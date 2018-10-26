@@ -1,0 +1,5 @@
+{ 
+    "name": "providers",
+    "main": "providers",
+    "types": "providers.d.ts"
+}

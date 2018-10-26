@@ -1,10 +1,19 @@
-import * as observable from 'tns-core-modules/data/observable';
-import * as pages from 'tns-core-modules/ui/page';
-import {HelloWorldModel} from './main-view-model';
+import { EventData } from "tns-core-modules/data/observable";
+import { Page } from "tns-core-modules/ui/page";
+import { HelloWorldModel } from "./main-view-model";
+import { tnsOauthLogin, tnsOauthLogout } from "./auth-service";
 
-// Event handler for Page 'loaded' event attached in main-page.xml
-export function pageLoaded(args: observable.EventData) {
-    // Get the event sender
-    let page = <pages.Page>args.object;
-    page.bindingContext = new HelloWorldModel();
+let page: Page;
+
+export function navigatingTo(args: EventData) {
+  page = <Page>args.object;
+  page.bindingContext = new HelloWorldModel();
+}
+
+export function onLoginTap() {
+  tnsOauthLogin("facebook");
+}
+
+export function onLogoutTap() {
+  tnsOauthLogout();
 }

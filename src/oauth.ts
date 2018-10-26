@@ -1,53 +1,170 @@
 import * as applicationModule from "tns-core-modules/application";
 import * as platformModule from "tns-core-modules/platform";
-import * as dialogs from "tns-core-modules/ui/dialogs";
-// import { tnsOauthProviderMap } from "./tns-oauth-helper-setup";
-import { TnsOAuthClientLoginBlock } from "./index";
+import * as frameModule from "tns-core-modules/ui/frame";
+import { HttpResponse } from "tns-core-modules/http";
+
+import {
+  TnsOAuthClientLoginBlock,
+  ITnsOAuthLoginController,
+  ITnsOAuthTokenResult,
+  TnsOAuthResponseBlock
+} from "./index";
 import { TnsOaProvider, TnsOaProviderType } from "./providers";
+import { TnsOAuthClientAppDelegate } from "./delegate";
+import { TnsOAuthLoginNativeViewController } from "./tns-oauth-native-view-controller";
+import { TnsOAuthLoginWebViewController } from "./tns-oauth-login-webview-controller";
+import { TnsOAuthClientConnection } from "./tns-oauth-client-connection";
+import { nsArrayToJSArray, jsArrayToNSArray } from "./tns-oauth-utils";
 
 export class TnsOAuthClient {
   public provider: TnsOaProvider = null;
+  private loginController: ITnsOAuthLoginController;
+  public tokenResult: ITnsOAuthTokenResult;
 
   public constructor(providerType: TnsOaProviderType) {
     this.provider = tnsOauthProviderMap.providerMap.get(providerType);
     if (this.provider) {
-      console.log("provider found");
-    } else {
-      console.log("provider NOT found");
+      switch (this.provider.options.openIdSupport) {
+        case "oid-full":
+          TnsOAuthClientAppDelegate.setConfig(
+            this,
+            (<any>this.provider.options).urlScheme
+          );
+          this.loginController = TnsOAuthLoginNativeViewController.initWithClient(
+            this
+          );
+          break;
+        case "oid-none":
+          this.loginController = TnsOAuthLoginWebViewController.initWithClient(
+            this
+          );
+          break;
+        default:
+          this.loginController = TnsOAuthLoginWebViewController.initWithClient(
+            this
+          );
+          break;
+      }
     }
   }
-  public loginWithCompletion(completion?: TnsOAuthClientLoginBlock): void {}
-}
 
-export class Common {
-  public message: string;
-
-  constructor() {
-    this.message = Utils.SUCCESS_MSG();
+  public loginWithCompletion(completion?: TnsOAuthClientLoginBlock) {
+    if (this.provider) {
+      this.loginController.loginWithParametersFrameCompletion(
+        null,
+        frameModule.topmost(),
+        (<any>this.provider.options).urlScheme,
+        completion
+      );
+    } else {
+      completion(null, "Provider is not configured");
+    }
   }
 
-  public greet() {
-    return "Hello, NS";
+  public logout(successPage?: string) {
+    this.removeCookies();
+    this.removeToken();
+    this.callRevokeEndpoint();
+    if (successPage) {
+      let navEntry: frameModule.NavigationEntry = {
+        moduleName: successPage,
+        clearHistory: true
+      };
+      frameModule.topmost().navigate(navEntry);
+    }
   }
 
-  public sayHello(name: string): string {
-    return "Say hello " + name;
+  public resumeWithUrl(url: string) {
+    this.loginController.resumeWithUrl(url);
   }
-}
 
-export class Utils {
-  public static SUCCESS_MSG(): string {
-    let msg = `Your plugin is working on ${
-      applicationModule.android ? "Android" : "iOS"
-    }.`;
+  private removeCookies(): void {
+    if (platformModule.isIOS) {
+      let cookieArr = nsArrayToJSArray(
+        NSHTTPCookieStorage.sharedHTTPCookieStorage.cookies
+      );
+      for (let i = 0; i < cookieArr.length; i++) {
+        const cookie: NSHTTPCookie = <NSHTTPCookie>cookieArr[i];
+        for (let j = 0; j < this.provider.cookieDomains.length; j++) {
+          if (cookie.domain.endsWith(this.provider.cookieDomains[j])) {
+            NSHTTPCookieStorage.sharedHTTPCookieStorage.deleteCookie(cookie);
+          }
+        }
+      }
 
-    setTimeout(() => {
-      dialogs
-        .alert(`${msg} For real. It's really working :)`)
-        .then(() => console.log(`Dialog closed.`));
-    }, 2000);
+      const dataStore = WKWebsiteDataStore.defaultDataStore();
+      dataStore.fetchDataRecordsOfTypesCompletionHandler(
+        WKWebsiteDataStore.allWebsiteDataTypes(),
+        records => {
+          const cookieArr = <WKWebsiteDataRecord[]>nsArrayToJSArray(records);
 
-    return msg;
+          for (let k = 0; k < cookieArr.length; k++) {
+            const cookieRecord = cookieArr[k];
+            for (let l = 0; l < this.provider.cookieDomains.length; l++) {
+              if (
+                cookieRecord.displayName.endsWith(
+                  this.provider.cookieDomains[l]
+                )
+              ) {
+                dataStore.removeDataOfTypesForDataRecordsCompletionHandler(
+                  cookieRecord.dataTypes,
+                  jsArrayToNSArray([cookieRecord]),
+                  () => {
+                    console.log(
+                      `Cookies for ${
+                        cookieRecord.displayName
+                      } deleted successfully`
+                    );
+                  }
+                );
+              }
+            }
+          }
+        }
+      );
+    } else if (platformModule.isAndroid) {
+      let cookieManager = android.webkit.CookieManager.getInstance();
+      if ((<any>cookieManager).removeAllCookies) {
+        let cm23 = <any>cookieManager;
+        cm23.removeAllCookies(null);
+        cm23.flush();
+      } else if (cookieManager.removeAllCookie) {
+        cookieManager.removeAllCookie();
+        cookieManager.removeSessionCookie();
+      }
+    }
+  }
+
+  private removeToken(): void {
+    this.tokenResult = null;
+  }
+
+  private callRevokeEndpoint() {
+    if (!this.provider.revokeEndpoint) {
+      return;
+    }
+
+    // const request = null;
+    let responseCompletion: TnsOAuthResponseBlock = (
+      data: any,
+      response: HttpResponse,
+      responseError: Error
+    ) => {
+      if (!responseError) {
+        if (response.statusCode === 200) {
+        } else {
+          // Error condition - ignore
+        }
+      }
+    };
+
+    const connection: TnsOAuthClientConnection = TnsOAuthClientConnection.initWithRequestClientCompletion(
+      // request,
+      this,
+      responseCompletion
+    );
+
+    connection.startTokenRevocation();
   }
 }
 
@@ -66,14 +183,14 @@ export class TnsOauthProviderMap {
 export const tnsOauthProviderMap = new TnsOauthProviderMap();
 
 function configureClientAuthAppDelegate(): void {
-  // application.ios.delegate = TnsOAuthClientAppDelegate;
+  applicationModule.ios.delegate = TnsOAuthClientAppDelegate;
 }
 
 export function configureTnsOAuth(providers: TnsOaProvider[]) {
   if (platformModule.isIOS) {
-    // if (providers.some(p => p.options.openIdSupport === "oid-full")) {
-    //  configureClientAuthAppDelegate();
-    // }
+    if (providers.some(p => p.options.openIdSupport === "oid-full")) {
+      configureClientAuthAppDelegate();
+    }
   }
 
   for (let i = 0; i < providers.length; ++i) {

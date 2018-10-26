@@ -1,22 +1,41 @@
-import { TnsOAuthClient, configureTnsOAuth } from "nativescript-oauth";
+import {
+  TnsOAuthClient,
+  configureTnsOAuth,
+  ITnsOAuthTokenResult
+} from "nativescript-oauth";
 import {
   TnsOaProvider,
   TnsOaProviderOptionsFacebook,
-  TnsOaProviderFacebook
+  TnsOaProviderFacebook,
+  TnsOaProviderOptionsGoogle,
+  TnsOaProviderGoogle,
+  TnsOaProviderOptionsMicrosoft,
+  TnsOaProviderMicrosoft
 } from "nativescript-oauth/providers";
 
 let client: TnsOAuthClient = null;
 
 export function configureOAuthProviders() {
-  // const microsoftProvider = configureOAuthProviderMicrosoft();
-  // const googleProvider = configureOAuthProviderGoogle();
+  const microsoftProvider = configureOAuthProviderMicrosoft();
+  const googleProvider = configureOAuthProviderGoogle();
   const facebookProvider = configureOAuthProviderFacebook();
 
-  configureTnsOAuth([
-    // microsoftProvider,
-    // googleProvider,
-    facebookProvider
-  ]);
+  configureTnsOAuth([microsoftProvider, googleProvider, facebookProvider]);
+}
+
+function configureOAuthProviderGoogle(): TnsOaProvider {
+  const googleProviderOptions: TnsOaProviderOptionsGoogle = {
+    openIdSupport: "oid-full",
+    clientId:
+      "932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb.apps.googleusercontent.com",
+    redirectUri:
+      "com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb:/auth",
+    urlScheme:
+      "com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb",
+    scopes: ["email"]
+  };
+  const googleProvider = new TnsOaProviderGoogle(googleProviderOptions);
+  return googleProvider;
 }
 
 function configureOAuthProviderFacebook(): TnsOaProvider {
@@ -31,8 +50,33 @@ function configureOAuthProviderFacebook(): TnsOaProvider {
   return facebookProvider;
 }
 
+function configureOAuthProviderMicrosoft(): TnsOaProvider {
+  const microsoftProviderOptions: TnsOaProviderOptionsMicrosoft = {
+    openIdSupport: "oid-full",
+    clientId: "f376fa87-64a9-49a1-8b56-e0d48fc0810b",
+    // redirectUri: "urn:ietf:wg:oauth:2.0:oob",
+    redirectUri: "msalf376fa87-64a9-49a1-8b56-e0d48fc0810b://auth",
+    urlScheme: "msalf376fa87-64a9-49a1-8b56-e0d48fc0810b",
+    scopes: ["https://outlook.office.com/mail.read"]
+  };
+  const microsoftProvider = new TnsOaProviderMicrosoft(
+    microsoftProviderOptions
+  );
+  return microsoftProvider;
+}
+
 export function tnsOauthLogin(providerType) {
   client = new TnsOAuthClient(providerType);
+
+  client.loginWithCompletion((tokenResult: ITnsOAuthTokenResult, error) => {
+    if (error) {
+      console.error("back to main page with error: ");
+      console.error(error);
+    } else {
+      console.log("back to main page with access token: ");
+      console.log(tokenResult);
+    }
+  });
 }
 
 export function tnsOauthLogout() {

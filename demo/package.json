@@ -3,6 +3,9 @@
     "id": "org.nativescript.demo",
     "tns-ios": {
       "version": "4.2.0"
+    },
+    "tns-android": {
+      "version": "4.2.0"
     }
   },
   "dependencies": {

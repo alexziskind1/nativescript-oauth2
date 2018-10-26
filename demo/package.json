@@ -1,0 +1,27 @@
+{
+  "nativescript": {
+    "id": "org.nativescript.demo"
+  },
+  "dependencies": {
+    "nativescript-theme-core": "^1.0.4",
+    "nativescript-unit-test-runner": "^0.3.4",
+    "nativescript-oauth": "file:../src",
+    "tns-core-modules": "^4.2.0"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.5.2",
+    "karma": "^1.3.0",
+    "karma-jasmine": "^1.0.2",
+    "karma-nativescript-launcher": "^0.4.0",
+    "nativescript-css-loader": "~0.26.1",
+    "nativescript-dev-typescript": "~0.7.2",
+    "nativescript-dev-webpack": "~0.15.1",
+    "tns-platform-declarations": "^4.2.0",
+    "tslint": "~5.4.3",
+    "typescript": "~2.8.2"
+  },
+  "scripts": {
+    "build.plugin": "cd ../src && npm run build",
+    "ci.tslint": "npm i && tslint --config '../tslint.json' 'app/**/*.ts' --exclude '**/node_modules/**'"
+  }
+}

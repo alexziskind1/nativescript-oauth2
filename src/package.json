@@ -1,7 +1,7 @@
 {
   "name": "nativescript-oauth2",
   "version": "1.0.0",
-  "description": "Your awesome NativeScript plugin.",
+  "description": "OAuth 2 login for NativeScript.",
   "main": "oauth",
   "typings": "index.d.ts",
   "nativescript": {
@@ -27,21 +27,31 @@
     "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**'",
     "prepack": "npm run build.native"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexziskind1/nativescript-oauth2.git"
+  },
   "keywords": [
     "NativeScript",
     "JavaScript",
-    "Android",
-    "iOS"
+    "TypeScript",
+    "Office365",
+    "Facebook",
+    "Google",
+    "Azure AD",
+    "iOS",
+    "Android"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "youremail@yourdomain.com"
+    "name": "Alexander Ziskind",
+    "email": "alex@nuvious.com",
+    "url": "https://nativescripting.com"
   },
   "bugs": {
-    "url": "https://github.com/alexziskind1/nativescript-oauth/issues"
+    "url": "https://github.com/alexziskind1/nativescript-oauth2/issues"
   },
-  "license": "Apache-2.0",
-  "homepage": "https://github.com/alexziskind1/nativescript-oauth",
+  "license": "MIT",
+  "homepage": "https://github.com/alexziskind1/nativescript-oauth2",
   "readmeFilename": "README.md",
   "devDependencies": {
     "tns-core-modules": "^4.2.0",

@@ -1,0 +1,11 @@
+demo/
+demo-angular/
+node_modules/
+hooks/
+*.log
+*.ts
+*.js.map
+tsconfig.json
+
+!index.d.ts
+!*.js

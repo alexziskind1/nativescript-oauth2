@@ -30,6 +30,8 @@ Register your mobile app [here](https://apps.dev.microsoft.com). This will requi
 2.  Copy the "Client Id" GUID from the Mobile Application section.
 3.  Click "Save" at the bottom.
 
+Microsoft login will work either with the in-app webview method, in which case your redirectUri config property can be set to `urn:ietf:wg:oauth:2.0:oob`. Or it can use the more secure method that doesn't require a client secret, but it will need to have a custom URL scheme registered (see below).
+
 ### Facebook account
 
 For logging in with your Facebook account, you should have a Facebook developer account. If you don't have one yet, you can get one [here](https://developers.facebook.com/).
@@ -43,6 +45,17 @@ Register your mobile app by following the wizard under "My Apps" -> "Add a new a
 3.  Make sure to turn ON the option "Embedded Browser OAuth Login"
 4.  Click Save
 5.  Copy the App ID and the App Secret from the Dashboard page to bootstrap your app. These will be the ClientID and ClientSecret respectively.
+
+### Google account
+
+For logging in with your Google account, you should have a Google developer account. If you don't have one yet, you can get one [here](https://developers.google.com/).
+
+Keep an eye out on my [YouTube channel](https://www.youtube.com/c/AlexanderZiskind) for a video on how to set up Google with with plugin.
+
+Register your mobile app by following the wizard in the Developer Console.
+(more info coming soon)
+
+Google login will only work with the out-of-app browser. You must register a custom URL scheme for your app (see below).
 
 ### LinkedIn Account (coming soon)
 
@@ -177,6 +190,68 @@ export declare class TnsOaProviderMyProvider implements TnsOaProvider {
   parseTokenResult(jsonData: any): ITnsOAuthTokenResult;
 }
 ```
+
+### Custom URL Scheme
+
+If you are using an OpenId certified provider and need to use an out-of-app browser to authenticate, then you must register a custom URL scheme with your app.
+This is easy to do with NativeScript. The first step is to register your custom scheme with your provider when you register your app.
+
+#### Android
+
+To register a custom URL scheme for Android, open your Android app resources, which are in this path: app/App_Resources/Android/src/main/AndroidManifest.xml. The AndroidManifest.xml file used to be right in the Android folder, but now it's been moved down a bit. It's still the same file though. Find the `<application>` section and add the attribute `android:launchMode="singleTask"`. Then inside the activity named `com.tns.NativeScriptActivity`, add a new `<intent-filter>` section with your scheme AND your path. Here is an example of the entire `<application>`
+section:
+
+```xml
+	<application android:name="com.tns.NativeScriptApplication" android:allowBackup="true" android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/AppTheme" android:launchMode="singleTask">
+
+		<activity android:name="com.tns.NativeScriptActivity" android:label="@string/title_activity_kimera" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@style/LaunchScreenTheme">
+
+			<meta-data android:name="SET_THEME_ON_LAUNCH" android:resource="@style/AppTheme" />
+
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW"/>
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+				<!-- Custom Path data -->
+				<data android:path="/auth" android:scheme="com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb"/>
+				<data android:path="/auth" android:scheme="msalf376fa87-64a9-89a1-8b56-e0d48fc08107"/>
+			</intent-filter>
+
+		</activity>
+		<activity android:name="com.tns.ErrorReportActivity"/>
+	</application>
+```
+
+Notice in the config above, I've registered TWO custom URL schemes for my app - this is the `<data>` element with the `path` and `scheme` attributes.
+
+#### iOS
+
+To register a custom URL scheme for iOS, open your iOS app resources, which are in this path: app/App_Resources/iOS/Info.plist. In the key/value dictionary in this file, add a key for `CFBundleURLTypes`, if it's not already there. And add the value for that key as an array. The entire addition is listed here:
+
+```
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>org.nativescript.testnsazmobaplugin</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>msalf376fa87-64a9-49a1-8b57-e0d48fc08107</string>
+				<string>fb691208554415647</string>
+				<string>com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb</string>
+			</array>
+		</dict>
+	</array>
+```
+
+Notice that for the key `CFBundleURLSchemes`, there are three string listed as custom URL schemes, all of them will open your app.
 
 ## Contributing
 

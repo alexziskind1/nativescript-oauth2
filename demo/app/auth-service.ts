@@ -2,7 +2,7 @@ import {
   TnsOAuthClient,
   configureTnsOAuth,
   ITnsOAuthTokenResult
-} from "nativescript-oauth";
+} from "nativescript-oauth2";
 import {
   TnsOaProvider,
   TnsOaProviderOptionsFacebook,
@@ -11,7 +11,7 @@ import {
   TnsOaProviderGoogle,
   TnsOaProviderOptionsMicrosoft,
   TnsOaProviderMicrosoft
-} from "nativescript-oauth/providers";
+} from "nativescript-oauth2/providers";
 
 let client: TnsOAuthClient = null;
 

@@ -11,7 +11,7 @@
   "dependencies": {
     "nativescript-theme-core": "^1.0.4",
     "nativescript-unit-test-runner": "^0.3.4",
-    "nativescript-oauth": "file:../src",
+    "nativescript-oauth2": "file:../src",
     "tns-core-modules": "^4.2.0"
   },
   "devDependencies": {

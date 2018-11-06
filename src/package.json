@@ -1,6 +1,6 @@
 {
   "name": "nativescript-oauth2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "OAuth 2 login for NativeScript.",
   "main": "oauth",
   "typings": "index.d.ts",

@@ -1,6 +1,8 @@
 # OAuth 2 Plugin for NativeScript
 
-Library for interacting with OAuth 2.0 in NativeScript applications that provides simplified direct client access with a OAuth providers that support the OAuth 2.0 protocol such as Microsoft, Facebook, and Google.
+![npm-downloads-per-week](https://img.shields.io/npm/dw/nativescript-oauth2.svg)
+
+Library for interacting with OAuth 2.0 in NativeScript applications that provides simplified direct client access with a OAuth providers that support the OAuth 2.0 protocol such as Microsoft, Facebook, and Google, but not limited to any login providers, and even allows you to plug in your own. This library doesn't use any native libraries and relies only on what comes in the box - making it really lightweight.
 
 **_NEW:_** **This is the new version of the old [nativescript-oauth plugin](https://www.npmjs.com/package/nativescript-oauth)**
 
@@ -14,7 +16,7 @@ Thanks to all those who contributed providers to the old plugin - please do the 
 
 Some providers are [OpenId certified](https://openid.net/certification/) (Google, Microsoft) so they are a bit more secure in that they don't have to store the client secret on the client (which can always be pwned by folks that are savvy enough to get into your app). Google doesn't allow client secrets to be passed and requires an out-of-app browser to be used for auth. This plugin supports this method for any providers that require it, but there are a few extra configuration steps that have to be performed to get this working, more on that below.
 
-Facebook doesn't support OpenId and works with the in-app webview implementation of the auth process. So while this requires less configuration, there is an slight security risk of keeping your client secret in the app. If you have strict security requirements, you have to implement Facebook login by using your backend as a proxy between this plugin and Facebook auth servers.
+Facebook doesn't support OpenId and works with the in-app WebView implementation of the auth process. So while this requires less configuration, there is an slight security risk of keeping your client secret in the app. If you have strict security requirements, you have to implement Facebook login by using your backend as a proxy between this plugin and Facebook auth servers.
 
 ## Prerequisites
 

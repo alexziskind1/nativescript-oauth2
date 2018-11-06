@@ -87,10 +87,32 @@ If you want a quickstart, you can start with one of two demo apps:
 
 ### Bootstrapping
 
-When your app starts up, you'll have to register one or more auth providers to use with the nativescript-oauth2 plugin. If you are not using Angular, open `app.ts` and add the following code before `application.start();`
-If you are using Angular, then open your `main.ts` file and add the following code before `platformNativeScriptDynamic().bootstrapModule(AppModule);`
+When your app starts up, you'll have to register one or more auth providers to use with the nativescript-oauth2 plugin. You'll use the code below to register the providers.
+
+#### NativeScript Core
+
+If you are using NativeScript Core, open `app.ts` and add the following registration code before `application.start();`
+
+#### NativeScript with Angular
+
+If you are using Angular, then open your `main.ts` file. You will need to explicitly use frames, so make sure to pass an options object to `platformNativeScriptDynamic` with the `createFrameOnBootstrap` flag set to `true`, like this.
 
 ```typescript
+// main.ts
+platformNativeScriptDynamic({ createFrameOnBootstrap: true }).bootstrapModule(
+  AppModule
+);
+```
+
+then add add the registration code below somewhere before you call login, most likely in your Auth service, as in the demo-angular project.
+
+#### NativeScript-Vue
+
+If you are using NativeScript-Vue, then you'll have to add this registration code somewhere when your app bootstraps. A demo app is coming soon.
+
+```typescript
+// This is the provider registration example code
+
 import { configureTnsOAuth } from "nativescript-oauth2";
 
 import {

@@ -190,30 +190,65 @@ After login is done, the completion handler will be called with the results.
 
 If you don't see an auth provider that you need, you can just implement your own.
 
-If your provider supports OpenId, simply implement your provider's options by extending the `TnsOaOpenIdProviderMyProvider` interface.
+If your provider supports OpenId, simply implement your provider's options by extending the `TnsOaUnsafeProviderOptions` interface if your provider is not Open Id compliant, or the `TnsOaOpenIdProviderOptions` interface if your provider IS Open Id compliant.
 
 ```typescript
-export declare type ProviderTypeMyProvider = "myProvider";
-export interface TnsOaProviderOptionsMyProvider
-  extends TnsOaOpenIdProviderMyProvider {}
+export interface TnsOaMyCustomProviderOptions extends TnsOaUnsafeProviderOptions { }
 ```
 
 Then you can create your provider class by implementing the `TnsOaProvider` interface:
 
 ```typescript
-export declare class TnsOaProviderMyProvider implements TnsOaProvider {
-  options: TnsOaProviderOptions;
-  openIdSupport: OpenIdSupportFull;
-  providerType: ProviderTypeMyProvider;
-  authority: string;
-  tokenEndpointBase: string;
-  authorizeEndpoint: string;
-  tokenEndpoint: string;
-  cookieDomains: string[];
-  constructor(options: TnsOaProviderOptionsMyProvider);
-  parseTokenResult(jsonData: any): ITnsOAuthTokenResult;
+export class TnsOaProviderMyCustomProvider implements TnsOaProvider {
+    public options: TnsOaProviderOptions;
+    public openIdSupport: OpenIdSupportNone = "oid-none";
+    public providerType = "myCustomProvider";
+    public authority = "https://www.facebook.com/v3.1/dialog";
+    public tokenEndpointBase = "https://graph.facebook.com";
+    public authorizeEndpoint = "/oauth";
+    public tokenEndpoint = "/v3.1/oauth/access_token";
+    public cookieDomains = ["facebook.com"];
+
+    constructor(options: TnsOaMyCustomProviderOptions) {
+        this.options = options;
+    }
+
+    public parseTokenResult(jsonData): ITnsOAuthTokenResult {
+        return jsonData;
+    }
 }
 ```
+
+Finally, you'll use your provider when you register it with the app.
+
+```typescript
+// app.ts
+
+import * as application from "tns-core-modules/application";
+import { configureOAuthProviders } from "./auth-service";
+configureOAuthProviders();
+application.run({ moduleName: "app-root" });
+```
+
+```typescript
+// auth-service.ts
+export function configureOAuthProviders() {
+  const myCustomProvider = configureOAuthProviderMyCustomProvider();
+  configureTnsOAuth([myCustomProvider]);
+}
+function configureOAuthProviderMyCustomProvider(): TnsOaProvider {
+  const facebookProviderOptions: TnsOaMyCustomProviderOptions = {
+    openIdSupport: "oid-none",
+    clientId: "<your client/app id>",
+    clientSecret: "<your client secret>",
+    redirectUri: "<redirect Uri>",
+    scopes: ["email"]
+  };
+  const facebookProvider = new TnsOaProviderMyCustomProvider(facebookProviderOptions);
+  return facebookProvider;
+}
+```
+
 
 ### Custom URL Scheme
 

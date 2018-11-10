@@ -22,11 +22,7 @@ export interface TnsOaOpenIdProviderOptions extends TnsOaProviderOptions {
   issuerUrl?: string; // Used for discovery, to be implemented
 }
 
-export type TnsOaProviderType =
-  | ProviderTypeFacebook
-  | ProviderTypeGoogle
-  | ProviderTypeMicrosoft
-  | ProviderTypeLinkedIn;
+export type TnsOaProviderType = string;
 
 export interface TnsOaProvider {
   options: TnsOaProviderOptions;
@@ -46,7 +42,7 @@ export interface TnsOaProvider {
 
 export declare type ProviderTypeFacebook = "facebook";
 export interface TnsOaProviderOptionsFacebook
-  extends TnsOaUnsafeProviderOptions {}
+  extends TnsOaUnsafeProviderOptions { }
 export declare class TnsOaProviderFacebook implements TnsOaProvider {
   options: TnsOaProviderOptions;
   openIdSupport: OpenIdSupportNone;
@@ -62,7 +58,7 @@ export declare class TnsOaProviderFacebook implements TnsOaProvider {
 
 export declare type ProviderTypeGoogle = "google";
 export interface TnsOaProviderOptionsGoogle
-  extends TnsOaOpenIdProviderOptions {}
+  extends TnsOaOpenIdProviderOptions { }
 export declare class TnsOaProviderGoogle implements TnsOaProvider {
   options: TnsOaProviderOptions;
   openIdSupport: OpenIdSupportFull;
@@ -78,7 +74,7 @@ export declare class TnsOaProviderGoogle implements TnsOaProvider {
 
 export declare type ProviderTypeMicrosoft = "microsoft";
 export interface TnsOaProviderOptionsMicrosoft
-  extends TnsOaOpenIdProviderOptions {}
+  extends TnsOaOpenIdProviderOptions { }
 export declare class TnsOaProviderMicrosoft implements TnsOaProvider {
   options: TnsOaProviderOptions;
   openIdSupport: OpenIdSupportFull;
@@ -94,7 +90,7 @@ export declare class TnsOaProviderMicrosoft implements TnsOaProvider {
 
 export declare type ProviderTypeLinkedIn = "linkedIn";
 export interface TnsOaProviderOptionsLinkedIn
-  extends TnsOaUnsafeProviderOptions {}
+  extends TnsOaUnsafeProviderOptions { }
 export declare class TnsOaProviderLinkedIn implements TnsOaProvider {
   options: TnsOaProviderOptions;
   openIdSupport: OpenIdSupportNone;

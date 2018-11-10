@@ -1,6 +1,6 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" class="page">
   <Page.actionBar>
-    <ActionBar title="My App" icon="" class="action-bar">
+    <ActionBar title="OAuth Demo: TypeScript" icon="" class="action-bar">
     </ActionBar>
   </Page.actionBar>
 

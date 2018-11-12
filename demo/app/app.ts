@@ -3,4 +3,4 @@ import { configureOAuthProviders } from "./auth-service";
 
 configureOAuthProviders();
 
-application.start({ moduleName: "main-page" });
+application.run({ moduleName: "app-root" });

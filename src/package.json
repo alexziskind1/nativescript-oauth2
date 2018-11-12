@@ -21,7 +21,7 @@
     "test.ios-angular": "npm run tsc && npm run tslint && cd ../demo-angular && tns build ios && tns test ios --justlaunch",
     "test.android-custom": "npm run tsc && npm run tslint && cd ../demo-custom-provider && tns build android && tns test android --justlaunch",
     "test.ios-angular-custom": "npm run tsc && npm run tslint && cd ../demo-custom-provider && tns build ios && tns test ios --justlaunch",
-    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
+    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\" --exclude \"**/platforms/**\" --exclude \"**/demo*/**\"",
     "plugin.tscwatch": "npm run tsc -- -w",
     "demo.ios": "npm run tsc && cd ../demo && tns run ios --syncAllFiles --emulator",
     "demo.android": "npm run tsc && cd ../demo && tns run android --syncAllFiles --emulator",

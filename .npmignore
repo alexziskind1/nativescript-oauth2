@@ -1,5 +1,6 @@
 demo/
 demo-angular/
+demo-vue/
 demo-custom-provider/
 node_modules/
 hooks/

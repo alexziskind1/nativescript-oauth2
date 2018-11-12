@@ -27,6 +27,8 @@
     "demo.android": "npm run tsc && cd ../demo && tns run android --syncAllFiles --emulator",
     "demo.ios-angular": "npm run tsc && cd ../demo-angular && tns run ios --syncAllFiles --emulator",
     "demo.android-angular": "npm run tsc && cd ../demo-angular && tns run android --syncAllFiles --emulator",
+    "demo.ios-vue": "npm run tsc && cd ../demo-vue && tns run ios --bundle --syncAllFiles --emulator",
+    "demo.android-vue": "npm run tsc && cd ../demo-vue && tns run android --bundle --syncAllFiles --emulator",
     "demo.ios-custom": "npm run tsc && cd ../demo-custom-provider && tns run ios --syncAllFiles --emulator",
     "demo.android-custom": "npm run tsc && cd ../demo-custom-provider && tns run android --syncAllFiles --emulator",
     "demo.reset": "cd ../demo && npx rimraf -- hooks node_modules platforms package-lock.json",

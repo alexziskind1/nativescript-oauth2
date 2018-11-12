@@ -24,4 +24,5 @@ publish/package
 demo/report/report.html
 demo/report/stats.json
 demo-angular/platforms
+demo-vue/platforms
 demo-custom-provider/platforms

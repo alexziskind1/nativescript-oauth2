@@ -1,74 +1,123 @@
+env:
+  global:
+    - ANDROID_PACKAGE='app-debug.apk'
+    - ANDROID_PACKAGE_FOLDER=$TRAVIS_BUILD_DIR/demo/platforms/android/app/build/outputs/apk/debug
+    - ANDROID_SAUCE_STORAGE="https://saucelabs.com/rest/v1/storage/$SAUCE_USER/$ANDROID_PACKAGE?overwrite=true"
+    - IOS_PACKAGE='imagepickerdemo.zip'
+    - IOS_PACKAGE_FOLDER=$TRAVIS_BUILD_DIR/demo/platforms/ios/build/emulator
+    - IOS_SAUCE_STORAGE="https://saucelabs.com/rest/v1/storage/$SAUCE_USER/$IOS_PACKAGE?overwrite=true"
+
+git:
+  depth: 1
+
+branches:
+  only: 
+    - master
 matrix:
   include:
     - stage: "Lint"
       language: node_js
       os: linux
       node_js: "8"
-      script: cd src && npm run ci.tslint && cd ../demo && npm run ci.tslint
-    - stage: "WebPack, Build and Test"
+      script: cd src && npm run ci.tslint && cd ../demo && npm run ci.tslint && cd ../demo-angular && npm run ci.tslint
+    - stage: "WebPack and Build"
       os: osx
       env:
-        - WebPack="iOS"
-      osx_image: xcode9.2
+        - WebPackiOS="12.0"
+      osx_image: xcode10.0
       language: node_js 
       node_js: "8"
       jdk: oraclejdk8
-      script: cd demo && npm run build.plugin && npm i && tns build ios --bundle --env.uglify
+      script:
+        - cd demo && npm run build.plugin && npm i && tns build ios --bundle --env.uglify 
+        - cd ../publish 
+        - sh pack.sh
+        - cp package/*.tgz ../demo-angular/package.tgz
+        - cd ../demo-angular
+        - sed -i -e 's/\"..\/src\"/"package.tgz"/g' package.json
+        - npm i
+        - tns build ios --bundle --env.uglify --env.aot
     - language: android
       os: linux
       env:
-        - WebPack="Android"
+        - WebPackAndroid="28"
       jdk: oraclejdk8
-      before_install: nvm install 8
-      script: cd demo && npm run build.plugin && npm i && tns build android --bundle --env.uglify --env.snapshot
+      before_install: nvm install 8.11.4
+      script:
+        - cd demo && npm run build.plugin && npm i && tns build android --bundle --env.uglify --env.snapshot
+        - cd ../publish 
+        - sh pack.sh
+        - cp package/*.tgz ../demo-angular/package.tgz
+        - cd ../demo-angular
+        - sed -i -e 's/\"..\/src\"/"package.tgz"/g' package.json
+        - npm i
+        - tns build android --bundle --env.uglify --env.aot
     - language: android
       env: 
-        - BuildAndroid="26"
+        - BuildAndroid="28"
       os: linux
       jdk: oraclejdk8
-      before_install: nvm install stable
+      before_install: nvm install 8.11.4
       script:
-        - cd src && npm i && npm run tsc && cd ../demo && tns build android
+        - cd demo && npm run ci.android.build && cd ../demo-angular && npm run ci.android.build
+        - "curl -u $SAUCE_USER:$SAUCE_KEY -X POST -H 'Content-Type: application/octet-stream' $ANDROID_SAUCE_STORAGE --data-binary @$ANDROID_PACKAGE_FOLDER/$ANDROID_PACKAGE"
     - os: osx
       env: 
-        - BuildiOS="11"
-        - Xcode="9.2"
-      osx_image: xcode9.2
+        - BuildiOS="12.0"
+        - Xcode="10.0"
+      osx_image: xcode10.0
       language: node_js 
       node_js: "8"
       jdk: oraclejdk8
-      script: 
-        - cd src && npm i && npm run tsc && cd ../demo && tns build ios
-    - os: linux
-      language: android
-      dist: precise
-      sudo: required
-      jdk: oraclejdk8
-      before_script:
-        - echo no | android create avd --force -n test -t android-21 -b armeabi-v7a
-        - emulator -avd test -no-audio -no-window &
-        - android-wait-for-emulator
-      before_install:
-        - nvm install 8
-      script: cd src && npm run test.android
-    - os: osx
+      script:
+        - cd demo && npm run ci.ios.build && cd ../demo-angular && npm run ci.ios.build
+        - cd $IOS_PACKAGE_FOLDER && zip -r $IOS_PACKAGE demo.app
+        - "curl -u $SAUCE_USER:$SAUCE_KEY -X POST -H 'Content-Type: application/octet-stream' $IOS_SAUCE_STORAGE --data-binary @$IOS_PACKAGE_FOLDER/$IOS_PACKAGE"
+    - stage: "UI Tests"
+      env: 
+        - AndroidEmulator="23"
       language: node_js
+      os: linux
       node_js: "8"
-      jdk: oraclejdk8
-      osx_image: xcode9.2
-      script: cd src && npm run test.ios
+      script:
+        - npm i -g appium
+        - cd demo && npm i
+        - travis_retry npm run e2e -- --runType android23 --sauceLab --appPath $ANDROID_PACKAGE
+    - os: linux
+      env: 
+        - iOS="12"
+      language: node_js 
+      node_js: "8"
+      script: 
+        - npm i -g appium
+        - cd demo && npm i
+        - travis_wait travis_retry npm run e2e -- --runType sim11iPhone6 --sauceLab --appPath $IOS_PACKAGE
 
 android:
   components:
     - tools
     - platform-tools
-    - build-tools-26.0.1
-    - android-26
+    - build-tools-28.0.2
+    - android-28
     - android-23
     - extra-android-m2repository
-    - sys-img-armeabi-v7a-android-21
 
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+    directories:
+        - .nvm
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+        
+before_install:
+    - sudo pip install --upgrade pip
+    - sudo pip install six
+        
 install:
     - echo no | npm install -g nativescript
     - tns usage-reporting disable
     - tns error-reporting disable
+
+  

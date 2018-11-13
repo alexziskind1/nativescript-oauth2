@@ -24,9 +24,5 @@
     "nativescript-dev-webpack": "~0.17.0",
     "tslint": "~5.4.3",
     "typescript": "~2.8.2"
-  },
-  "scripts": {
-    "build.plugin": "cd ../src && npm run build",
-    "ci.tslint": "npm i && tslint --config '../tslint.json' 'app/**/*.ts' --exclude '**/node_modules/**'"
   }
 }

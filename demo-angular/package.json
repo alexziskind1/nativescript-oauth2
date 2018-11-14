@@ -41,6 +41,8 @@
   "readme": "NativeScript Application",
   "scripts": {
     "build.plugin": "cd ../src && npm run build",
+    "ci.android.build": "npm i && tns build android",
+    "ci.ios.build": "npm i && tns build ios",
     "ci.tslint": "npm i && tslint --config '../tslint.json' 'app/**/*.ts' --exclude '**/node_modules/**'"
   }
 }

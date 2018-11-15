@@ -8,6 +8,8 @@ import {
   TnsOAuthLoginSubController
 } from "./tns-oauth-login-sub-controller";
 
+declare var android: any;
+
 export class TnsOAuthLoginNativeViewController
   implements ITnsOAuthLoginController {
   private loginController: TnsOAuthLoginSubController = null;

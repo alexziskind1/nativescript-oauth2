@@ -100,7 +100,7 @@ If you are using NativeScript Core, open `app.ts` and add the following registra
 
 #### NativeScript with Angular
 
-If you are using Angular, then open your `main.ts` file. You will need to explicitly use frames, so make sure to pass an options object to `platformNativeScriptDynamic` with the `createFrameOnBootstrap` flag set to `true`, like this.
+If you are using Angular AND you are NOT using `<page-router-outlet`, you'll need to enable frames in order for the plugin to open up a new native page with a login screen. To do that open your `main.ts` file. You will need to explicitly use frames, so make sure to pass an options object to `platformNativeScriptDynamic` with the `createFrameOnBootstrap` flag set to `true`, like this.
 
 ```typescript
 // main.ts
@@ -108,6 +108,8 @@ platformNativeScriptDynamic({ createFrameOnBootstrap: true }).bootstrapModule(
   AppModule
 );
 ```
+
+You don't need to do this if you already have `<page-router-outlet>` in your component.
 
 then add add the registration code below somewhere before you call login, most likely in your Auth service, as in the demo-angular project.
 

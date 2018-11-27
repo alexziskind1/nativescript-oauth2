@@ -26,4 +26,6 @@ demo/report/report.html
 demo/report/stats.json
 demo-angular/platforms
 demo-vue/platforms
+!demo-vue/**/*.js
 demo-custom-provider/platforms
+

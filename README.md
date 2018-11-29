@@ -115,7 +115,7 @@ then add add the registration code below somewhere before you call login, most l
 
 #### NativeScript-Vue
 
-If you are using NativeScript-Vue, then you'll have to add this registration code somewhere when your app bootstraps. A demo app is coming soon.
+If you are using NativeScript-Vue, then you'll have to add this registration code somewhere when your app bootstraps. A Vue demo app is included with the GitHub repo.
 
 ```typescript
 // This is the provider registration example code
@@ -193,17 +193,29 @@ After login is done, the completion handler will be called with the results.
 
 ### Creating a custom provider
 
-If you don't see an auth provider that you need, you can just implement your own.
+If you don't see an auth provider that you need, you can just implement your own - see the `demo-custom-provider` project in the GitHub repo for an example on how to do this.
 
-If your provider supports OpenId, simply implement your provider's options by extending the `TnsOaUnsafeProviderOptions` interface if your provider is not Open Id compliant, or the `TnsOaOpenIdProviderOptions` interface if your provider IS Open Id compliant.
+You need to implement two interfaces: provider options that suits your provider (more below), and `TnsOaProvider` for the provider endpoint details.
+
+#### Provider Options
+
+Implement your provider's options by extending the `TnsOaUnsafeProviderOptions` interface **if your provider is not Open Id compliant**, or the `TnsOaOpenIdProviderOptions` interface **if your provider *is* Open Id compliant**.
+
+> Note: the interface is named with the word 'unsafe' in the name because non-open id compliant providers (like Facebook) usually make you use a client secret to send to the provider in exchange for the token. Storing the secret somewhere other than the client app is recommended (like a proxy), but most people don't do this and just store the secret with the app - thus unsafe.
 
 ```typescript
+//Provider options example
+
 export interface TnsOaMyCustomProviderOptions extends TnsOaUnsafeProviderOptions { }
 ```
+
+#### TnsOaProvider
 
 Then you can create your provider class by implementing the `TnsOaProvider` interface:
 
 ```typescript
+//Provider implementation example
+
 export class TnsOaProviderMyCustomProvider implements TnsOaProvider {
     public options: TnsOaProviderOptions;
     public openIdSupport: OpenIdSupportNone = "oid-none";
@@ -237,6 +249,7 @@ application.run({ moduleName: "app-root" });
 
 ```typescript
 // auth-service.ts
+
 export function configureOAuthProviders() {
   const myCustomProvider = configureOAuthProviderMyCustomProvider();
   configureTnsOAuth([myCustomProvider]);

@@ -1,6 +1,7 @@
 import { Frame } from "tns-core-modules/ui/frame";
 import { WebView, LoadEventData } from "tns-core-modules/ui/web-view";
-import { Page } from "tns-core-modules/ui/page";
+import { android as androidApp } from "tns-core-modules/application";
+import { Page, isAndroid } from "tns-core-modules/ui/page";
 import { GridLayout } from "tns-core-modules/ui/layouts/grid-layout";
 import { NavigationButton } from "tns-core-modules/ui/action-bar/action-bar";
 import {
@@ -14,6 +15,9 @@ import {
   ITnsOAuthLoginController,
   TnsOAuthLoginSubController
 } from "./tns-oauth-login-sub-controller";
+
+// https://developer.android.com/reference/android/view/WindowManager.LayoutParams#soft_input_adjust_resize
+const SOFT_INPUT_ADJUST_RESIZE = 16;
 
 export class TnsOAuthLoginWebViewController
   implements ITnsOAuthLoginController {
@@ -65,9 +69,21 @@ export class TnsOAuthLoginWebViewController
     const page = new Page();
     page.content = grid;
 
-    const navBtn = new NavigationButton();
-    navBtn.text = "Done";
-    page.actionBar.navigationButton = navBtn;
+    if (isAndroid) {
+      page.actionBarHidden = true;
+      page.on("navigatedTo", () => {
+        this.setAndroidSoftInputModeToResize();
+        webView.android.getSettings().setDomStorageEnabled(true);
+        webView.android.getSettings().setBuiltInZoomControls(false);
+      });
+      page.on("navigatingFrom", () => {
+        this.restoreAndroidSoftInputMode();
+      });
+    } else {
+      const navBtn = new NavigationButton();
+      navBtn.text = "";
+      page.actionBar.navigationButton = navBtn;
+    }
 
     return page;
   }
@@ -109,5 +125,18 @@ export class TnsOAuthLoginWebViewController
   }
   private pageLoadFinished(args: LoadEventData) {
     console.log("WebView loadFinished " + args.url);
+  }
+
+  private originalSoftInputMode: number;
+
+  private setAndroidSoftInputModeToResize(): void {
+    const window = androidApp.foregroundActivity.getWindow();
+    this.originalSoftInputMode = window.getAttributes().softInputMode;
+    window.setSoftInputMode(SOFT_INPUT_ADJUST_RESIZE);
+  }
+
+  private restoreAndroidSoftInputMode(): void {
+    const window = androidApp.foregroundActivity.getWindow();
+    window.setSoftInputMode(this.originalSoftInputMode);
   }
 }

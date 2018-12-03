@@ -1,6 +1,8 @@
+import * as http from "tns-core-modules/http";
 import * as querystring from "querystring";
 import * as UrlLib from "url";
 import { TnsOaProvider } from "./providers";
+import { ITnsOAuthTokenResult } from ".";
 
 export function getAuthUrlStr(provider: TnsOaProvider): string {
   if (provider.getAuthUrlStr) {
@@ -10,7 +12,7 @@ export function getAuthUrlStr(provider: TnsOaProvider): string {
   params["client_id"] = provider.options.clientId;
   params["response_type"] = "code";
   params["redirect_uri"] = provider.options.redirectUri;
-  params["scope"] = provider.options.scopes;
+  params["scope"] = provider.options.scopes && provider.options.scopes.join(" ");
   params["response_mode"] = "query";
   params["state"] = "abcd";
 
@@ -58,7 +60,7 @@ export function getAccessTokenUrlWithCodeStr(
   params["client_secret"] = (<any>provider.options).clientSecret;
   // params["response_type"] = "code";
   // params["redirect_uri"] = credentials.redirectUri;
-  params["scope"] = provider.options.scopes;
+  params["scope"] = provider.options.scopes && provider.options.scopes.join(" ");
   // params["response_mode"] = "query";
   params["state"] = "abcd";
 
@@ -115,4 +117,34 @@ export function nsArrayToJSArray(a) {
 
 export function jsArrayToNSArray<T>(str) {
   return NSArray.arrayWithArray<T>(str);
+}
+
+export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthTokenResult {
+  let results;
+  try {
+    // As of http://tools.ietf.org/html/draft-ietf-oauth-v2-07
+    // responses should be in JSON
+    results = response.content.toJSON();
+  } catch (e) {
+    // .... However both Facebook + Github currently use rev05 of the spec
+    // and neither seem to specify a content-type correctly in their response headers :(
+    // clients of these services will suffer a *minor* performance cost of the exception
+    // being thrown
+    results = querystring.parse(response.content.toString());
+  }
+  let access_token = results["access_token"];
+  let refresh_token = results["refresh_token"];
+  let expires_in = results["expires_in"];
+  delete results["refresh_token"];
+
+  let expSecs = Math.floor(parseFloat(expires_in));
+  let expDate = new Date();
+  expDate.setSeconds(expDate.getSeconds() + expSecs);
+
+  return {
+    accessToken: access_token,
+    refreshToken: refresh_token,
+    accessTokenExpiration: expDate,
+    refreshTokenExpiration: expDate
+  };
 }

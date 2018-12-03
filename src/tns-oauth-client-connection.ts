@@ -8,6 +8,7 @@ import {
 } from "./providers";
 
 import { TnsOAuthClient, TnsOAuthResponseBlock } from "./index";
+import { httpResponseToToken } from "./tns-oauth-utils";
 
 const accessTokenName = "access_token";
 
@@ -112,6 +113,52 @@ export class TnsOAuthClientConnection {
       });
   }
 
+  public startTokenRefresh() {
+    const tokenUrl =
+      this.client.provider.authority + this.client.provider.tokenEndpoint;
+    const headers = {
+      "Content-Type": "application/x-www-form-urlencoded"
+    };
+    let body = null;
+    switch (this.client.provider.options.openIdSupport) {
+      case "oid-full":
+        const options1 = <TnsOaOpenIdProviderOptions>this.client.provider.options;
+        body = querystring.stringify({
+          grant_type: "refresh_token",
+          refresh_token: this.client.tokenResult.refreshToken,
+          client_id: options1.clientId
+        });
+        break;
+        case "oid-none":
+        const options2 = <TnsOaUnsafeProviderOptions>this.client.provider.options;
+        body = querystring.stringify({
+          grant_type: "refresh_token",
+          refresh_token: this.client.tokenResult.refreshToken,
+          client_id: options2.clientId,
+          client_secret: options2.clientSecret
+        });
+    }
+
+    http
+      .request({
+        url: tokenUrl,
+        method: "POST",
+        headers: headers,
+        content: body
+      })
+      .then((response: http.HttpResponse) => {
+        if (response.statusCode !== 200) {
+          this.completion(
+            null,
+            response,
+            new Error(`Failed refresh token with status ${response.statusCode}.`)
+          );
+        } else {
+          this.completion(null, response, null);
+        }
+      });
+  }
+
   private getTokenFromCode(
     client: TnsOAuthClient,
     code: string,
@@ -199,36 +246,8 @@ export class TnsOAuthClientConnection {
     return new Promise<any>((resolve, reject) => {
       this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
         .then((response: http.HttpResponse) => {
-          let results;
-          try {
-            // As of http://tools.ietf.org/html/draft-ietf-oauth-v2-07
-            // responses should be in JSON
-            results = response.content.toJSON();
-          } catch (e) {
-            // .... However both Facebook + Github currently use rev05 of the spec
-            // and neither seem to specify a content-type correctly in their response headers :(
-            // clients of these services will suffer a *minor* performance cost of the exception
-            // being thrown
-            results = querystring.parse(response.content.toString());
-          }
-          let access_token = results["access_token"];
-          let refresh_token = results["refresh_token"];
-          let expires_in = results["expires_in"];
-          delete results["refresh_token"];
-
-          let expSecs = Math.floor(parseFloat(expires_in));
-          let expDate = new Date();
-          expDate.setSeconds(expDate.getSeconds() + expSecs);
-
-          let tokenResult = {
-            accessToken: access_token,
-            refreshToken: refresh_token,
-            accessTokenExpiration: expDate,
-            refreshTokenExpiration: expDate
-          };
-
+          let tokenResult = httpResponseToToken(response);
           completion(tokenResult, <any>response);
-
           resolve(response);
         })
         .catch(er => {

@@ -88,7 +88,8 @@ npm install nativescript-oauth2 --save
 If you want a quickstart, you can start with one of two demo apps:
 
 - [TypeScript Demo App](https://github.com/alexziskind1/nativescript-oauth2/tree/master/demo)
-- [Angular Demo App (coming soon)](https://github.com/alexziskind1/nativescript-oauth2/tree/master/demo-angular)
+- [Angular Demo App](https://github.com/alexziskind1/nativescript-oauth2/tree/master/demo-angular)
+- [Vue Demo App](https://github.com/alexziskind1/nativescript-oauth2/tree/master/demo-vue)
 
 ### Bootstrapping
 

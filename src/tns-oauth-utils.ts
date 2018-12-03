@@ -10,7 +10,7 @@ export function getAuthUrlStr(provider: TnsOaProvider): string {
   params["client_id"] = provider.options.clientId;
   params["response_type"] = "code";
   params["redirect_uri"] = provider.options.redirectUri;
-  params["scope"] = provider.options.scopes;
+  params["scope"] = provider.options.scopes.join(' ');
   params["response_mode"] = "query";
   params["state"] = "abcd";
 
@@ -58,7 +58,7 @@ export function getAccessTokenUrlWithCodeStr(
   params["client_secret"] = (<any>provider.options).clientSecret;
   // params["response_type"] = "code";
   // params["redirect_uri"] = credentials.redirectUri;
-  params["scope"] = provider.options.scopes;
+  params["scope"] = provider.options.scopes.join(' ');
   // params["response_mode"] = "query";
   params["state"] = "abcd";
 
@@ -86,9 +86,9 @@ export function newUUID(a?, b?) {
     b = a = "";
     a++ < 36;
     b +=
-      (a * 51) & 52
-        ? (a ^ 15 ? 8 ^ (Math.random() * (a ^ 20 ? 16 : 4)) : 4).toString(16)
-        : "-"
+    (a * 51) & 52
+      ? (a ^ 15 ? 8 ^ (Math.random() * (a ^ 20 ? 16 : 4)) : 4).toString(16)
+      : "-"
   );
   return b;
 }

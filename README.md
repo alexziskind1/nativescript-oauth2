@@ -192,6 +192,31 @@ client.loginWithCompletion((tokenResult: ITnsOAuthTokenResult, error) => {
 
 After login is done, the completion handler will be called with the results.
 
+### Refreshing the Access Token
+
+Once you have logged in, you can call `refreshTokenWithCompletion()` on your `TnsOAuthClient` instance to attempt to refresh your access token. In order to do this, the following criteria must be met:
+
+ * The scope `offline_access` was requested when you logged in.
+ * The `TnsOAuthClient` must have the token result from your previous login. If you have the original instance you used to log in, it will already be on the object. If you do not have the original instance of `TnsOAuthClient` which you used to log in, such as if the app was restarted, then assign the client's `tokenResult` property to your token.
+
+If that criteria is met, then you can refresh the token like so:
+
+```
+import { TnsOAuthClient, ITnsOAuthTokenResult } from "nativescript-oauth2";
+
+...
+
+client.refreshTokenWithCompletion((tokenResult: ITnsOAuthTokenResult, error) => {
+  if (error) {
+    console.error("Unable to refresh token with error: ");
+    console.error(error);
+  } else {
+    console.log("Successfully refreshed access token: ");
+    console.log(tokenResult);
+  }
+});
+```
+
 ### Creating a custom provider
 
 If you don't see an auth provider that you need, you can just implement your own - see the `demo-custom-provider` project in the GitHub repo for an example on how to do this.

@@ -18,6 +18,7 @@ import {
 export class TnsOAuthLoginWebViewController
   implements ITnsOAuthLoginController {
   private loginController: TnsOAuthLoginSubController = null;
+  private unbindCancelEvent: () => void;
 
   public static initWithClient(client: TnsOAuthClient) {
     const instance = new TnsOAuthLoginWebViewController();
@@ -69,6 +70,12 @@ export class TnsOAuthLoginWebViewController
     navBtn.text = "Done";
     page.actionBar.navigationButton = navBtn;
 
+    const onCancel = () => {
+      this.loginController.completeLoginWithTokenResponseError(null, new Error("User cancelled."));
+    };
+    page.on("navigatedFrom", onCancel);
+    this.unbindCancelEvent = () => page.off("navigatedFrom", onCancel);
+
     return page;
   }
 
@@ -92,6 +99,9 @@ export class TnsOAuthLoginWebViewController
           tokenResult,
           error
         );
+        if (this.unbindCancelEvent) {
+          this.unbindCancelEvent();
+        }
         this.loginController.frame.goBack();
       }
     );

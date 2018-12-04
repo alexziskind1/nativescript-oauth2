@@ -12,7 +12,7 @@ export function getAuthUrlStr(provider: TnsOaProvider): string {
   params["client_id"] = provider.options.clientId;
   params["response_type"] = "code";
   params["redirect_uri"] = provider.options.redirectUri;
-  params["scope"] = provider.options.scopes && provider.options.scopes.join(" ");
+  params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
   params["response_mode"] = "query";
   params["state"] = "abcd";
 
@@ -60,7 +60,7 @@ export function getAccessTokenUrlWithCodeStr(
   params["client_secret"] = (<any>provider.options).clientSecret;
   // params["response_type"] = "code";
   // params["redirect_uri"] = credentials.redirectUri;
-  params["scope"] = provider.options.scopes && provider.options.scopes.join(" ");
+  params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
   // params["response_mode"] = "query";
   params["state"] = "abcd";
 

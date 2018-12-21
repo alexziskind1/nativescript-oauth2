@@ -1,7 +1,7 @@
 {
   "name": "nativescript-oauth2",
   "version": "1.2.0",
-  "description": "OAuth 2 login for NativeScript.",
+  "description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
   "main": "oauth",
   "typings": "index.d.ts",
   "nativescript": {
@@ -63,8 +63,8 @@
   "homepage": "https://github.com/alexziskind1/nativescript-oauth2",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "tns-core-modules": "^5.0.2",
-    "tns-platform-declarations": "^5.0.2",
+    "tns-core-modules": "^5.1.1",
+    "tns-platform-declarations": "^5.1.1",
     "typescript": "~2.8.2",
     "prompt": "^1.0.0",
     "rimraf": "^2.6.2",

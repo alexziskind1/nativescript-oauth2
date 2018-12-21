@@ -30,6 +30,7 @@ export declare class TnsOAuthClient {
   tokenResult: ITnsOAuthTokenResult;
   constructor(providerType: TnsOaProviderType);
   loginWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
+  refreshTokenWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
   resumeWithUrl(url: string): void;
   logout(successPage?: string): void;
   // private removeCookies();

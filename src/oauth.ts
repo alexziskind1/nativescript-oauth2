@@ -69,17 +69,10 @@ export class TnsOAuthClient {
     }
   }
 
-  public logout(successPage?: string) {
+  public logout() {
     this.removeCookies();
     this.removeToken();
     this.callRevokeEndpoint();
-    if (successPage) {
-      let navEntry: frameModule.NavigationEntry = {
-        moduleName: successPage,
-        clearHistory: true
-      };
-      frameModule.topmost().navigate(navEntry);
-    }
   }
 
   public resumeWithUrl(url: string) {
@@ -120,7 +113,7 @@ export class TnsOAuthClient {
                   () => {
                     console.log(
                       `Cookies for ${
-                        cookieRecord.displayName
+                      cookieRecord.displayName
                       } deleted successfully`
                     );
                   }

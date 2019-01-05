@@ -134,6 +134,7 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
   }
   let access_token = results["access_token"];
   let refresh_token = results["refresh_token"];
+  let id_token = results["id_token"];
   let expires_in = results["expires_in"];
   delete results["refresh_token"];
 
@@ -144,7 +145,9 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
   return {
     accessToken: access_token,
     refreshToken: refresh_token,
+    idToken: id_token,
     accessTokenExpiration: expDate,
-    refreshTokenExpiration: expDate
+    refreshTokenExpiration: expDate,
+    idTokenExpiration: expDate
   };
 }

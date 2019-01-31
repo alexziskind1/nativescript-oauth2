@@ -55,14 +55,14 @@ Register your mobile app by following the wizard under "My Apps" -> "Add a new a
 
 For logging in with your Google account, you should have a Google developer account. If you don't have one yet, you can get one [here](https://developers.google.com/).
 
-Keep an eye out on my [YouTube channel](https://www.youtube.com/c/AlexanderZiskind) for a video on how to set up Google with with plugin.
+Keep an eye out on my [YouTube channel](https://www.youtube.com/c/AlexanderZiskind) for a video on how to set up Google with this plugin.
 
 Register your mobile app by following the wizard in the Developer Console.
 (more info coming soon)
 
 Google login will only work with the out-of-app browser. You must register a custom URL scheme for your app (see below).
 
-### LinkedIn Account (coming soon)
+### LinkedIn Account
 
 For logging in with your LinkedIn account, you should have a LinkedIn developer account. If you don't have one yet, you can get one [here](https://developer.linkedin.com/).
 

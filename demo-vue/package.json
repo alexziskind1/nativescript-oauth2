@@ -7,16 +7,16 @@
   "nativescript": {
     "id": "org.nativescript.application",
     "tns-ios": {
-      "version": "5.0.0"
+      "version": "5.2.0"
     },
     "tns-android": {
-      "version": "5.0.0"
+      "version": "5.2.0"
     }
   },
   "dependencies": {
-    "nativescript-vue": "^2.0.2",
+    "nativescript-vue": "2.0.2",
     "nativescript-oauth2": "file:../src",
-    "tns-core-modules": "^5.1.1"
+    "tns-core-modules": "5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",

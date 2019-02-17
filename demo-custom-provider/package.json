@@ -28,7 +28,7 @@
     "nativescript-dev-webpack": "~0.17.0",
     "tns-platform-declarations": "^4.2.0",
     "tslint": "~5.4.3",
-    "typescript": "~2.8.2"
+    "typescript": "3.1.1"
   },
   "readme": "NativeScript Application"
 }

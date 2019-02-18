@@ -10,11 +10,10 @@ export function getAuthUrlStr(provider: TnsOaProvider): string {
   }
   const params = {};
   params["client_id"] = provider.options.clientId;
-  params["response_type"] = "code";
   params["redirect_uri"] = provider.options.redirectUri;
   params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
   params["response_mode"] = provider.options.response_mode;
-  params["response_type"] = provider.options.response_type;
+  params["response_type"] = provider.options.response_type || "code";
   params["access_type"] = provider.options.access_type;
   params["login_hint"] = provider.options.login_hint;
   params["approval_prompt"] = provider.options.approval_prompt;

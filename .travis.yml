@@ -22,11 +22,7 @@ matrix:
       before_script: pod repo update
       script:
         - cd demo && npm run build.plugin && npm i && tns build ios --bundle --env.uglify 
-        - cd ../publish 
-        - sh pack.sh
-        - cp package/*.tgz ../demo-angular/package.tgz
         - cd ../demo-angular
-        - sed -i -e 's/\"..\/src\"/"package.tgz"/g' package.json
         - npm i
         - tns build ios --bundle --env.uglify --env.aot
        

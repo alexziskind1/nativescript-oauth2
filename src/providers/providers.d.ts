@@ -9,6 +9,14 @@ export interface TnsOaProviderOptions {
   clientId: string;
   redirectUri: string;
   scopes?: string[];
+  state?:string;
+  response_mode?:string;
+  response_type?:string;
+  access_type?:string;
+  login_hint?:string;
+  approval_prompt?:string;
+  grant_type?:string;
+  custom_param?:string;
 }
 
 export interface TnsOaUnsafeProviderOptions extends TnsOaProviderOptions {

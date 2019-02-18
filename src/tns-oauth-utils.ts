@@ -13,13 +13,20 @@ export function getAuthUrlStr(provider: TnsOaProvider): string {
   params["response_type"] = "code";
   params["redirect_uri"] = provider.options.redirectUri;
   params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
-  params["response_mode"] = "query";
-  params["state"] = "abcd";
+  params["response_mode"] = provider.options.response_mode;
+  params["response_type"] = provider.options.response_type;
+  params["access_type"] = provider.options.access_type;
+  params["login_hint"] = provider.options.login_hint;
+  params["approval_prompt"] = provider.options.approval_prompt;
+  params["state"] = provider.options.state || "abcd";
 
   const pararmsStr = querystring.stringify(params);
 
-  const retAuthUrlStr =
+  let retAuthUrlStr =
     provider.authority + provider.authorizeEndpoint + "?" + pararmsStr;
+    if (provider.options.custom_param){
+      retAuthUrlStr += provider.options.custom_param;
+    }
   return retAuthUrlStr;
 }
 
@@ -58,11 +65,12 @@ export function getAccessTokenUrlWithCodeStr(
   params["code"] = authCode;
   params["client_id"] = provider.options.clientId;
   params["client_secret"] = (<any>provider.options).clientSecret;
+  params["grant_type"] = provider.options.grant_type || "authorization_code";
   // params["response_type"] = "code";
   // params["redirect_uri"] = credentials.redirectUri;
   params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
   // params["response_mode"] = "query";
-  params["state"] = "abcd";
+  params["state"] = provider.options.state || "abcd";
 
   const pararmsStr = querystring.stringify(params);
 
@@ -135,9 +143,12 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
   let access_token = results["access_token"];
   let refresh_token = results["refresh_token"];
   let expires_in = results["expires_in"];
+  let expires_in_sec = results["expires_in_sec"];
+  // let refresh_token_expires_in = results["refresh_token_expires_in"];
+  
   delete results["refresh_token"];
 
-  let expSecs = Math.floor(parseFloat(expires_in));
+  let expSecs = Math.floor(parseFloat(expires_in_sec || expires_in));
   let expDate = new Date();
   expDate.setSeconds(expDate.getSeconds() + expSecs);
 

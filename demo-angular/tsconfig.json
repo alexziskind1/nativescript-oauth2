@@ -1,29 +1,49 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
         "target": "es5",
-        "experimentalDecorators": true,
+        "module": "commonjs",
+        "declaration": false,
+        "removeComments": true,
+        "noLib": false,
         "emitDecoratorMetadata": true,
-        "noEmitHelpers": true,
-        "noEmitOnError": true,
+        "experimentalDecorators": true,
         "lib": [
             "es6",
             "dom",
             "es2015.iterable"
         ],
+        "pretty": true,
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "noEmitHelpers": true,
+        "noEmitOnError": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "noImplicitUseStrict": false,
+        "noFallthroughCasesInSwitch": true,
+        "skipLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "~/*": [
-                "src/*"
-            ],
             "*": [
                 "./node_modules/tns-core-modules/*",
                 "./node_modules/*"
+            ],
+            "~/*": [
+                "app/*"
             ]
         }
     },
+    "include": [
+        "../src",
+        "**/*"
+    ],
+    "files": [
+        "../src/delegate/delegate.ts",
+    ],
     "exclude": [
+        "../src/node_modules",
         "node_modules",
         "platforms"
-    ]
+    ],
+    "compileOnSave": false
 }

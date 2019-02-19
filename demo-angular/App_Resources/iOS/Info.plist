@@ -43,21 +43,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>org.nativescript.testnsazmobaplugin</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>testnsazmobaplugin</string>
-				<string>msalf376fa87-64a9-49a1-8b56-e0d48fc0810b</string>
-				<string>fb691208554415645</string>
-				<string>com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb</string>
-			</array>
-		</dict>
-	</array>
 </dict>
 </plist>

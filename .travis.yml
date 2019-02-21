@@ -11,47 +11,35 @@ matrix:
       os: linux
       node_js: "8"
       script: cd src && npm run ci.tslint
-    - stage: "WebPack and Build"
-      os: osx
-      env:
-        - WebPackiOS="12.0"
-      osx_image: xcode10.0
-      language: node_js 
-      node_js: "8"
-      jdk: oraclejdk8
-      before_script: pod repo update
-      script:
-        - cd demo && npm run build.plugin && npm i && tns build ios --bundle --env.uglify 
-        - cd ../publish 
-        - sh pack.sh
-        - cp package/*.tgz ../demo-angular/package.tgz
-        - cd ../demo-angular
-        - sed -i -e 's/\"..\/src\"/"package.tgz"/g' package.json
-        - npm i
-        - tns build ios --bundle --env.uglify --env.aot
-    - language: android
-      env:
-        - BuildAndroid="28"
-        - Type="Angular"
-      os: linux
-      jdk: oraclejdk8
-      before_install: nvm install 8.11.4
-      script:
-        - cd demo-angular && npm run ci.android.build
+
        
 android:
   components:
     - tools
     - platform-tools
-    - build-tools-28.0.3
+    - build-tools-28.0.2
     - android-28
+    - android-23
     - extra-android-m2repository
+    - extra-google-m2repository
+    - extra-android-support
+    - extra-google-google_play_services
 
+before_cache:
+    - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+    directories:
+        - .nvm
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+        
 before_install:
-  - sudo pip install --upgrade pip
-  - sudo pip install six
-
+    - sudo pip install --upgrade pip
+    - sudo pip install six
+        
 install:
-  - npm install -g nativescript
-  - tns usage-reporting disable
-  - tns error-reporting disable
+    - echo no | npm install -g nativescript
+    - tns usage-reporting disable
+    - tns error-reporting disable
+

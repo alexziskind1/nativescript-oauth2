@@ -14,9 +14,9 @@ import {
 } from "nativescript-oauth2/providers";
 
 export function configureOAuthProviders() {
-    const microsoftProvider = this.configureOAuthProviderMicrosoft();
-    const googleProvider = this.configureOAuthProviderGoogle();
-    const facebookProvider = this.configureOAuthProviderFacebook();
+    const microsoftProvider = configureOAuthProviderMicrosoft();
+    const googleProvider = configureOAuthProviderGoogle();
+    const facebookProvider = configureOAuthProviderFacebook();
 
     configureTnsOAuth([microsoftProvider, googleProvider, facebookProvider]);
 }
@@ -55,7 +55,7 @@ export function configureOAuthProviderMicrosoft(): TnsOaProvider {
         // redirectUri: "urn:ietf:wg:oauth:2.0:oob",
         redirectUri: "msalf376fa87-64a9-49a1-8b56-e0d48fc0810b://auth",
         urlScheme: "msalf376fa87-64a9-49a1-8b56-e0d48fc0810b",
-        scopes: ['openid', "https://outlook.office.com/mail.read"]
+        scopes: ["openid", "https://outlook.office.com/mail.read"]
     };
     const microsoftProvider = new TnsOaProviderMicrosoft(
         microsoftProviderOptions

@@ -4,6 +4,15 @@ import * as UrlLib from "url";
 import { TnsOaProvider } from "./providers";
 import { ITnsOAuthTokenResult } from ".";
 
+function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
+  const customQueryParams = provider.options.customQueryParams;
+  if (customQueryParams) {
+    for (const paramName of Object.keys(customQueryParams)) {
+      params[paramName] = customQueryParams[paramName];
+    }
+  }
+}
+
 export function getAuthUrlStr(provider: TnsOaProvider): string {
   if (provider.getAuthUrlStr) {
     return provider.getAuthUrlStr();
@@ -15,6 +24,8 @@ export function getAuthUrlStr(provider: TnsOaProvider): string {
   params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
   params["response_mode"] = "query";
   params["state"] = "abcd";
+
+  addCustomQueryParams(params, provider);
 
   const pararmsStr = querystring.stringify(params);
 
@@ -63,6 +74,8 @@ export function getAccessTokenUrlWithCodeStr(
   params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
   // params["response_mode"] = "query";
   params["state"] = "abcd";
+
+  addCustomQueryParams(params, provider);
 
   const pararmsStr = querystring.stringify(params);
 

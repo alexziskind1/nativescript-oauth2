@@ -286,7 +286,10 @@ function configureOAuthProviderMyCustomProvider(): TnsOaProvider {
     clientId: "<your client/app id>",
     clientSecret: "<your client secret>",
     redirectUri: "<redirect Uri>",
-    scopes: ["email"]
+    scopes: ["email"],
+    customQueryParams: {
+      foo: "bar"
+    }
   };
   const facebookProvider = new TnsOaProviderMyCustomProvider(facebookProviderOptions);
   return facebookProvider;

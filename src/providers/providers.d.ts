@@ -9,6 +9,7 @@ export interface TnsOaProviderOptions {
   clientId: string;
   redirectUri: string;
   scopes?: string[];
+  customQueryParams?: { [paramName: string]: string };
 }
 
 export interface TnsOaUnsafeProviderOptions extends TnsOaProviderOptions {

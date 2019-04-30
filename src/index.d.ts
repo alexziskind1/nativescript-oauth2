@@ -9,7 +9,6 @@ export declare interface ITnsOAuthTokenResult {
   refreshToken: string;
   idToken: string;
   accessTokenExpiration: Date;
-  refreshTokenExpiration: Date;
   idTokenExpiration: Date;
 }
 

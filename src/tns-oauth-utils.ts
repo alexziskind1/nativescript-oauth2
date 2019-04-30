@@ -160,7 +160,6 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
     refreshToken: refresh_token,
     idToken: id_token,
     accessTokenExpiration: expDate,
-    refreshTokenExpiration: expDate,
     idTokenExpiration: expDate
   };
 }

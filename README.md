@@ -304,13 +304,16 @@ This is easy to do with NativeScript. The first step is to register your custom 
 
 #### Android
 
-To register a custom URL scheme for Android, open your Android app resources, which are in this path: app/App_Resources/Android/src/main/AndroidManifest.xml. The AndroidManifest.xml file used to be right in the Android folder, but now it's been moved down a bit. It's still the same file though. Find the `<application>` section and add the attribute `android:launchMode="singleTask"`. Then inside the activity named `com.tns.NativeScriptActivity`, add a new `<intent-filter>` section with your scheme AND your path. Here is an example of the entire `<application>`
-section:
+To register a custom URL scheme for Android, open your Android app resources, which are in this path: app/App_Resources/Android/src/main/AndroidManifest.xml.
+The AndroidManifest.xml file used to be right in the Android folder, but now it's been moved down a bit. It's still the same file though.
+
+Find the `<activity>` section named `com.tns.NativeScriptActivity` and add the attribute `android:launchMode="singleTask"` (or `singleTop`).
+Then inside the activity add a new `<intent-filter>` section with your custom url scheme(s).
+
+Here is an example of the entire `<activity>` section:
 
 ```xml
-	<application android:name="com.tns.NativeScriptApplication" android:allowBackup="true" android:icon="@drawable/icon" android:label="@string/app_name" android:theme="@style/AppTheme" android:launchMode="singleTask">
-
-		<activity android:name="com.tns.NativeScriptActivity" android:label="@string/title_activity_kimera" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@style/LaunchScreenTheme">
+		<activity android:name="com.tns.NativeScriptActivity" android:launchMode="singleTask" android:label="@string/title_activity_kimera" android:configChanges="keyboardHidden|orientation|screenSize" android:theme="@style/LaunchScreenTheme">
 
 			<meta-data android:name="SET_THEME_ON_LAUNCH" android:resource="@style/AppTheme" />
 
@@ -323,14 +326,12 @@ section:
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.BROWSABLE" />
-				<!-- Custom Path data -->
-				<data android:path="/auth" android:scheme="com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb"/>
-				<data android:path="/auth" android:scheme="msalf376fa87-64a9-89a1-8b56-e0d48fc08107"/>
+				<!-- Custom URL Schemes -->
+				<data android:scheme="com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb"/>
+				<data android:scheme="msalf376fa87-64a9-89a1-8b56-e0d48fc08107"/>
 			</intent-filter>
 
 		</activity>
-		<activity android:name="com.tns.ErrorReportActivity"/>
-	</application>
 ```
 
 Notice in the config above, I've registered TWO custom URL schemes for my app - this is the `<data>` element with the `path` and `scheme` attributes.

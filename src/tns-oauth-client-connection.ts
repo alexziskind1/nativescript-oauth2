@@ -100,17 +100,20 @@ export class TnsOAuthClientConnection {
         headers: headers,
         content: body
       })
-      .then((response: http.HttpResponse) => {
-        if (response.statusCode !== 200) {
-          this.completion(
-            null,
-            response,
-            new Error(`Failed logout with status ${response.statusCode}.`)
-          );
-        } else {
-          this.completion(null, response, null);
-        }
-      });
+      .then(
+        (response: http.HttpResponse) => {
+          if (response.statusCode !== 200) {
+            this.completion(
+              null,
+              response,
+              new Error(`Failed logout with status ${response.statusCode}.`)
+            );
+          } else {
+            this.completion(null, response, null);
+          }
+        },
+        error => this.completion(null, null, error)
+      );
   }
 
   public startTokenRefresh() {
@@ -122,15 +125,19 @@ export class TnsOAuthClientConnection {
     let body = null;
     switch (this.client.provider.options.openIdSupport) {
       case "oid-full":
-        const options1 = <TnsOaOpenIdProviderOptions>this.client.provider.options;
+        const options1 = <TnsOaOpenIdProviderOptions>(
+          this.client.provider.options
+        );
         body = querystring.stringify({
           grant_type: "refresh_token",
           refresh_token: this.client.tokenResult.refreshToken,
           client_id: options1.clientId
         });
         break;
-        case "oid-none":
-        const options2 = <TnsOaUnsafeProviderOptions>this.client.provider.options;
+      case "oid-none":
+        const options2 = <TnsOaUnsafeProviderOptions>(
+          this.client.provider.options
+        );
         body = querystring.stringify({
           grant_type: "refresh_token",
           refresh_token: this.client.tokenResult.refreshToken,
@@ -146,17 +153,22 @@ export class TnsOAuthClientConnection {
         headers: headers,
         content: body
       })
-      .then((response: http.HttpResponse) => {
-        if (response.statusCode !== 200) {
-          this.completion(
-            null,
-            response,
-            new Error(`Failed refresh token with status ${response.statusCode}.`)
-          );
-        } else {
-          this.completion(null, response, null);
-        }
-      });
+      .then(
+        (response: http.HttpResponse) => {
+          if (response.statusCode !== 200) {
+            this.completion(
+              null,
+              response,
+              new Error(
+                `Failed refresh token with status ${response.statusCode}.`
+              )
+            );
+          } else {
+            this.completion(null, response, null);
+          }
+        },
+        error => this.completion(null, null, error)
+      );
   }
 
   private getTokenFromCode(

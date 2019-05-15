@@ -70,9 +70,9 @@ export class TnsOAuthClient {
   }
 
   public logout() {
+    this.callRevokeEndpoint();
     this.removeCookies();
     this.removeToken();
-    this.callRevokeEndpoint();
   }
 
   public resumeWithUrl(url: string) {

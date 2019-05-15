@@ -14,7 +14,11 @@ import { TnsOAuthClientAppDelegate } from "./delegate";
 import { TnsOAuthLoginNativeViewController } from "./tns-oauth-native-view-controller";
 import { TnsOAuthLoginWebViewController } from "./tns-oauth-login-webview-controller";
 import { TnsOAuthClientConnection } from "./tns-oauth-client-connection";
-import { nsArrayToJSArray, jsArrayToNSArray, httpResponseToToken } from "./tns-oauth-utils";
+import {
+  nsArrayToJSArray,
+  jsArrayToNSArray,
+  httpResponseToToken
+} from "./tns-oauth-utils";
 
 export class TnsOAuthClient {
   public provider: TnsOaProvider = null;
@@ -113,7 +117,7 @@ export class TnsOAuthClient {
                   () => {
                     console.log(
                       `Cookies for ${
-                      cookieRecord.displayName
+                        cookieRecord.displayName
                       } deleted successfully`
                     );
                   }
@@ -168,7 +172,9 @@ export class TnsOAuthClient {
     connection.startTokenRevocation();
   }
 
-  private callRefreshEndpointWithCompletion(completion?: TnsOAuthClientLoginBlock) {
+  private callRefreshEndpointWithCompletion(
+    completion?: TnsOAuthClientLoginBlock
+  ) {
     if (!this.provider.tokenEndpoint) {
       return;
     }
@@ -177,7 +183,9 @@ export class TnsOAuthClient {
       // request,
       this,
       (data, result, error) => {
-        this.tokenResult = httpResponseToToken(result);
+        if (result) {
+          this.tokenResult = httpResponseToToken(result);
+        }
         completion(this.tokenResult, error);
       }
     );

@@ -112,12 +112,7 @@ export class TnsOAuthClientConnection {
             this.completion(null, response, null);
           }
         },
-        error =>
-          this.completion(
-            null,
-            error,
-            new Error(`Failed logout due to network error.`)
-          )
+        error => this.completion(null, null, error)
       );
   }
 
@@ -172,12 +167,7 @@ export class TnsOAuthClientConnection {
             this.completion(null, response, null);
           }
         },
-        error =>
-          this.completion(
-            null,
-            error,
-            new Error(`Failed refresh token due to network error.`)
-          )
+        error => this.completion(null, null, error)
       );
   }
 

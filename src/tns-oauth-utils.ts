@@ -156,6 +156,7 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
   expDate.setSeconds(expDate.getSeconds() + expSecs);
 
   return {
+    original: results,
     accessToken: access_token,
     refreshToken: refresh_token,
     idToken: id_token,

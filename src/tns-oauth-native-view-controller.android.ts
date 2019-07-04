@@ -8,7 +8,13 @@ import {
   TnsOAuthLoginSubController
 } from "./tns-oauth-login-sub-controller";
 
-declare var android: any;
+declare let android, global: any;
+
+function useAndroidX() {
+  return global.androidx && global.androidx.appcompat;
+}
+
+const customtabs = useAndroidX() ? androidx.browser.customtabs : android.support.customtabs;
 
 export class TnsOAuthLoginNativeViewController
   implements ITnsOAuthLoginController {
@@ -41,7 +47,9 @@ export class TnsOAuthLoginNativeViewController
     fullUrl: string,
     frame: Frame
   ): void {
-    const builder = new android.support.customtabs.CustomTabsIntent.Builder();
+    const builder = new customtabs.CustomTabsIntent.Builder();
+    //const builder = new android.support.customtabs.CustomTabsIntent.Builder();
+
     builder.setToolbarColor(new colorModule.Color("#335da0").android);
     builder.setShowTitle(true);
     const customTabsIntent = builder.build();

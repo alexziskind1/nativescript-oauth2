@@ -48,8 +48,6 @@ export class TnsOAuthLoginNativeViewController
     frame: Frame
   ): void {
     const builder = new customtabs.CustomTabsIntent.Builder();
-    //const builder = new android.support.customtabs.CustomTabsIntent.Builder();
-
     builder.setToolbarColor(new colorModule.Color("#335da0").android);
     builder.setShowTitle(true);
     const customTabsIntent = builder.build();

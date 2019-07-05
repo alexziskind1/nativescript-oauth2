@@ -1,7 +1,17 @@
 # OAuth 2 Plugin for NativeScript
 
-![npm-downloads-per-week](https://img.shields.io/npm/dw/nativescript-oauth2.svg) [![Build Status](https://travis-ci.org/alexziskind1/nativescript-oauth2.svg?branch=master)](https://travis-ci.org/alexziskind1/nativescript-oauth2)
+[![Build Status][build-status]][build-url]
+[![NPM version][npm-image]][npm-url]
+[![Downloads][downloads-image]][npm-url]
+[![Twitter Follow][twitter-image]][twitter-url]
 
+[build-status]:https://travis-ci.org/alexziskind1/nativescript-oauth2.svg?branch=master
+[build-url]:https://travis-ci.org/alexziskind1/nativescript-oauth2
+[npm-image]:http://img.shields.io/npm/v/nativescript-oauth2.svg
+[npm-url]:https://npmjs.org/package/nativescript-oauth2
+[downloads-image]:http://img.shields.io/npm/dm/nativescript-oauth2.svg
+[twitter-image]:https://img.shields.io/twitter/follow/digitalix.svg?style=social&label=Follow%20me
+[twitter-url]:https://twitter.com/digitalix
 
 Library for interacting with OAuth 2.0 in NativeScript applications that provides simplified direct client access with a OAuth providers that support the OAuth 2.0 protocol such as Microsoft, Facebook, and Google, but not limited to any login providers, and even allows you to plug in your own. This library doesn't use any native libraries and relies only on what comes in the box - making it really lightweight.
 

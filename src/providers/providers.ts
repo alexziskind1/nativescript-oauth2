@@ -1,5 +1,7 @@
 import * as definition from "../providers";
 import { ITnsOAuthTokenResult } from "../index";
+import * as UrlLib from "url";
+import * as Querystring from "querystring";
 
 export class TnsOaProviderMicrosoft implements definition.TnsOaProvider {
   public options: definition.TnsOaProviderOptions;
@@ -74,5 +76,31 @@ export class TnsOaProviderLinkedIn implements definition.TnsOaProvider {
 
   public parseTokenResult(jsonData): ITnsOAuthTokenResult {
     return jsonData;
+  }
+}
+
+export class TnsOaProviderVkontakte implements definition.TnsOaProvider {
+  public options: definition.TnsOaProviderOptions;
+  public openIdSupport: definition.OpenIdSupportNone = "oid-none";
+  public providerType: definition.ProviderTypeVkontakte = "vkontakte";
+  public authority = "https://oauth.vk.com";
+  public tokenEndpointBase = "https://oauth.vk.com";
+  public authorizeEndpoint = "/authorize";
+  public tokenEndpoint = "/access_token";
+  public cookieDomains = ["oauth.vk.com"];
+
+  constructor(options: definition.TnsOaProviderOptionsLinkedIn) {
+    this.options = options;
+  }
+
+  public parseTokenResult(jsonData): ITnsOAuthTokenResult {
+    return jsonData;
+  }
+
+  public getCodeFromRedirectUrl(url: string): string {
+    const parsedRetStr = UrlLib.parse(url);
+    const queryFromHash = parsedRetStr.hash.slice(1);
+    const qsObj = Querystring.parse(queryFromHash);
+    return qsObj['code'];
   }
 }

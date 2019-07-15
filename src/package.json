@@ -1,6 +1,6 @@
 {
   "name": "nativescript-oauth2",
-  "version": "1.5.3",
+  "version": "1.6.0",
   "description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
   "main": "oauth",
   "typings": "index.d.ts",
@@ -52,7 +52,8 @@
     "Google",
     "Azure AD",
     "iOS",
-    "Android"
+    "Android",
+    "Vkontakte"
   ],
   "author": {
     "name": "Alexander Ziskind",

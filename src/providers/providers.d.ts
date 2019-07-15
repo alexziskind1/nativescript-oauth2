@@ -39,6 +39,7 @@ export interface TnsOaProvider {
   getAuthUrlStr?(): string;
   getAccessTokenUrlWithCodeStr?(authCode: string): string;
   parseTokenResult(jsonData): ITnsOAuthTokenResult;
+  getCodeFromRedirectUrl?(url: string): string;
 }
 
 export declare type ProviderTypeFacebook = "facebook";
@@ -103,4 +104,21 @@ export declare class TnsOaProviderLinkedIn implements TnsOaProvider {
   cookieDomains: string[];
   constructor(options: TnsOaProviderOptionsLinkedIn);
   parseTokenResult(jsonData: any): ITnsOAuthTokenResult;
+}
+
+export declare type ProviderTypeVkontakte = "vkontakte";
+export interface TnsOaProviderOptionsVkontakte
+  extends TnsOaUnsafeProviderOptions { }
+export declare class TnsOaProviderVkontakte implements TnsOaProvider {
+  options: TnsOaProviderOptions;
+  openIdSupport: OpenIdSupportNone;
+  providerType: ProviderTypeVkontakte;
+  authority: string;
+  tokenEndpointBase: string;
+  authorizeEndpoint: string;
+  tokenEndpoint: string;
+  cookieDomains: string[];
+  constructor(options: TnsOaProviderOptionsVkontakte);
+  parseTokenResult(jsonData: any): ITnsOAuthTokenResult;
+  getCodeFromRedirectUrl(url: string): string;
 }

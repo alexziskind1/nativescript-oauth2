@@ -79,7 +79,12 @@ export class TnsOAuthLoginSubController {
     const isRedirectUrlValid = true; // TODO: check URL validity
 
     if (isRedirectUrlValid) {
-      const authorizationCode: string = authorizationCodeFromRedirectUrl(url);
+      let authorizationCode: string = null;
+      if (this.client.provider.getCodeFromRedirectUrl) {
+        authorizationCode = this.client.provider.getCodeFromRedirectUrl(url);
+      } else {
+        authorizationCode = authorizationCodeFromRedirectUrl(url);
+      }
 
       if (authorizationCode) {
         this.authState.authCode = authorizationCode;

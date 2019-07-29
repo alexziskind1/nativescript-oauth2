@@ -1,7 +1,7 @@
 export function getCodeVerifier(): string {
   const randomData = NSMutableData.dataWithLength(32);
   const result: number = SecRandomCopyBytes(kSecRandomDefault, randomData.length, randomData.mutableBytes);
-  if (result != 0) {
+  if (result !== 0) {
     return null;
   } else {
     return encodeBase64urlNoPadding(randomData);

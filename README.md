@@ -184,6 +184,9 @@ The last call to `configureTnsOAuth()` takes an array of providers and registers
 
 When you're ready to login, or as a response to a tap event on a login button, you can create a new instance of the `TnsOAuthClient` and call `loginWithCompletion()` on the instance, passing in the provider you want to login with. The provider is of the type `TnsOaProviderType`, or it can be a string 'google', 'facebook', 'microsoft', etc.
 
+By default, this plugin enables [PKCE (Proof Key for Code Exchange)](https://oauth.net/2/pkce/) since version 2.0.0.
+If you want to disable it, pass in `false` as the second argument of the `TnsOAuthClient` constructor.
+
 ```typescript
 import { TnsOAuthClient, ITnsOAuthTokenResult } from "nativescript-oauth2";
 

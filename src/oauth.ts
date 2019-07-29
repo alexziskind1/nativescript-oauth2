@@ -25,7 +25,7 @@ export class TnsOAuthClient {
   private loginController: ITnsOAuthLoginController;
   public tokenResult: ITnsOAuthTokenResult;
 
-  public constructor(providerType: TnsOaProviderType) {
+  public constructor(providerType: TnsOaProviderType, public pkce: boolean = true) {
     this.provider = tnsOauthProviderMap.providerMap.get(providerType);
     if (this.provider) {
       switch (this.provider.options.openIdSupport) {
@@ -178,13 +178,22 @@ export class TnsOAuthClient {
     if (!this.provider.tokenEndpoint) {
       return;
     }
+    if (!this.tokenResult) {
+      return;
+    }
 
     const connection: TnsOAuthClientConnection = TnsOAuthClientConnection.initWithRequestClientCompletion(
       // request,
       this,
       (data, result, error) => {
         if (result) {
-          this.tokenResult = httpResponseToToken(result);
+          const tokenResult = httpResponseToToken(result);
+          // let's retain the refresh token
+          if (!tokenResult.refreshToken && this.tokenResult) {
+            tokenResult.refreshToken = this.tokenResult.refreshToken;
+            tokenResult.refreshTokenExpiration = this.tokenResult.refreshTokenExpiration;
+          }
+          this.tokenResult = tokenResult;
         }
         completion(this.tokenResult, error);
       }

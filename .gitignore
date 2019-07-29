@@ -7,6 +7,7 @@
 *.log
 src/*.d.ts
 !src/index.d.ts
+!src/pkce-util.d.ts
 !src/references.d.ts
 !src/tns-oauth-native-view-controller.d.ts
 !src/scripts/*.js

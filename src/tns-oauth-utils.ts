@@ -2,7 +2,7 @@ import * as http from "tns-core-modules/http";
 import * as querystring from "querystring";
 import * as UrlLib from "url";
 import { TnsOaProvider } from "./providers";
-import { ITnsOAuthTokenResult } from ".";
+import { ITnsOAuthTokenResult, TnsOAuthClient } from ".";
 
 function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   const customQueryParams = provider.options.customQueryParams;
@@ -13,7 +13,7 @@ function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   }
 }
 
-export function getAuthUrlStr(provider: TnsOaProvider): string {
+export function getAuthUrlStr(provider: TnsOaProvider, codeChallenge?: string): string {
   if (provider.getAuthUrlStr) {
     return provider.getAuthUrlStr();
   }
@@ -24,6 +24,11 @@ export function getAuthUrlStr(provider: TnsOaProvider): string {
   params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
   params["response_mode"] = "query";
   params["state"] = "abcd";
+
+  if (codeChallenge) {
+    params["code_challenge"] = codeChallenge;
+    params["code_challenge_method"] = "S256";
+  }
 
   addCustomQueryParams(params, provider);
 
@@ -79,21 +84,13 @@ export function getAccessTokenUrlWithCodeStr(
 
   const pararmsStr = querystring.stringify(params);
 
-  const pararmsWithRedirectStr =
+  const paramsWithRedirectStr =
     pararmsStr + "&redirect_uri=" + provider.options.redirectUri;
 
   const retAccessTokenWithCodeUrlStr =
-    getAccessTokenUrlStr(provider) + "?" + pararmsWithRedirectStr;
+    getAccessTokenUrlStr(provider) + "?" + paramsWithRedirectStr;
 
   return retAccessTokenWithCodeUrlStr;
-}
-
-export function getAccessTokenWithCodeUrl(
-  provider: TnsOaProvider,
-  authCode: string
-): string {
-  const accessUrlStr = getAccessTokenUrlWithCodeStr(provider, authCode);
-  return accessUrlStr;
 }
 
 export function newUUID(a?, b?) {

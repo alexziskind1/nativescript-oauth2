@@ -30,7 +30,9 @@ export declare class TnsOAuthClient {
   // private loginController;
   provider: TnsOaProvider;
   tokenResult: ITnsOAuthTokenResult;
-  constructor(providerType: TnsOaProviderType);
+  codeVerifier?: string;
+  pkce?: boolean;
+  constructor(providerType: TnsOaProviderType, pkce?: boolean);
   loginWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
   refreshTokenWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
   resumeWithUrl(url: string): void;

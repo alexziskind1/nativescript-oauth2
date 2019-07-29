@@ -36,6 +36,8 @@ export interface TnsOaProvider {
   revokeEndpoint?: string;
   cookieDomains: string[];
 
+  usePKCE?: true;
+
   getAuthUrlStr?(): string;
   getAccessTokenUrlWithCodeStr?(authCode: string): string;
   parseTokenResult(jsonData): ITnsOAuthTokenResult;

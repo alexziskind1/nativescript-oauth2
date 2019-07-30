@@ -66,7 +66,7 @@ function configureOAuthProviderMicrosoft(): TnsOaProvider {
 }
 
 export function tnsOauthLogin(providerType) {
-  // PKCE is enabled by default, but you can pass in 'false' here if you like to disable it
+  // PKCE is enabled by default, but you can pass in 'false' here if you'd like to disable it
   client = new TnsOAuthClient(providerType, true);
 
   client.loginWithCompletion((tokenResult: ITnsOAuthTokenResult, error) => {

@@ -1,5 +1,7 @@
+const SHA256_DIGEST_LENGTH = 32;
+
 export function getCodeVerifier(): string {
-  const randomData = NSMutableData.dataWithLength(32);
+  const randomData = NSMutableData.dataWithLength(SHA256_DIGEST_LENGTH);
   const result: number = SecRandomCopyBytes(kSecRandomDefault, randomData.length, randomData.mutableBytes);
   if (result !== 0) {
     return null;
@@ -10,9 +12,8 @@ export function getCodeVerifier(): string {
 
 export function sha256base64encoded(inputString: string): string {
   const verifierData: NSData = NSString.stringWithString(inputString).dataUsingEncoding(NSUTF8StringEncoding);
-  const sha256Verifier: NSMutableData = NSMutableData.dataWithLength(32); // CC_SHA256_DIGEST_LENGTH = 32
+  const sha256Verifier: NSMutableData = NSMutableData.dataWithLength(SHA256_DIGEST_LENGTH);
   CC_SHA256(verifierData.bytes, verifierData.length, <string><unknown>sha256Verifier.mutableBytes);
-  // const sha256: NSData = NSData.dataWithBytesLength(sha256Verifier.mutableBytes, 32);
   return encodeBase64urlNoPadding(sha256Verifier);
 }
 

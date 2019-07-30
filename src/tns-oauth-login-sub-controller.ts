@@ -1,19 +1,10 @@
-import { Frame } from "tns-core-modules/ui/frame";
 import { HttpResponse } from "tns-core-modules/http";
-
-import {
-  TnsOAuthClient,
-  ITnsOAuthTokenResult,
-  TnsOAuthClientLoginBlock,
-  TnsOAuthResponseBlock
-} from "./index";
+import { Frame } from "tns-core-modules/ui/frame";
+import { ITnsOAuthTokenResult, TnsOAuthClient, TnsOAuthClientLoginBlock, TnsOAuthResponseBlock } from "./index";
+import { getCodeVerifier, sha256base64encoded } from "./pkce-util";
 import { TnsOAuthState } from "./tns-oauth-auth-state";
 import { TnsOAuthClientConnection } from "./tns-oauth-client-connection";
-import {
-  getAuthUrlStr,
-  authorizationCodeFromRedirectUrl,
-  getAccessTokenUrlWithCodeStr
-} from "./tns-oauth-utils";
+import { authorizationCodeFromRedirectUrl, getAccessTokenUrlWithCodeStr, getAuthUrlStr } from "./tns-oauth-utils";
 
 export interface ITnsOAuthLoginController {
   loginWithParametersFrameCompletion(
@@ -47,13 +38,18 @@ export class TnsOAuthLoginSubController {
       // return '';
     }
 
+    let codeChallenge;
+    if (this.client.pkce) {
+      this.client.codeVerifier = getCodeVerifier();
+      codeChallenge = sha256base64encoded(this.client.codeVerifier);
+    }
+
     this.authState = new TnsOAuthState(
-      "" /*utils.generateCodeVerifier()*/,
+      this.client.codeVerifier, // this could be removed actually
       completion
     );
 
-    const fullUrl = getAuthUrlStr(this.client.provider);
-    return fullUrl;
+    return getAuthUrlStr(this.client.provider, codeChallenge);
   }
 
   public resumeWithUrl(

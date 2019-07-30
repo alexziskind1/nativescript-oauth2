@@ -6,6 +6,7 @@
 
   <StackLayout class="p-20">
     <Button text="Login" tap="onLoginTap" class="btn btn-primary btn-active"/>
+    <Button text="Refresh accesstoken" tap="onRefreshTokenTap" class="btn btn-primary btn-active"/>
     <Button text="Logout" tap="onLogoutTap" class="btn btn-primary btn-active"/>
   </StackLayout>
 </Page>

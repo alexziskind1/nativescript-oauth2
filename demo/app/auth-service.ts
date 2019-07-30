@@ -66,7 +66,8 @@ function configureOAuthProviderMicrosoft(): TnsOaProvider {
 }
 
 export function tnsOauthLogin(providerType) {
-  client = new TnsOAuthClient(providerType);
+  // PKCE is enabled by default, but you can pass in 'false' here if you'd like to disable it
+  client = new TnsOAuthClient(providerType, true);
 
   client.loginWithCompletion((tokenResult: ITnsOAuthTokenResult, error) => {
     if (error) {
@@ -74,6 +75,22 @@ export function tnsOauthLogin(providerType) {
       console.error(error);
     } else {
       console.log("back to main page with access token: ");
+      console.log(tokenResult);
+    }
+  });
+}
+
+export function tnsRefreshOAuthAccessToken() {
+  if (!client) {
+    return;
+  }
+
+  client.refreshTokenWithCompletion((tokenResult: ITnsOAuthTokenResult, error) => {
+    if (error) {
+      console.error("back to main page with error: ");
+      console.error(error);
+    } else {
+      console.log("back to main page with token: ");
       console.log(tokenResult);
     }
   });

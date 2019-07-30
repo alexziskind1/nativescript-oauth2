@@ -245,6 +245,10 @@ export class TnsOAuthClientConnection {
       params.grant_type === "refresh_token" ? "refresh_token" : "code";
     params[codeParam] = code;
 
+    if (client.codeVerifier) {
+      params["code_verifier"] = client.codeVerifier;
+    }
+
     let post_data = querystring.stringify(params);
     post_data =
       post_data + "&redirect_uri=" + client.provider.options.redirectUri;

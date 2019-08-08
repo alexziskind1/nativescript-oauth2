@@ -11,7 +11,76 @@ matrix:
       os: linux
       node_js: "8"
       script: cd src && npm run ci.tslint
-
+    - stage: "Build"
+      os: osx
+      env:
+        - Platform="iOS"
+        - Type="VanillaJS"
+      osx_image: xcode10.2
+      language: node_js
+      node_js: "10"
+      jdk: oraclejdk8
+      before_script: pod repo update
+      script:
+        - cd src && npm run build
+        - cd ../demo && npm i && tns build ios --env.uglify
+    - os: osx
+      env:
+        - Platform="iOS"
+        - Type="VueJS"
+      osx_image: xcode10.2
+      language: node_js
+      node_js: "10"
+      jdk: oraclejdk8
+      before_script: pod repo update
+      script:
+        - cd src && npm run build
+        - cd ../demo-vue && npm i && tns build ios --env.uglify
+    - os: osx
+      env:
+        - Platform="iOS"
+        - Type="Angular"
+      osx_image: xcode10.2
+      language: node_js
+      node_js: "10"
+      jdk: oraclejdk8
+      before_script: pod repo update
+      script:
+        - cd src && npm run build
+        - cd ../demo-angular && npm i && tns build ios --env.uglify --env.aot
+    - language: android
+      os: linux
+      dist: trusty
+      env:
+        - Platform="Android"
+        - Type="VanillaJS"
+      jdk: oraclejdk8
+      before_install: nvm install 10
+      script:
+        - cd src && npm run build
+        - cd ../demo && npm i && tns build android --env.uglify --env.snapshot
+    - language: android
+      os: linux
+      dist: trusty
+      env:
+        - Platform="Android"
+        - Type="VueJS"
+      jdk: oraclejdk8
+      before_install: nvm install 10
+      script:
+        - cd src && npm run build
+        - cd ../demo-vue && npm i && tns build android --env.uglify --env.snapshot
+    - language: android
+      os: linux
+      dist: trusty
+      env:
+        - Platform="Android"
+        - Type="Angular"
+      jdk: oraclejdk8
+      before_install: nvm install 10
+      script:
+        - cd src && npm run build
+        - cd ../demo-angular && npm i && tns build android --env.uglify --env.snapshot --env.aot
        
 android:
   components:

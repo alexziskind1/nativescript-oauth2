@@ -6,7 +6,6 @@ import { HttpResponse } from "tns-core-modules/http";
 import {
   TnsOAuthClientLoginBlock,
   ITnsOAuthLoginController,
-  ITnsOAuthTokenResult,
   TnsOAuthResponseBlock
 } from "./index";
 import { TnsOaProvider, TnsOaProviderType } from "./providers";
@@ -20,6 +19,14 @@ import {
   httpResponseToToken
 } from "./tns-oauth-utils";
 
+export interface ITnsOAuthTokenResult {
+  accessToken: string;
+  refreshToken: string;
+  idToken: string;
+  accessTokenExpiration: Date;
+  refreshTokenExpiration: Date;
+  idTokenExpiration: Date;
+}
 export class TnsOAuthClient {
   public provider: TnsOaProvider = null;
   private loginController: ITnsOAuthLoginController;
@@ -232,9 +239,3 @@ export function configureTnsOAuth(providers: TnsOaProvider[]) {
     tnsOauthProviderMap.addProvider(providers[i].providerType, providers[i]);
   }
 }
-
-export {
-  TnsOaProvider,
-  TnsOaProviderType,
-  ITnsOAuthTokenResult
-};

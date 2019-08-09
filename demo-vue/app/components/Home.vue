@@ -1,6 +1,9 @@
 <template>
-    <Page>
-        <ActionBar title="OAuth Demo: NativeScript-Vue"/>
+    <Page class="page">
+        <ActionBar class="action-bar">
+            <Label class="action-bar-title" text="OAuth Demo: NativeScript-Vue"></Label>
+        </ActionBar>
+
         <StackLayout class="p-20">
             <Button text="Login" @tap="onLoginTap()" class="btn btn-primary btn-active"/>
             <Button text="Logout" @tap="onLogoutTap()" class="btn btn-primary btn-active"/>
@@ -9,8 +12,7 @@
 </template>
 
 <script>
-    var auth_service_1 = require("../auth-service");
-
+  var auth_service_1 = require("../auth-service");
 
   export default {
     data() {
@@ -27,16 +29,17 @@
   }
 </script>
 
-<style scoped>
-    ActionBar {
-        background-color: #53ba82;
-        color: #ffffff;
+<style scoped lang="scss">
+    // Start custom common variables
+    @import '../app-variables';
+    // End custom common variables
+
+    // Custom styles
+    .fa {
+        color: $accent-dark;
     }
 
-    .message {
-        vertical-align: center;
-        text-align: center;
+    .info {
         font-size: 20;
-        color: #333333;
     }
 </style>

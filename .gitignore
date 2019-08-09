@@ -28,5 +28,6 @@ demo/report/stats.json
 demo-angular/platforms
 demo-vue/platforms
 !demo-vue/**/*.js
+demo-vue/webpack.config.js
 demo-custom-provider/platforms
 

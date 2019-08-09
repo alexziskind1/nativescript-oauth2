@@ -232,3 +232,9 @@ export function configureTnsOAuth(providers: TnsOaProvider[]) {
     tnsOauthProviderMap.addProvider(providers[i].providerType, providers[i]);
   }
 }
+
+export {
+  TnsOaProvider,
+  TnsOaProviderType,
+  ITnsOAuthTokenResult
+};

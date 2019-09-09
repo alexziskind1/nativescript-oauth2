@@ -130,7 +130,7 @@ export class TnsOAuthLoginWebViewController
         this.loginController.client.provider.options.redirectUri
       )
     ) {
-      if (isAndroid && args.object && args.object.stopLoading) {
+      if (isAndroid && args.object && args.object['stopLoading']) {
         args.object.stopLoading();
       }
       this.resumeWithUrl(args.url);

@@ -131,7 +131,7 @@ export class TnsOAuthLoginWebViewController
       )
     ) {
       if (isAndroid && args.object && args.object['stopLoading']) {
-        args.object.stopLoading();
+        args.object['stopLoading']();
       }
       this.resumeWithUrl(args.url);
     }

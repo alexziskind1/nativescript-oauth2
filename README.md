@@ -377,3 +377,11 @@ Notice that for the key `CFBundleURLSchemes`, there are three string listed as c
 
 1. Follow the [plugin authoring guidelines](https://docs.nativescript.org/plugins/building-plugins) in the NativeScript docs.
 1. Use the Pull Request Template that can be found here to submit the PR.
+
+## Contributing Quick Steps
+
+1. Clone the repo: `https://github.com/alexziskind1/nativescript-oauth2.git`
+1. Open a terminal and navigate to `/src` folder
+1. Run `npm run build`, then run `npm run plugin.tscwatch`
+1. Open another terminal in the `/src` folder
+1. Run the Angular demo on iOS by executing the command `npm run demo.ios-angular`. For other demos on other platforms, see the different scripts available in the `package.json` file ion the `src` folder ([package.json file](https://github.com/alexziskind1/nativescript-oauth2/blob/master/src/package.json))

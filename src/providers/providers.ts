@@ -34,6 +34,7 @@ export interface TnsOaProvider {
   authorizeEndpoint: string;
   tokenEndpoint: string;
   revokeEndpoint?: string;
+  endSessionEndpoint?: string;
   cookieDomains: string[];
 
   usePKCE?: true;
@@ -124,6 +125,38 @@ export class TnsOaProviderLinkedIn implements TnsOaProvider {
 
   constructor(options: TnsOaProviderOptionsLinkedIn) {
     this.options = options;
+  }
+
+  public parseTokenResult(jsonData): ITnsOAuthTokenResult {
+    return jsonData;
+  }
+}
+
+export interface TnsOaProviderOptionsIdentityServer extends TnsOaOpenIdProviderOptions { }
+export declare type ProviderTypeIdentityServer = 'identityServer';
+export class TnsOaProviderIdentityServer implements TnsOaProvider {
+  public options: TnsOaProviderOptions;
+  public openIdSupport: OpenIdSupportFull = 'oid-full';
+  public providerType: ProviderTypeIdentityServer = 'identityServer';
+  public authority;
+  public tokenEndpointBase;
+  public authorizeEndpoint = '/connect/authorize';
+  public tokenEndpoint = '/connect/token';
+  public revokeEndpoint = '/connect/revocation';
+  public endSessionEndpoint = '/connect/endsession';
+  public cookieDomains;
+
+  constructor(
+    options: TnsOaProviderOptionsIdentityServer
+  ) {
+    this.options = options;
+    this.authority = options.issuerUrl;
+    this.tokenEndpointBase = options.issuerUrl;
+
+    const match = /^https:\/\/(.*?)$/.exec(options.issuerUrl);
+    if (match) {
+      this.cookieDomains = [match[1].toString()];
+    }
   }
 
   public parseTokenResult(jsonData): ITnsOAuthTokenResult {

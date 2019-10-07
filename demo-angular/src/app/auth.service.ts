@@ -31,9 +31,27 @@ export class AuthService {
     });
   }
 
-  public tnsOauthLogout() {
-    if (this.client) {
-      this.client.logout();
-    }
+  public tnsOauthLogout(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      if (this.client) {
+        this.client.logoutWithCompletion(
+          (error) => {
+            if (error) {
+              console.error("back to main page with error: ");
+              console.error(error);
+              reject(error);
+            } else {
+              console.log("back to main page with success");
+              resolve();
+            }
+          }
+        );
+      }
+      else {
+        console.log("back to main page with success");
+        resolve();
+      }
+    });
   }
 }
+

@@ -39,6 +39,28 @@ export function getAuthUrlStr(provider: TnsOaProvider, codeChallenge?: string): 
   return retAuthUrlStr;
 }
 
+export function getLogoutUrlStr(provider: TnsOaProvider, client: TnsOAuthClient): string {
+  if (provider.getLogoutUrlStr) {
+    return provider.getLogoutUrlStr();
+  }
+
+  if (!client || !client.tokenResult) {
+    return null;
+  }
+
+  const params = {};
+  params["id_token_hint"] = client.tokenResult.idToken;
+  params["post_logout_redirect_uri"] = provider.options.redirectUri;
+
+  addCustomQueryParams(params, provider);
+
+  const pararmsStr = querystring.stringify(params);
+
+  const retAuthUrlStr =
+    provider.authority + provider.endSessionEndpoint + "?" + pararmsStr;
+  return retAuthUrlStr;
+}
+
 export function authorizationCodeFromRedirectUrl(url: string): string {
   let authorizationCode: string = null;
 

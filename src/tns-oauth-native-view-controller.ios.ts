@@ -2,7 +2,8 @@ import { Frame } from "tns-core-modules/ui/frame";
 import {
   TnsOAuthClient,
   ITnsOAuthTokenResult,
-  TnsOAuthClientLoginBlock
+  TnsOAuthClientLoginBlock,
+  TnsOAuthResponseBlock
 } from "./index";
 import {
   ITnsOAuthLoginController,
@@ -36,10 +37,25 @@ export class TnsOAuthLoginNativeViewController extends NSObject
       completion
     );
 
-    this.loginInternalWithParametersCompletion(fullUrl, frame);
+    this.openUrlWithParametersCompletion(fullUrl, frame);
   }
 
-  private loginInternalWithParametersCompletion(
+  public logoutWithParametersFrameCompletion(
+    parameters,
+    frame: Frame,
+    urlScheme?: string,
+    completion?: TnsOAuthResponseBlock
+  ) {
+    const fullUrl = this.loginController.preLogoutSetup(
+      frame,
+      urlScheme,
+      completion
+    );
+console.dir(fullUrl);
+    this.openUrlWithParametersCompletion(fullUrl, frame);
+  }
+
+  private openUrlWithParametersCompletion(
     fullUrl: string,
     frame: Frame
   ): void {

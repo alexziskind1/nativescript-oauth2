@@ -4,7 +4,7 @@ import { ITnsOAuthTokenResult, TnsOAuthClient, TnsOAuthClientLoginBlock, TnsOAut
 import { getCodeVerifier, sha256base64encoded } from "./pkce-util";
 import { TnsOAuthState } from "./tns-oauth-auth-state";
 import { TnsOAuthClientConnection } from "./tns-oauth-client-connection";
-import { authorizationCodeFromRedirectUrl, getAccessTokenUrlWithCodeStr, getAuthUrlStr } from "./tns-oauth-utils";
+import { authorizationCodeFromRedirectUrl, getAccessTokenUrlWithCodeStr, getAuthUrlStr, getLogoutUrlStr } from "./tns-oauth-utils";
 
 export interface ITnsOAuthLoginController {
   loginWithParametersFrameCompletion(
@@ -50,6 +50,26 @@ export class TnsOAuthLoginSubController {
     );
 
     return getAuthUrlStr(this.client.provider, codeChallenge);
+  }
+
+  public preLogoutSetup(
+    frame: Frame,
+    urlScheme?: string,
+    completion?: TnsOAuthResponseBlock
+  ): string {
+    this.frame = frame;
+
+    if (this.authState) {
+      const error = "Logout failed because another logout operation is in progress.";
+      completion(error);
+    }
+
+    this.authState = new TnsOAuthState(
+      this.client.codeVerifier, // this could be removed actually
+      completion
+    );
+
+    return getLogoutUrlStr(this.client.provider, this.client);
   }
 
   public resumeWithUrl(

@@ -40,6 +40,7 @@ export interface TnsOaProvider {
   usePKCE?: true;
 
   getAuthUrlStr?(): string;
+  getLogoutUrlStr?(): string;
   getAccessTokenUrlWithCodeStr?(authCode: string): string;
   parseTokenResult(jsonData): ITnsOAuthTokenResult;
 }

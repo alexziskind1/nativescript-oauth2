@@ -2,7 +2,8 @@ import * as http from "tns-core-modules/http";
 import * as querystring from "querystring";
 import * as UrlLib from "url";
 import { TnsOaProvider } from "./providers";
-import { ITnsOAuthTokenResult, TnsOAuthClient } from ".";
+import { ITnsOAuthTokenResult } from ".";
+import { TnsOAuthClient } from "./oauth";
 
 function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   const customQueryParams = provider.options.customQueryParams;

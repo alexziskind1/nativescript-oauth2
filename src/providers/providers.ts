@@ -87,6 +87,11 @@ export class TnsOaProviderGoogle implements TnsOaProvider {
   public parseTokenResult(jsonData): ITnsOAuthTokenResult {
     return jsonData;
   }
+
+  public getLogoutUrlStr(): string {
+    // Googles implementation of the "end_session_endpoint" (not oidc compliant)
+    return `https://www.google.com/accounts/Logout`;
+  }
 }
 
 export declare type ProviderTypeFacebook = "facebook";

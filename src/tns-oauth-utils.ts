@@ -3,7 +3,7 @@ import * as querystring from "querystring";
 import * as UrlLib from "url";
 import { TnsOaProvider } from "./providers";
 import { ITnsOAuthTokenResult } from ".";
-import { TnsOAuthClient } from "./oauth";
+import { TnsOAuthClient } from "./index";
 
 function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   const customQueryParams = provider.options.customQueryParams;

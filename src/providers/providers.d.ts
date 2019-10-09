@@ -34,11 +34,13 @@ export interface TnsOaProvider {
   authorizeEndpoint: string;
   tokenEndpoint: string;
   revokeEndpoint?: string;
+  endSessionEndpoint?: string;
   cookieDomains: string[];
 
   usePKCE?: true;
 
   getAuthUrlStr?(): string;
+  getLogoutUrlStr?(): string;
   getAccessTokenUrlWithCodeStr?(authCode: string): string;
   parseTokenResult(jsonData): ITnsOAuthTokenResult;
 }
@@ -105,4 +107,23 @@ export declare class TnsOaProviderLinkedIn implements TnsOaProvider {
   cookieDomains: string[];
   constructor(options: TnsOaProviderOptionsLinkedIn);
   parseTokenResult(jsonData: any): ITnsOAuthTokenResult;
+}
+
+export declare type ProviderTypeIdentityServer = 'identityServer';
+export interface TnsOaProviderOptionsIdentityServer extends TnsOaOpenIdProviderOptions { }
+export class TnsOaProviderIdentityServer implements TnsOaProvider {
+  public options: TnsOaProviderOptions;
+  public openIdSupport: OpenIdSupportFull;
+  public providerType: ProviderTypeIdentityServer;
+  public authority;
+  public tokenEndpointBase;
+  public authorizeEndpoint;
+  public tokenEndpoint;
+  public revokeEndpoint;
+  public endSessionEndpoint;
+  public cookieDomains;
+
+  constructor(options: TnsOaProviderOptionsIdentityServer);
+
+  public parseTokenResult(jsonData: any): ITnsOAuthTokenResult;
 }

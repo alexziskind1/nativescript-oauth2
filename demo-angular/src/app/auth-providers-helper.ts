@@ -10,15 +10,18 @@ import {
     TnsOaProviderOptionsGoogle,
     TnsOaProviderGoogle,
     TnsOaProviderOptionsMicrosoft,
-    TnsOaProviderMicrosoft
+    TnsOaProviderMicrosoft,
+    TnsOaProviderOptionsIdentityServer,
+    TnsOaProviderIdentityServer
 } from "nativescript-oauth2/providers";
 
 export function configureOAuthProviders() {
     const microsoftProvider = configureOAuthProviderMicrosoft();
     const googleProvider = configureOAuthProviderGoogle();
     const facebookProvider = configureOAuthProviderFacebook();
+    const identityServer = configureOAuthProviderIdentityServer();
 
-    configureTnsOAuth([microsoftProvider, googleProvider, facebookProvider]);
+    configureTnsOAuth([microsoftProvider, googleProvider, facebookProvider, identityServer]);
 }
 
 export function configureOAuthProviderGoogle(): TnsOaProvider {
@@ -62,3 +65,18 @@ export function configureOAuthProviderMicrosoft(): TnsOaProvider {
     );
     return microsoftProvider;
 }
+
+export function configureOAuthProviderIdentityServer(): TnsOaProvider {
+    const identityServerProviderOptions: TnsOaProviderOptionsIdentityServer = {
+      openIdSupport: 'oid-full',
+      issuerUrl: 'https://demo.identityserver.io',
+      clientId: 'native.code',
+      urlScheme: 'org.nativescript.demoangular',
+      redirectUri: 'org.nativescript.demoangular://auth',
+      scopes: ['openid', 'profile', 'email', 'offline_access'],
+    };
+    const identityServerProvider = new TnsOaProviderIdentityServer(
+      identityServerProviderOptions
+    );
+    return identityServerProvider;
+  }

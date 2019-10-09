@@ -16,7 +16,7 @@ export class LoginComponent {
 
   public onTapLogin() {
     this.authService
-        .tnsOauthLogin("google")
+        .tnsOauthLogin("identityServer")
         .then((result: ITnsOAuthTokenResult) => {
           console.log("back to login component with token " + result.accessToken);
           this.routerExtensions

@@ -17,6 +17,9 @@ export type TnsOAuthClientLoginBlock = (
   tokenResult: ITnsOAuthTokenResult,
   error
 ) => void;
+export type TnsOAuthClientLogoutBlock = (
+  error
+) => void;
 export type TnsOAuthPageLoadStarted = (args: LoadEventData) => void;
 export type TnsOAuthPageLoadFinished = (args: LoadEventData) => void;
 
@@ -34,6 +37,7 @@ export declare class TnsOAuthClient {
   pkce?: boolean;
   constructor(providerType: TnsOaProviderType, pkce?: boolean);
   loginWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
+  logoutWithCompletion(completion?: TnsOAuthResponseBlock): void;
   refreshTokenWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
   resumeWithUrl(url: string): void;
   logout(successPage?: string): void;
@@ -46,6 +50,12 @@ export function configureTnsOAuth(providers: TnsOaProvider[]): void;
 
 export interface ITnsOAuthLoginController {
   loginWithParametersFrameCompletion(
+    parameters,
+    frame: Frame,
+    urlScheme?: string,
+    completion?: TnsOAuthClientLoginBlock
+  );
+  logoutWithParametersFrameCompletion(
     parameters,
     frame: Frame,
     urlScheme?: string,

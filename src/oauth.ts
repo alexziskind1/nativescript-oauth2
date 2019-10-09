@@ -6,7 +6,8 @@ import { HttpResponse } from "tns-core-modules/http";
 import {
   TnsOAuthClientLoginBlock,
   ITnsOAuthLoginController,
-  TnsOAuthResponseBlock
+  TnsOAuthResponseBlock,
+  TnsOAuthClientLogoutBlock
 } from "./index";
 import { TnsOaProvider, TnsOaProviderType } from "./providers";
 import { TnsOAuthClientAppDelegate } from "./delegate";
@@ -69,6 +70,19 @@ export class TnsOAuthClient {
       );
     } else {
       completion(null, "Provider is not configured");
+    }
+  }
+
+  public logoutWithCompletion(completion?: TnsOAuthClientLogoutBlock) {
+    if (this.provider) {
+      this.loginController.logoutWithParametersFrameCompletion(
+        null,
+        frameModule.topmost(),
+        (<any>this.provider.options).urlScheme,
+        completion
+      );
+    } else {
+      completion("Provider is not configured");
     }
   }
 

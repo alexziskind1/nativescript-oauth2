@@ -1,7 +1,7 @@
 import * as appModule from "tns-core-modules/application";
 import * as colorModule from "tns-core-modules/color";
 import { Frame } from "tns-core-modules/ui/frame";
-import { TnsOAuthClient, ITnsOAuthTokenResult } from "./index";
+import { TnsOAuthClient, ITnsOAuthTokenResult, TnsOAuthResponseBlock } from "./index";
 import { TnsOAuthClientLoginBlock } from "./index";
 import {
   ITnsOAuthLoginController,
@@ -40,10 +40,25 @@ export class TnsOAuthLoginNativeViewController
       completion
     );
 
-    this.loginInternalWithParametersCompletion(fullUrl, frame);
+    this.openUrlWithParametersCompletion(fullUrl, frame);
   }
 
-  private loginInternalWithParametersCompletion(
+  public logoutWithParametersFrameCompletion(
+    parameters,
+    frame: Frame,
+    urlScheme?: string,
+    completion?: TnsOAuthResponseBlock
+  ) {
+    const fullUrl = this.loginController.preLogoutSetup(
+      frame,
+      urlScheme,
+      completion
+    );
+
+    this.openUrlWithParametersCompletion(fullUrl, frame);
+  }
+
+  private openUrlWithParametersCompletion(
     fullUrl: string,
     frame: Frame
   ): void {

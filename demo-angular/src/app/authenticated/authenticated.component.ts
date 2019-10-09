@@ -14,7 +14,11 @@ export class AuthenticatedComponent {
   }
 
   public onTapLogout() {
-    this.authService.tnsOauthLogout();
-    this.routerExtensions.back();
+    this.authService.tnsOauthLogout()
+    .then(() => {
+      this.routerExtensions.back();
+    })
+    .catch(e => console.log("Error: " + e));
+    
   }
 }

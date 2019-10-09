@@ -2,7 +2,8 @@ import * as http from "tns-core-modules/http";
 import * as querystring from "querystring";
 import * as UrlLib from "url";
 import { TnsOaProvider } from "./providers";
-import { ITnsOAuthTokenResult, TnsOAuthClient } from ".";
+import { ITnsOAuthTokenResult } from ".";
+import { TnsOAuthClient } from "./index";
 
 function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   const customQueryParams = provider.options.customQueryParams;
@@ -36,6 +37,28 @@ export function getAuthUrlStr(provider: TnsOaProvider, codeChallenge?: string): 
 
   const retAuthUrlStr =
     provider.authority + provider.authorizeEndpoint + "?" + pararmsStr;
+  return retAuthUrlStr;
+}
+
+export function getLogoutUrlStr(provider: TnsOaProvider, client: TnsOAuthClient): string {
+  if (provider.getLogoutUrlStr) {
+    return provider.getLogoutUrlStr();
+  }
+
+  if (!client || !client.tokenResult) {
+    return null;
+  }
+
+  const params = {};
+  params["id_token_hint"] = client.tokenResult.idToken;
+  params["post_logout_redirect_uri"] = provider.options.redirectUri;
+
+  addCustomQueryParams(params, provider);
+
+  const pararmsStr = querystring.stringify(params);
+
+  const retAuthUrlStr =
+    provider.authority + provider.endSessionEndpoint + "?" + pararmsStr;
   return retAuthUrlStr;
 }
 

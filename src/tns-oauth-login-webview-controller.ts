@@ -9,7 +9,8 @@ import {
   ITnsOAuthTokenResult,
   TnsOAuthClientLoginBlock,
   TnsOAuthPageLoadStarted,
-  TnsOAuthPageLoadFinished
+  TnsOAuthPageLoadFinished,
+  TnsOAuthResponseBlock
 } from "./index";
 import {
   ITnsOAuthLoginController,
@@ -44,10 +45,25 @@ export class TnsOAuthLoginWebViewController
       completion
     );
 
-    this.loginInternalWithParametersCompletion(fullUrl, frame);
+    this.openUrlWithParametersCompletion(fullUrl, frame);
   }
 
-  private loginInternalWithParametersCompletion(
+  public logoutWithParametersFrameCompletion(
+    parameters,
+    frame: Frame,
+    urlScheme?: string,
+    completion?: TnsOAuthResponseBlock
+  ) {
+    const fullUrl = this.loginController.preLogoutSetup(
+      frame,
+      urlScheme,
+      completion
+    );
+
+    this.openUrlWithParametersCompletion(fullUrl, frame);
+  }
+
+  private openUrlWithParametersCompletion(
     fullUrl: string,
     frame: Frame
   ): void {

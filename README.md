@@ -83,6 +83,10 @@ For logging in with your LinkedIn account, you should have a LinkedIn developer 
 5.  In this page, make sure to add an `Authorized Redirect URL`. (This can be any url starting with http:// or https://).
 6.  Copy the Authentication Keys and the Authorized Redirect URL.
 
+### IdentityServer Account
+
+Documentation for IdentityServer to follow.
+
 ## Setup
 
 Add TypeScript to your NativeScript project if you don't already have it added. While this is not a requirement, it's highly recommended. If you want to watch a video on how to convert your existing JavaScript based NativeScript app to TypeScript, [watch it here](https://youtu.be/2JDXnduTlgs).

@@ -85,7 +85,11 @@ For logging in with your LinkedIn account, you should have a LinkedIn developer 
 
 ### IdentityServer Account
 
-Documentation for IdentityServer to follow.
+For logging in with [IdentityServer](https://identityserver.io/) you can make use of the [demo server](https://demo.identityserver.io/) or create your own. You can get more information on how to start your own IdentityServer [here](https://identityserver4.readthedocs.io/en/latest/quickstarts/0_overview.html).
+
+The default IdentityServer provider is configured to use the [demo server](https://demo.identityserver.io/) with __client id: native.code__ _grant type: authorization code with PKCE and client credentials_.
+
+login with `bob/bob`, `alice/alice` or choose external login with `Google` or `Azure AD`.
 
 ## Setup
 

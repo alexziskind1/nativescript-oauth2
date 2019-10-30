@@ -80,7 +80,6 @@ export class TnsOAuthLoginNativeViewController
           tokenResult,
           error
         );
-        this.loginController.frame.goBack();
       }
     );
   }

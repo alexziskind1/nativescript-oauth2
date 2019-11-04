@@ -118,7 +118,6 @@ export class TnsOAuthLoginSubController {
     // completion with tokenResult.
     // If a accessToken is in the result (data) and there is no responseError,
     // call loginCompletion with tokenResult
-
     let responseCompletion: TnsOAuthResponseBlock;
 
     if (completion) {

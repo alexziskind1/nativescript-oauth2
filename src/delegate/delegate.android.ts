@@ -9,12 +9,14 @@ appModule.android.on(
           new String(args.activity.getIntent().getAction()).valueOf() ===
           new String(android.content.Intent.ACTION_VIEW).valueOf()
       ) {
-        const url = args.activity
-            .getIntent()
-            .getData()
-            .toString();
-        TnsOAuthClientAppDelegate._client.resumeWithUrl(url);
-        console.log(args.activity.getIntent().getData());
+          const url = args.activity
+              .getIntent()
+              .getData()
+              .toString();
+          TnsOAuthClientAppDelegate._client.resumeWithUrl(url);
+          console.log(args.activity.getIntent().getData());
+      } else {
+          TnsOAuthClientAppDelegate._client.resumeWithUrl(null);
       }
     }
 );

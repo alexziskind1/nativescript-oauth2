@@ -73,7 +73,8 @@ export class TnsOAuthLoginNativeViewController
   }
 
   public resumeWithUrl(url: string): boolean {
-    return this.loginController.resumeWithUrl(
+    if (!!url) {
+      return this.loginController.resumeWithUrl(
       url,
       (tokenResult: ITnsOAuthTokenResult, error) => {
         this.loginController.completeLoginWithTokenResponseError(
@@ -82,5 +83,10 @@ export class TnsOAuthLoginNativeViewController
         );
       }
     );
+    } else {
+      const er = "The login operation was canceled.";
+      this.loginController.completeLoginWithTokenResponseError(null, er);
+      return true;
+    }
   }
 }

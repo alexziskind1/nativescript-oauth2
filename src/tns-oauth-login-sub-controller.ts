@@ -113,16 +113,11 @@ export class TnsOAuthLoginSubController {
     url: string,
     completion: TnsOAuthClientLoginBlock
   ) {
-    // const request: HttpRequestOptions = null;
-
     // Call the token endpoint for code exchange.
-    // If response is 200 OK, dismiss safari view controller and call login
+    // If response is 200 OK, dismiss view controller and call login
     // completion with tokenResult.
-    // If response is non-400 error, dismiss safari view controller and
-    // call login completion with response error.
-    // Ignore 400 error. It means something wrong with code exchange, could be a malicious caller
-    // with a bogus code verifier.
-
+    // If a accessToken is in the result (data) and there is no responseError,
+    // call loginCompletion with tokenResult
     let responseCompletion: TnsOAuthResponseBlock;
 
     if (completion) {
@@ -131,29 +126,15 @@ export class TnsOAuthLoginSubController {
         response: HttpResponse,
         responseError: Error
       ) => {
-        if (!responseError) {
-          if (response.statusCode === 200) {
-            const tokenResult = this.client.provider.parseTokenResult(data);
-
-            if (tokenResult && !responseError) {
-              this.client.tokenResult = tokenResult;
-              completion(tokenResult, responseError);
-            }
-          } else if (response.statusCode === 400) {
-            console.error("400 ERRROR Occurred");
-            // A 400 error can be due to an malformed request to the server by the SDK OR a malicious caller
-            // with an invalid auth code. At this point the server intentionally omit the detailed reason
-            // of the 400. We always assume the 400 is caused by a malicious caller and ignore it silently.
-            // Handling 400 error and notifying the user would mess up the auth flow and make the app
-            // less secure.
-            completion(null, responseError);
-          } else if (response.statusCode > 400) {
-            // A non-400 error is unlikely to be caused by a malicious caller with an invalid auth code.
-            // So we don't ignore such error.
-
-            // Set responseError
-            completion(null, responseError);
-          }
+        if ((response.statusCode === 200 || (data && data.accessToken)) && !responseError) {
+          const tokenResult = this.client.provider.parseTokenResult(data);
+          this.client.tokenResult = tokenResult;
+          completion(tokenResult, null);
+        }
+        else {
+          const msg = `${response ? response.statusCode : ''} ERRROR Occurred`;
+          console.error(msg);
+          completion(null, responseError ? responseError : new Error(msg));
         }
       };
     }
@@ -171,9 +152,11 @@ export class TnsOAuthLoginSubController {
     tokenResult: ITnsOAuthTokenResult,
     responseError
   ) {
-    const loginCompletion: TnsOAuthClientLoginBlock = this.authState
-      .loginCompletion;
-    this.authState = null;
-    loginCompletion(tokenResult, responseError);
+    if (this.authState) {
+      const loginCompletion: TnsOAuthClientLoginBlock = this.authState
+        .loginCompletion;
+      this.authState = null;
+      loginCompletion(tokenResult, responseError);
+    }
   }
 }

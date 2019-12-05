@@ -132,7 +132,7 @@ export class TnsOAuthLoginSubController {
           completion(tokenResult, null);
         }
         else {
-          const msg = `${response ? response.statusCode : ''} ERRROR Occurred`;
+          const msg = `${response ? response.statusCode : ''} ERROR Occurred`;
           console.error(msg);
           completion(null, responseError ? responseError : new Error(msg));
         }

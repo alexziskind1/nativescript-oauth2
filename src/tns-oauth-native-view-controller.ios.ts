@@ -3,7 +3,7 @@ import {
   TnsOAuthClient,
   ITnsOAuthTokenResult,
   TnsOAuthClientLoginBlock,
-  TnsOAuthResponseBlock
+  TnsOAuthClientLogoutBlock
 } from "./index";
 import {
   ITnsOAuthLoginController,
@@ -44,7 +44,7 @@ export class TnsOAuthLoginNativeViewController extends NSObject
     parameters,
     frame: Frame,
     urlScheme?: string,
-    completion?: TnsOAuthResponseBlock
+    completion?: TnsOAuthClientLogoutBlock
   ) {
     const fullUrl = this.loginController.preLogoutSetup(
       frame,

@@ -1,7 +1,7 @@
 import * as appModule from "tns-core-modules/application";
 import * as colorModule from "tns-core-modules/color";
 import { Frame } from "tns-core-modules/ui/frame";
-import { TnsOAuthClient, ITnsOAuthTokenResult, TnsOAuthResponseBlock } from "./index";
+import { TnsOAuthClient, ITnsOAuthTokenResult, TnsOAuthClientLogoutBlock } from "./index";
 import { TnsOAuthClientLoginBlock } from "./index";
 import {
   ITnsOAuthLoginController,
@@ -47,7 +47,7 @@ export class TnsOAuthLoginNativeViewController
     parameters,
     frame: Frame,
     urlScheme?: string,
-    completion?: TnsOAuthResponseBlock
+    completion?: TnsOAuthClientLogoutBlock
   ) {
     const fullUrl = this.loginController.preLogoutSetup(
       frame,

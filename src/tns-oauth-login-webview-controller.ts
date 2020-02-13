@@ -10,7 +10,7 @@ import {
   TnsOAuthClientLoginBlock,
   TnsOAuthPageLoadStarted,
   TnsOAuthPageLoadFinished,
-  TnsOAuthResponseBlock
+  TnsOAuthClientLogoutBlock
 } from "./index";
 import {
   ITnsOAuthLoginController,
@@ -52,7 +52,7 @@ export class TnsOAuthLoginWebViewController
     parameters,
     frame: Frame,
     urlScheme?: string,
-    completion?: TnsOAuthResponseBlock
+    completion?: TnsOAuthClientLogoutBlock
   ) {
     const fullUrl = this.loginController.preLogoutSetup(
       frame,

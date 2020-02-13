@@ -59,7 +59,7 @@ export interface ITnsOAuthLoginController {
     parameters,
     frame: Frame,
     urlScheme?: string,
-    completion?: TnsOAuthClientLoginBlock
+    completion?: TnsOAuthClientLogoutBlock
   );
   resumeWithUrl(url: string);
 }

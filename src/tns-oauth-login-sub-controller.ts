@@ -1,6 +1,6 @@
 import { HttpResponse } from "tns-core-modules/http";
 import { Frame } from "tns-core-modules/ui/frame";
-import { ITnsOAuthTokenResult, TnsOAuthClient, TnsOAuthClientLoginBlock, TnsOAuthResponseBlock } from "./index";
+import { ITnsOAuthTokenResult, TnsOAuthClient, TnsOAuthClientLoginBlock, TnsOAuthResponseBlock, TnsOAuthClientLogoutBlock } from "./index";
 import { getCodeVerifier, sha256base64encoded } from "./pkce-util";
 import { TnsOAuthState } from "./tns-oauth-auth-state";
 import { TnsOAuthClientConnection } from "./tns-oauth-client-connection";
@@ -46,6 +46,7 @@ export class TnsOAuthLoginSubController {
 
     this.authState = new TnsOAuthState(
       this.client.codeVerifier, // this could be removed actually
+      false,
       completion
     );
 
@@ -55,7 +56,7 @@ export class TnsOAuthLoginSubController {
   public preLogoutSetup(
     frame: Frame,
     urlScheme?: string,
-    completion?: TnsOAuthResponseBlock
+    completion?: TnsOAuthClientLogoutBlock
   ): string {
     this.frame = frame;
 
@@ -66,6 +67,7 @@ export class TnsOAuthLoginSubController {
 
     this.authState = new TnsOAuthState(
       this.client.codeVerifier, // this could be removed actually
+      true,
       completion
     );
 
@@ -74,16 +76,22 @@ export class TnsOAuthLoginSubController {
 
   public resumeWithUrl(
     url: string,
-    completion: TnsOAuthClientLoginBlock
+    completion: TnsOAuthClientLoginBlock | TnsOAuthClientLogoutBlock
   ): boolean {
     if (this.authState) {
-      const codeExchangeRequestUrl: string = this.codeExchangeRequestUrlFromRedirectUrl(
-        url
-      );
-
-      if (codeExchangeRequestUrl) {
-        this.codeExchangeWithUrlCompletion(codeExchangeRequestUrl, completion);
+      if (this.authState.isLogout && url === this.client.provider.options.redirectUri) {
+        this.client.logout();
+        (completion as TnsOAuthClientLogoutBlock)(undefined);
         return true;
+      } else {
+        const codeExchangeRequestUrl: string = this.codeExchangeRequestUrlFromRedirectUrl(
+          url
+        );
+
+        if (codeExchangeRequestUrl) {
+          this.codeExchangeWithUrlCompletion(codeExchangeRequestUrl, completion);
+          return true;
+        }
       }
     }
 

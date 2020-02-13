@@ -4,6 +4,7 @@ export class TnsOAuthState {
   private _loginCompletion: TnsOAuthClientLoginBlock;
   private _codeVerifier: string;
   private _urlScheme: string;
+  private _isLogout: boolean;
 
   public authCode: string;
 
@@ -19,13 +20,19 @@ export class TnsOAuthState {
     return this._urlScheme;
   }
 
+  public get isLogout(): boolean {
+    return this._isLogout;
+  }
+
   constructor(
     codeVerifier: string,
+    isLogout: boolean,
     loginCompletion?: TnsOAuthClientLoginBlock,
     urlScheme?: string
   ) {
     this._loginCompletion = loginCompletion;
     this._codeVerifier = codeVerifier;
     this._urlScheme = urlScheme;
+    this._isLogout = isLogout;
   }
 }

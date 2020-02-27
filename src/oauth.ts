@@ -238,8 +238,12 @@ export class TnsOauthProviderMap {
 
 export const tnsOauthProviderMap = new TnsOauthProviderMap();
 
+
+  
 function configureClientAuthAppDelegate(): void {
-  applicationModule.ios.delegate = TnsOAuthClientAppDelegate;
+    // applicationModule.ios.delegate = TnsOAuthClientAppDelegate;
+    console.log("fired: configureClientAuthAppDelegate()");
+    TnsOAuthClientAppDelegate.doRegisterDelegates();
 }
 
 export function configureTnsOAuth(providers: TnsOaProvider[]) {

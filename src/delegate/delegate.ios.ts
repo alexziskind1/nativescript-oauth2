@@ -18,16 +18,16 @@ export class TnsOAuthClientAppDelegate {
       class UIApplicationDelegateImpl extends UIResponder implements UIApplicationDelegate { }
 
       applicationModule.ios.delegate = UIApplicationDelegateImpl;
-    } 
+    }
     return applicationModule.ios.delegate;
   }
-  
+
   private static addAppDelegateMethods = appDelegate => {
       if (parseInt(platformModule.device.osVersion.split('.')[0]) >= 10 ) {
         // iOS >= 10
         appDelegate.prototype.applicationOpenURLOptions = (
-              application: UIApplication, 
-              url: NSURL, 
+              application: UIApplication,
+              url: NSURL,
               options: NSDictionary<string, any>) => {
           TnsOAuthClientAppDelegate.handleIncomingUrl(url);
         };

@@ -1,6 +1,6 @@
 import { TnsOAuthClient } from "../index";
 import * as applicationModule from "tns-core-modules/application";
-// import * as platformModule from "tns-core-modules/platform";
+import * as platformModule from "tns-core-modules/platform";
 
 export class TnsOAuthClientAppDelegate {
   private static _client: TnsOAuthClient;
@@ -14,43 +14,54 @@ export class TnsOAuthClientAppDelegate {
   private static getAppDelegate() {
     // Play nice with other plugins by not completely ignoring anything already added to the appdelegate
     if (applicationModule.ios.delegate === undefined) {
-      console.log("creating new delegate");
       @ObjCClass(UIApplicationDelegate)
-      class UIApplicationDelegateImpl extends UIResponder implements UIApplicationDelegate {
-      }
-  
+      class UIApplicationDelegateImpl extends UIResponder implements UIApplicationDelegate { }
+
       applicationModule.ios.delegate = UIApplicationDelegateImpl;
-    } else {
-      console.log("returning existing delegate");
-    }
+    } 
     return applicationModule.ios.delegate;
   }
   
   private static addAppDelegateMethods = appDelegate => {
-      console.log("fired: addAppDelegateMethods");
-      
-      appDelegate.prototype.applicationOpenURLOptions = (application: UIApplication, url: NSURL, options: NSDictionary<string, any>) => {
-        console.log("fired: " + url);
-        if (
-          !TnsOAuthClientAppDelegate._client ||
-          !TnsOAuthClientAppDelegate._urlScheme
-        ) {
-          // the delegate wasn't wired to the client, that should have resulted in an errormessage already
-          console.log("IMPORTANT: Could not complete login flow.");
-          return false;
-        }
-    
-        if (url.scheme.toLowerCase() === TnsOAuthClientAppDelegate._urlScheme) {
-          TnsOAuthClientAppDelegate._client.resumeWithUrl(url.absoluteString);
-          return true;
-        } else {
-          return false;
-        }
-      };
+      if (parseInt(platformModule.device.osVersion.split('.')[0]) >= 10 ) {
+        // iOS >= 10
+        appDelegate.prototype.applicationOpenURLOptions = (
+              application: UIApplication, 
+              url: NSURL, 
+              options: NSDictionary<string, any>) => {
+          TnsOAuthClientAppDelegate.handleIncomingUrl(url);
+        };
+      } else {
+        // iOS < 10
+        appDelegate.prototype.applicationOpenURLSourceApplicationAnnotation = (
+              application: UIApplication,
+              url: NSURL,
+              sourceApplication: string,
+              annotation: any ) => {
+          TnsOAuthClientAppDelegate.handleIncomingUrl(url);
+        };
+      }
   }
 
   public static doRegisterDelegates() {
     this.addAppDelegateMethods(this.getAppDelegate());
   }
 
+  private static handleIncomingUrl(url: NSURL): boolean {
+    if (
+      !TnsOAuthClientAppDelegate._client ||
+      !TnsOAuthClientAppDelegate._urlScheme
+    ) {
+      // the delegate wasn't wired to the client, that should have resulted in an errormessage already
+      console.log("IMPORTANT: Could not complete login flow.");
+      return false;
+    }
+
+    if (url.scheme.toLowerCase() === TnsOAuthClientAppDelegate._urlScheme) {
+      TnsOAuthClientAppDelegate._client.resumeWithUrl(url.absoluteString);
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

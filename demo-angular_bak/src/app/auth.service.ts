@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import {
   TnsOAuthClient,
   ITnsOAuthTokenResult
-} from "nativescript-oauth2";
+} from "@essent/nativescript-oauth2";
 
 @Injectable()
 export class AuthService {

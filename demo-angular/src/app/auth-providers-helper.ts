@@ -2,7 +2,7 @@ import {
     TnsOAuthClient,
     configureTnsOAuth,
     ITnsOAuthTokenResult
-} from "nativescript-oauth2";
+} from "@essent/nativescript-oauth2";
 import {
     TnsOaProvider,
     TnsOaProviderOptionsFacebook,
@@ -13,7 +13,7 @@ import {
     TnsOaProviderMicrosoft,
     TnsOaProviderOptionsIdentityServer,
     TnsOaProviderIdentityServer
-} from "nativescript-oauth2/providers";
+} from "@essent/nativescript-oauth2/providers";
 
 export function configureOAuthProviders() {
     const microsoftProvider = configureOAuthProviderMicrosoft();

@@ -2,10 +2,10 @@ import {
   TnsOAuthClient,
   configureTnsOAuth,
   ITnsOAuthTokenResult
-} from "nativescript-oauth2";
+} from "@essent/nativescript-oauth2";
 import {
   TnsOaProvider
-} from "nativescript-oauth2/providers";
+} from "@essent/nativescript-oauth2/providers";
 import { TnsOaProviderMyCustomProvider, TnsOaMyCustomProviderOptions } from "./my-oauth-provider";
 
 let client: TnsOAuthClient = null;

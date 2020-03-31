@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { AuthService } from "./auth.service";
-import { ITnsOAuthTokenResult } from "nativescript-oauth2";
+import { ITnsOAuthTokenResult } from "@essent/nativescript-oauth2";
 import { Page } from "tns-core-modules/ui/page/page";
 import { topmost } from "tns-core-modules/ui/frame";
 

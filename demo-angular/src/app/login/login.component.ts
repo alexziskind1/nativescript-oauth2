@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular";
-import { ITnsOAuthTokenResult } from "nativescript-oauth2";
+import { ITnsOAuthTokenResult } from "@essent/nativescript-oauth2";
 import { Page } from "ui/page";
 import { AuthService } from "../auth.service";
 

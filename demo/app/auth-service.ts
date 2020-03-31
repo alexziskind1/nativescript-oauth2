@@ -2,7 +2,7 @@ import {
   TnsOAuthClient,
   configureTnsOAuth,
   ITnsOAuthTokenResult
-} from "nativescript-oauth2";
+} from "@essent/nativescript-oauth2";
 import {
   TnsOaProvider,
   TnsOaProviderOptionsFacebook,
@@ -11,7 +11,7 @@ import {
   TnsOaProviderGoogle,
   TnsOaProviderOptionsMicrosoft,
   TnsOaProviderMicrosoft
-} from "nativescript-oauth2/providers";
+} from "@essent/nativescript-oauth2/providers";
 
 let client: TnsOAuthClient = null;
 

@@ -5,7 +5,6 @@ demo-custom-provider/
 node_modules/
 hooks/
 *.log
-*.ts
 *.js.map
 tsconfig.json
 

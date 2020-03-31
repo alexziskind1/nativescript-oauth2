@@ -31,4 +31,8 @@ export class TnsOAuthClientAppDelegate {
     this._client = client;
     this._urlScheme = urlScheme;
   }
+
+  public static doRegisterDelegates() {
+
+  }
 }

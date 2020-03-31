@@ -9,6 +9,7 @@
     }
   },
   "dependencies": {
+    "nativescript-oauth2": "file:../src",
     "nativescript-theme-core": "1.0.4",
     "nativescript-unit-test-runner": "0.7.0",
     "@essent/nativescript-oauth2": "file:../src",

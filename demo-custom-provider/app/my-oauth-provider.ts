@@ -1,5 +1,5 @@
-import { TnsOaProvider, TnsOaProviderOptions, OpenIdSupportNone, TnsOaUnsafeProviderOptions } from "nativescript-oauth2/providers";
-import { ITnsOAuthTokenResult } from "nativescript-oauth2";
+import { TnsOaProvider, TnsOaProviderOptions, OpenIdSupportNone, TnsOaUnsafeProviderOptions } from "@essent/nativescript-oauth2/providers";
+import { ITnsOAuthTokenResult } from "@essent/nativescript-oauth2";
 
 export interface TnsOaMyCustomProviderOptions extends TnsOaUnsafeProviderOptions { }
 

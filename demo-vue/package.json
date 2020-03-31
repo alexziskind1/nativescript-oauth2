@@ -11,7 +11,7 @@
   "description": "NativeScript Application",
   "dependencies": {
     "nativescript-theme-core": "~1.0.6",
-    "nativescript-oauth2": "../src",
+    "@essent/nativescript-oauth2": "../src",
     "nativescript-vue": "~2.4.0",
     "tns-core-modules": "~6.0.0"
   },

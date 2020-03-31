@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var nativescript_oauth2_1 = require("nativescript-oauth2");
-var providers_1 = require("nativescript-oauth2/providers");
+var nativescript_oauth2_1 = require("@essent/nativescript-oauth2");
+var providers_1 = require("@essent/nativescript-oauth2/providers");
 var client = null;
 function configureOAuthProviders() {
     var microsoftProvider = configureOAuthProviderMicrosoft();

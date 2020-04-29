@@ -184,3 +184,19 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
     idTokenExpiration: expDate
   };
 }
+export function getParamsFromURL(url: string): any {
+  if (!url) {
+      return {};
+  }
+  const at = url.indexOf('?');
+  const a = url.substring(at + 1);
+  const pairs = a.split('&');
+  let i = 0;
+  const urlparams = {};
+  for (i = 0; i < pairs.length; i++) {
+      if (pairs[i].indexOf('=') === -1) continue;
+      const params_individual = pairs[i].split('=');
+      urlparams[params_individual[0]] = decodeURIComponent(params_individual[1]);
+  }
+  return urlparams;
+}

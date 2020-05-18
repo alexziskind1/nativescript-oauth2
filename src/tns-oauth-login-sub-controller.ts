@@ -4,7 +4,7 @@ import { ITnsOAuthTokenResult, TnsOAuthClient, TnsOAuthClientLoginBlock, TnsOAut
 import { getCodeVerifier, sha256base64encoded } from "./pkce-util";
 import { TnsOAuthState } from "./tns-oauth-auth-state";
 import { TnsOAuthClientConnection } from "./tns-oauth-client-connection";
-import { authorizationCodeFromRedirectUrl, getAccessTokenUrlWithCodeStr, getAuthUrlStr, getLogoutUrlStr } from "./tns-oauth-utils";
+import { authorizationCodeFromRedirectUrl, getAccessTokenUrlWithCodeStr, getAuthUrlStr, getLogoutUrlStr, getParamsFromURL } from "./tns-oauth-utils";
 
 export interface ITnsOAuthLoginController {
   loginWithParametersFrameCompletion(
@@ -79,6 +79,11 @@ export class TnsOAuthLoginSubController {
     completion: TnsOAuthClientLoginBlock | TnsOAuthClientLogoutBlock
   ): boolean {
     if (this.authState) {
+      const urlParams = getParamsFromURL(url);
+      if (urlParams && urlParams.canceled) {
+        (completion as TnsOAuthClientLogoutBlock)(null);
+          return false;
+      }
       if (this.authState.isLogout && url === this.client.provider.options.redirectUri) {
         this.client.logout();
         (completion as TnsOAuthClientLogoutBlock)(undefined);

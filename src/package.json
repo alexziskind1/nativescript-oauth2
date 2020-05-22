@@ -1,84 +1,68 @@
 {
-  "name": "@essent/nativescript-oauth2",
-  "version": "1.4.0",
-  "description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
-  "main": "oauth",
-  "typings": "index.d.ts",
-  "nativescript": {
-    "platforms": {
-      "android": "5.2.0",
-      "ios": "5.2.0"
-    }
-  },
-  "scripts": {
-    "tsc": "tsc",
-    "build": "npm i && tsc",
-    "build.native": "node scripts/build-native.js",
-    "postclone": "npm i && node scripts/postclone.js && cd ../demo && npm i && npx rimraf -- package-lock.json && cd ../src",
-    "test.android": "npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
-    "test.ios": "npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
-    "test.android-angular": "npm run tsc && npm run tslint && cd ../demo-angular && tns build android && tns test android --justlaunch",
-    "test.ios-angular": "npm run tsc && npm run tslint && cd ../demo-angular && tns build ios && tns test ios --justlaunch",
-    "test.android-custom": "npm run tsc && npm run tslint && cd ../demo-custom-provider && tns build android && tns test android --justlaunch",
-    "test.ios-angular-custom": "npm run tsc && npm run tslint && cd ../demo-custom-provider && tns build ios && tns test ios --justlaunch",
-    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\" --exclude \"**/platforms/**\" --exclude \"**/demo*/**\"",
-    "plugin.tscwatch": "npm run tsc -- -w",
-    "demo.ios": "npm run tsc && cd ../demo && tns run ios --emulator",
-    "demo.android": "npm run tsc && cd ../demo && tns run android --emulator",
-    "demo.ios-angular": "npm run tsc && cd ../demo-angular && tns run ios --emulator",
-    "demo.android-angular": "npm run tsc && cd ../demo-angular && tns run android --emulator",
-    "demo.ios-vue": "npm run tsc && cd ../demo-vue && tns run ios --bundle --emulator",
-    "demo.android-vue": "npm run tsc && cd ../demo-vue && tns run android --bundle --emulator",
-    "demo.ios-custom": "npm run tsc && cd ../demo-custom-provider && tns run ios --emulator",
-    "demo.android-custom": "npm run tsc && cd ../demo-custom-provider && tns run android --emulator",
-    "demo.reset": "cd ../demo && npx rimraf -- hooks node_modules platforms package-lock.json",
-    "demo-angular.reset": "cd ../demo-angular && npx rimraf -- hooks node_modules platforms package-lock.json",
-    "demo-vue.reset": "cd ../demo-vue && npx rimraf -- hooks node_modules platforms package-lock.json",
-    "demo-custom-provider.reset": "cd ../demo-custom-provider && npx rimraf -- hooks node_modules platforms package-lock.json",
-    "plugin.prepare": "npm run build && cd ../demo && tns plugin remove @essent/nativescript-oauth2 && tns plugin add ../src",
-    "clean": "npm run demo.reset && npm run demo-angular.reset && npm run demo-vue.reset && npm run demo-custom-provider.reset && npx rimraf -- node_modules package-lock.json && npm i",
-    "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/alexziskind1/nativescript-oauth2.git"
-  },
-  "keywords": [
-    "NativeScript",
-    "JavaScript",
-    "TypeScript",
-    "Office365",
-    "Facebook",
-    "Google",
-    "Azure AD",
-    "iOS",
-    "Android"
-  ],
-  "author": {
-    "name": "Alexander Ziskind",
-    "email": "alex@nuvious.com",
-    "url": "https://nativescripting.com"
-  },
-  "bugs": {
-    "url": "https://github.com/alexziskind1/nativescript-oauth2/issues"
-  },
-  "license": "MIT",
-  "homepage": "https://github.com/alexziskind1/nativescript-oauth2",
-  "readmeFilename": "README.md",
-  "devDependencies": {
-    "@types/crypto-js": "^3.1.43",
-    "prompt": "^1.0.0",
-    "rimraf": "^2.6.2",
-    "semver": "^5.5.0",
-    "tns-core-modules": "^5.2.0",
-    "tns-platform-declarations": "^5.2.0",
-    "tslint": "5.18.0",
-    "typescript": "3.1.1"
-  },
-  "dependencies": {
-    "crypto-js": "3.1.9-1",
-    "querystring": "0.2.0",
-    "url": "0.11.0"
-  },
-  "bootstrapper": "nativescript-plugin-seed"
+	"name": "@essent/nativescript-oauth2",
+	"version": "1.5.0",
+	"description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
+	"main": "oauth",
+	"typings": "index.d.ts",
+	"nativescript": {
+		"platforms": {
+			"android": "6.5.0",
+			"ios": "6.5.0"
+		}
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Essent/nativescript-oauth2.git"
+	},
+	"scripts": {
+		"tsc": "npm i && tsc",
+		"build": "npm run tsc && npm run build.native",
+		"build.native": "node scripts/build-native.js",
+		"tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
+		"ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**' --exclude '**/platforms/**'",
+		"prepack": "npm run build.native",
+		"demo-angular.ios": "npm i && cd ../demo-angular && tns run ios",
+		"demo-angular.android": "npm i && cd ../demo-angular && tns run android",
+		"demo-angular.reset": "cd ../demo-angular && npx rimraf -- hooks node_modules platforms package-lock.json",
+		"plugin.prepare": "npm run build && cd ../demo-angular && tns plugin remove @essent/nativescript-oauth2 && tns plugin add ../src",
+		"clean": "npm run demo-angular.reset && npx rimraf -- node_modules package-lock.json && npm i"
+	},
+	"keywords": [
+		"NativeScript",
+		"JavaScript",
+		"TypeScript",
+		"Office365",
+		"Facebook",
+		"Google",
+		"Azure AD",
+		"iOS",
+		"Android"
+	],
+	"author": {
+		"name": "Alexander Ziskind",
+		"email": "alex@nuvious.com",
+		"url": "https://nativescripting.com"
+	},
+	"bugs": {
+		"url": "https://github.com/Essent/nativescript-oauth2/issues"
+	},
+	"license": "MIT",
+	"homepage": "https://github.com/Essent/nativescript-oauth2",
+	"readmeFilename": "README.md",
+	"devDependencies": {
+		"@types/crypto-js": "^3.1.43",
+		"tns-core-modules": "^6.0.0",
+		"tns-platform-declarations": "^6.0.0",
+		"typescript": "~3.4.5",
+		"prompt": "^1.0.0",
+		"rimraf": "^2.6.3",
+		"tslint": "^5.12.1",
+		"semver": "^5.6.0"
+	},
+	"dependencies": {
+		"crypto-js": "3.1.9-1",
+		"querystring": "0.2.0",
+		"url": "0.11.0"
+	},
+	"bootstrapper": "nativescript-plugin-seed"
 }

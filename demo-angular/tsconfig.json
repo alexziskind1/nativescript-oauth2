@@ -1,49 +1,38 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "declaration": false,
-        "removeComments": true,
-        "noLib": false,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "lib": [
-            "es6",
-            "dom",
-            "es2015.iterable"
-        ],
-        "pretty": true,
-        "allowUnreachableCode": false,
-        "allowUnusedLabels": false,
-        "noEmitHelpers": true,
-        "noEmitOnError": false,
-        "noImplicitAny": false,
-        "noImplicitReturns": true,
-        "noImplicitUseStrict": false,
-        "noFallthroughCasesInSwitch": true,
-        "skipLibCheck": true,
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "./node_modules/tns-core-modules/*",
-                "./node_modules/*"
-            ],
-            "~/*": [
-                "app/*"
-            ]
-        }
-    },
-    "include": [
-        "../src",
-        "**/*"
-    ],
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "es5",
+		"declaration": false,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"noEmitHelpers": true,
+		"noEmitOnError": true,
+		"skipLibCheck": true,
+		"lib": [
+			"es6",
+			"dom",
+			"es2015.iterable"
+		],
+		"baseUrl": ".",
+		"paths": {
+			"~/*": [
+				"src/*"
+			],
+			"*": [
+				"./node_modules/*"
+			]
+		}
+	},
+	"exclude": [
+		"node_modules",
+		"platforms",
+		"../src/node_modules"
+	],
+	"include": [
+		"../src",
+		"**/*"
+	],
     "files": [
         "../src/delegate/delegate.ts",
-    ],
-    "exclude": [
-        "../src/node_modules",
-        "node_modules",
-        "platforms"
-    ],
-    "compileOnSave": false
+    ]
 }

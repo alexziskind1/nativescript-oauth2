@@ -1,41 +1,39 @@
 {
-    "nativescript": {
-        "id": "org.nativescript.demoangular",
-        "tns-android": {
-            "version": "6.0.0"
-        },
-        "tns-ios": {
-            "version": "6.0.1"
-        }
+  "nativescript": {
+    "id": "org.nativescript.demoangular",
+    "tns-android": {
+      "version": "6.5.0"
     },
-    "description": "NativeScript Application",
-    "license": "SEE LICENSE IN <your-license-filename>",
-    "repository": "<fill-your-repository-here>",
-    "dependencies": {
-        "@angular/animations": "8.0.0",
-        "@angular/common": "8.0.0",
-        "@angular/compiler": "8.0.0",
-        "@angular/core": "8.0.0",
-        "@angular/forms": "8.0.0",
-        "@angular/http": "8.0.0-beta.10",
-        "@angular/platform-browser": "8.0.0",
-        "@angular/platform-browser-dynamic": "8.0.0",
-        "@angular/router": "8.0.0",
-        "nativescript-angular": "8.0.2",
-        "@essent/nativescript-oauth2": "../src",
-        "nativescript-theme-core": "~1.0.4",
-        "reflect-metadata": "~0.1.12",
-        "rxjs": "~6.3.0",
-        "tns-core-modules": "6.0.1",
-        "zone.js": "0.9.1"
-    },
-    "devDependencies": {
-        "@angular/compiler-cli": "8.0.0",
-        "@nativescript/schematics": "~0.5.0",
-        "@ngtools/webpack": "8.0.0",
-        "nativescript-dev-webpack": "1.0.1",
-        "typescript": "3.4.5"
-    },
-    "gitHead": "59b6da006346fedb5bb201fcc9cd7d204a69a82f",
-    "readme": "NativeScript Application"
+    "tns-ios": {
+      "version": "6.5.0"
+    }
+  },
+  "description": "NativeScript Application",
+  "license": "SEE LICENSE IN <your-license-filename>",
+  "repository": "<fill-your-repository-here>",
+  "dependencies": {
+    "@angular/animations": "~8.2.0",
+    "@angular/common": "~8.2.0",
+    "@angular/compiler": "~8.2.0",
+    "@angular/core": "~8.2.0",
+    "@angular/forms": "~8.2.0",
+    "@angular/platform-browser": "~8.2.0",
+    "@angular/platform-browser-dynamic": "~8.2.0",
+    "@angular/router": "~8.2.0",
+    "@essent/nativescript-oauth2": "file:../src",
+    "@nativescript/theme": "~2.3.3",
+    "nativescript-angular": "~8.21.0",
+    "reflect-metadata": "~0.1.12",
+    "rxjs": "^6.4.0",
+    "tns-core-modules": "~6.5.0",
+    "zone.js": "~0.9.1"
+  },
+  "devDependencies": {
+    "@angular/compiler-cli": "~8.2.0",
+    "@ngtools/webpack": "~8.2.0",
+    "nativescript-dev-webpack": "~1.5.1",
+    "typescript": "~3.5.3"
+  },
+  "gitHead": "2250137db8c1e0bd0eb543e8e4563cb71480c00d",
+  "readme": "NativeScript Application"
 }

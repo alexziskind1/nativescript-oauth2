@@ -12,7 +12,7 @@ src/*.d.ts
 !src/tns-oauth-native-view-controller.d.ts
 !src/scripts/*.js
 !seed-tests/*.js
-seed-tests/seed-copy/**/*.*
+seed-tests/seed-copy
 seed-tests/seed-copy-new-git-repo/**/*.*
 !demo/karma.conf.js
 !demo/app/tests/*.js
@@ -26,8 +26,3 @@ publish/package
 demo/report/report.html
 demo/report/stats.json
 demo-angular/platforms
-demo-vue/platforms
-!demo-vue/**/*.js
-demo-vue/webpack.config.js
-demo-custom-provider/platforms
-

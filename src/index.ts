@@ -30,7 +30,6 @@ export type TnsOAuthResponseBlock = (
 ) => void;
 
 export declare class TnsOAuthClient {
-  // private loginController;
   provider: TnsOaProvider;
   tokenResult: ITnsOAuthTokenResult;
   codeVerifier?: string;
@@ -41,9 +40,6 @@ export declare class TnsOAuthClient {
   refreshTokenWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
   resumeWithUrl(url: string): void;
   logout(successPage?: string): void;
-  // private removeCookies();
-  // private removeToken();
-  // private callRevokeEndpoint();
 }
 
 export const configureTnsOAuth = function(providers: TnsOaProvider[]): void{};

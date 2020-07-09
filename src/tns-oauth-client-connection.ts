@@ -251,7 +251,7 @@ export class TnsOAuthClientConnection {
 
     let post_data = querystring.stringify(params);
     post_data =
-      post_data + "&redirect_uri=" + client.provider.options.redirectUri;
+      post_data + "&redirect_uri=" + encodeURIComponent(client.provider.options.redirectUri);
 
     const post_headers = {
       "Content-Type": "application/x-www-form-urlencoded"

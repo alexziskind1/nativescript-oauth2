@@ -1,6 +1,6 @@
 {
   "name": "nativescript-oauth2",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
   "main": "oauth",
   "typings": "index.d.ts",

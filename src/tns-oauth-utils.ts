@@ -69,7 +69,7 @@ export function authorizationCodeFromRedirectUrl(url: string): string {
     let parsedRetStr = UrlLib.parse(url);
 
     let qsObj = querystring.parse(parsedRetStr.query);
-    authorizationCode = qsObj["code"];
+    authorizationCode = qsObj.code.toString();
   }
   return authorizationCode;
 }

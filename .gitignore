@@ -5,6 +5,7 @@
 *.js
 *.js.map
 *.log
+*.iml
 src/*.d.ts
 !src/index.d.ts
 !src/pkce-util.d.ts

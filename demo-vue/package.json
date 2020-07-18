@@ -13,7 +13,7 @@
     "nativescript-theme-core": "~1.0.6",
     "nativescript-oauth2": "../src",
     "nativescript-vue": "~2.4.0",
-    "tns-core-modules": "~6.0.0"
+    "@nativescript/core": "7.0.0-rc.21"
   },
   "devDependencies": {
     "@babel/core": "~7.1.0",
@@ -22,7 +22,7 @@
     "nativescript-dev-webpack": "~1.0.0",
     "nativescript-vue-template-compiler": "~2.4.0",
     "node-sass": "^4.7.1",
-    "typescript": "~3.4.5",
+    "typescript": "~3.9.7",
     "vue-loader": "~15.4.0"
   }
 }

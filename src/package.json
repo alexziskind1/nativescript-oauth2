@@ -67,11 +67,10 @@
   "readmeFilename": "README.md",
   "devDependencies": {
     "@types/node": "^14.0.23",
+    "@nativescript/core": "7.0.0-rc.21",
     "prompt": "^1.0.0",
     "rimraf": "^2.6.2",
     "semver": "^5.5.0",
-    "tns-core-modules": "^6.5.10",
-    "tns-platform-declarations": "^6.5.10",
     "tslint": "5.18.0",
     "typescript": "~3.9.2"
   },

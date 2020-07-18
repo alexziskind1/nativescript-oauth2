@@ -21,12 +21,12 @@
         "@angular/platform-browser": "8.0.0",
         "@angular/platform-browser-dynamic": "8.0.0",
         "@angular/router": "8.0.0",
+        "@nativescript/core": "7.0.0-rc.21",
         "nativescript-angular": "8.0.2",
         "nativescript-oauth2": "../src",
         "nativescript-theme-core": "~1.0.4",
         "reflect-metadata": "~0.1.12",
         "rxjs": "~6.3.0",
-        "tns-core-modules": "6.0.1",
         "zone.js": "0.9.1"
     },
     "devDependencies": {
@@ -34,7 +34,7 @@
         "@nativescript/schematics": "~0.5.0",
         "@ngtools/webpack": "8.0.0",
         "nativescript-dev-webpack": "1.0.1",
-        "typescript": "3.4.5"
+        "typescript": "~3.9.7"
     },
     "gitHead": "59b6da006346fedb5bb201fcc9cd7d204a69a82f",
     "readme": "NativeScript Application"

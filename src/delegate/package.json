@@ -1,5 +1,6 @@
-{ 
+{
     "name": "delegate",
     "main": "delegate",
-    "types": "delegate.d.ts"
+    "types": "delegate.d.ts",
+    "dependencies": {}
 }

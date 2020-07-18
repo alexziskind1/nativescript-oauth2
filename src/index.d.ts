@@ -1,7 +1,7 @@
 /// <reference path="./providers/providers.d.ts" />
-import { Frame } from "tns-core-modules/ui/frame";
-import { LoadEventData } from "tns-core-modules/ui/web-view/web-view";
-import { HttpResponse } from "tns-core-modules/http/http";
+import { Frame } from "@nativescript/core/ui/frame";
+import { LoadEventData } from "@nativescript/core/ui/web-view/web-view";
+import { HttpResponse } from "@nativescript/core/http/http";
 import { TnsOaProvider, TnsOaProviderType } from "./providers";
 
 export declare interface ITnsOAuthTokenResult {

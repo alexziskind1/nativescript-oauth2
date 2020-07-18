@@ -1,5 +1,5 @@
-import { HttpResponse } from "tns-core-modules/http";
-import { Frame } from "tns-core-modules/ui/frame";
+import { HttpResponse } from "@nativescript/core/http";
+import { Frame } from "@nativescript/core/ui/frame";
 import { ITnsOAuthTokenResult, TnsOAuthClient, TnsOAuthClientLoginBlock, TnsOAuthResponseBlock, TnsOAuthClientLogoutBlock } from "./index";
 import { getCodeVerifier, sha256base64encoded } from "./pkce-util";
 import { TnsOAuthState } from "./tns-oauth-auth-state";

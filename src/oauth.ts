@@ -1,7 +1,7 @@
-import * as applicationModule from "tns-core-modules/application";
-import * as platformModule from "tns-core-modules/platform";
-import * as frameModule from "tns-core-modules/ui/frame";
-import { HttpResponse } from "tns-core-modules/http";
+import * as applicationModule from "@nativescript/core/application";
+import * as platformModule from "@nativescript/core/platform";
+import * as frameModule from "@nativescript/core/ui/frame";
+import { HttpResponse } from "@nativescript/core/http";
 
 import {
   TnsOAuthClientLoginBlock,

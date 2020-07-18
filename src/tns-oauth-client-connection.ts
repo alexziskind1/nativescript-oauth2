@@ -1,6 +1,6 @@
 import * as querystring from "querystring";
 import * as URL from "url";
-import * as http from "tns-core-modules/http";
+import * as http from "@nativescript/core/http";
 
 import {
   TnsOaOpenIdProviderOptions,

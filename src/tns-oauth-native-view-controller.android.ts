@@ -1,6 +1,6 @@
-import * as appModule from "tns-core-modules/application";
-import * as colorModule from "tns-core-modules/color";
-import { Frame } from "tns-core-modules/ui/frame";
+import * as appModule from "@nativescript/core/application";
+import * as colorModule from "@nativescript/core/color";
+import { Frame } from "@nativescript/core/ui/frame";
 import { TnsOAuthClient, ITnsOAuthTokenResult, TnsOAuthClientLogoutBlock } from "./index";
 import { TnsOAuthClientLoginBlock } from "./index";
 import {

@@ -1,4 +1,4 @@
-import * as appModule from "tns-core-modules/application";
+import * as appModule from "@nativescript/core/application";
 
 import { TnsOAuthClient } from "../index";
 

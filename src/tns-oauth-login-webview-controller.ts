@@ -1,9 +1,10 @@
-import { Frame } from "tns-core-modules/ui/frame";
-import { WebView, LoadEventData } from "tns-core-modules/ui/web-view";
-import { android as androidApp } from "tns-core-modules/application";
-import { Page, isAndroid } from "tns-core-modules/ui/page";
-import { GridLayout } from "tns-core-modules/ui/layouts/grid-layout";
-import { NavigationButton } from "tns-core-modules/ui/action-bar/action-bar";
+import { Frame } from "@nativescript/core/ui/frame";
+import { WebView, LoadEventData } from "@nativescript/core/ui/web-view";
+import { android as androidApp } from "@nativescript/core/application";
+import { Page } from "@nativescript/core/ui/page";
+import { GridLayout } from "@nativescript/core/ui/layouts/grid-layout";
+import { NavigationButton } from "@nativescript/core/ui/action-bar";
+import { isAndroid } from "@nativescript/core"
 import {
   TnsOAuthClient,
   ITnsOAuthTokenResult,

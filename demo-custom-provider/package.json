@@ -16,7 +16,7 @@
     "nativescript-theme-core": "^1.0.4",
     "nativescript-unit-test-runner": "^0.3.4",
     "nativescript-oauth2": "file:../src",
-    "@nativescript/core": "7.0.0-rc.21"
+    "@nativescript/core": "7.0.0-rc.24"
   },
   "devDependencies": {
     "jasmine-core": "^2.5.2",

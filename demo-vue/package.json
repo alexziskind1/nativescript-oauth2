@@ -13,7 +13,7 @@
     "nativescript-theme-core": "~1.0.6",
     "nativescript-oauth2": "../src",
     "nativescript-vue": "~2.4.0",
-    "@nativescript/core": "7.0.0-rc.21"
+    "@nativescript/core": "7.0.0-rc.24"
   },
   "devDependencies": {
     "@babel/core": "~7.1.0",

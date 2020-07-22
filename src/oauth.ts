@@ -64,7 +64,7 @@ export class TnsOAuthClient {
     if (this.provider) {
       this.loginController.loginWithParametersFrameCompletion(
         null,
-        frameModule.topmost(),
+        frameModule.Frame.topmost(),
         (<any>this.provider.options).urlScheme,
         completion
       );
@@ -77,7 +77,7 @@ export class TnsOAuthClient {
     if (this.provider) {
       this.loginController.logoutWithParametersFrameCompletion(
         null,
-        frameModule.topmost(),
+        frameModule.Frame.topmost(),
         (<any>this.provider.options).urlScheme,
         completion
       );

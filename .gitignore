@@ -5,6 +5,7 @@
 *.js
 *.js.map
 *.log
+*.iml
 src/*.d.ts
 !src/index.d.ts
 !src/pkce-util.d.ts
@@ -30,4 +31,3 @@ demo-vue/platforms
 !demo-vue/**/*.js
 demo-vue/webpack.config.js
 demo-custom-provider/platforms
-

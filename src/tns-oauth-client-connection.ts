@@ -183,6 +183,12 @@ export class TnsOAuthClientConnection {
     return this.getOAuthAccessToken(client, code, oauthParams, completion);
   }
 
+
+  private getJwksTokenUrl(client: TnsOAuthClient): string {
+    return "https://account.tst.essent.nl/jwks";
+  }
+
+
   private getAccessTokenUrl(client: TnsOAuthClient): string {
     let oauth2 = null;
 
@@ -258,17 +264,24 @@ export class TnsOAuthClientConnection {
     };
 
     const accessTokenUrl = this.getAccessTokenUrl(client);
+    const jwksUrl = this.getJwksTokenUrl(client);
 
     return new Promise<any>((resolve, reject) => {
-      this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
-        .then((response: http.HttpResponse) => {
-          let tokenResult = httpResponseToToken(response);
-          completion(tokenResult, <any>response);
-          resolve(response);
-        })
-        .catch(er => {
-          reject(er);
-        });
+      this._createRequest("GET", jwksUrl, null, null, null)
+      .then((tokenKeys: http.HttpResponse) => {
+        this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
+          .then((response: http.HttpResponse, keys = tokenKeys) => {
+            let tokenResult = httpResponseToToken(response, keys);
+            completion(tokenResult, <any>response);
+            resolve(response);
+          })
+          .catch(er => {
+            reject(er);
+          });
+	}
+      ).catch(er => {
+         reject(er);
+       });
     });
   }
 
@@ -323,4 +336,5 @@ export class TnsOAuthClientConnection {
     });
     return promise;
   }
+
 }

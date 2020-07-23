@@ -1,9 +1,10 @@
-import * as http from "tns-core-modules/http";
+import * as http from "@nativescript/core/http";
 import * as querystring from "querystring";
 import * as UrlLib from "url";
 import { TnsOaProvider } from "./providers";
 import { ITnsOAuthTokenResult } from ".";
 import { TnsOAuthClient } from "./index";
+const jws = require("./jws");
 
 function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   const customQueryParams = provider.options.customQueryParams;
@@ -152,8 +153,9 @@ export function jsArrayToNSArray<T>(str) {
   return NSArray.arrayWithArray<T>(str);
 }
 
-export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthTokenResult {
+export function httpResponseToToken(response: http.HttpResponse, tKeys: http.HttpResponse): ITnsOAuthTokenResult {
   let results;
+  let tokenKeys;
   try {
     // As of http://tools.ietf.org/html/draft-ietf-oauth-v2-07
     // responses should be in JSON
@@ -165,6 +167,11 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
     // being thrown
     results = querystring.parse(response.content.toString());
   }
+  try {
+    tokenKeys = tKeys.content.toJSON()["keys"];
+  } catch (e) {
+    tokenKeys = querystring.parse(tKeys.content.toString())["keys"];
+  }
   let access_token = results["access_token"];
   let refresh_token = results["refresh_token"];
   let id_token = results["id_token"];
@@ -175,10 +182,34 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
   let expDate = new Date();
   expDate.setSeconds(expDate.getSeconds() + expSecs);
 
+  const decoded = jws.jwsDecode(id_token);
+  const id_token_data = decoded["payload"];
+  const id_token_header = decoded["header"];
+  const id_token_signature = decoded["signature"];
+  const id_token_kid = id_token_header["kid"];
+  console.log(id_token_header);
+  console.log(id_token_data);
+  console.log(id_token_signature);
+
+  let key;
+  for ( var c = 0; c < (tokenKeys.length-1); c++) {
+    if ( tokenKeys[c]["kid"] === id_token_kid ) {
+      key = tokenKeys[c];
+      continue;
+    }
+  }
+
+  console.log("KEY: ", key);
+
+  //TODO PERA
+  //const decoded_token = jws.jwsVerify(id_token, id_token_header["alg"], key);
+  //console.log(decoded_token);
+
   return {
     accessToken: access_token,
     refreshToken: refresh_token,
     idToken: id_token,
+    idTokenData: id_token_data,
     accessTokenExpiration: expDate,
     refreshTokenExpiration: expDate,
     idTokenExpiration: expDate

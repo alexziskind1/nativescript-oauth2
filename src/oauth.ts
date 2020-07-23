@@ -24,6 +24,7 @@ export interface ITnsOAuthTokenResult {
   accessToken: string;
   refreshToken: string;
   idToken: string;
+  idTokenData: string;
   accessTokenExpiration: Date;
   refreshTokenExpiration: Date;
   idTokenExpiration: Date;
@@ -208,16 +209,32 @@ export class TnsOAuthClient {
       this,
       (data, result, error) => {
         if (result) {
-          const tokenResult = httpResponseToToken(result);
+          const tokenResult = httpResponseToToken(result, null);
           // let's retain the refresh token
           if (!tokenResult.refreshToken && this.tokenResult) {
             tokenResult.refreshToken = this.tokenResult.refreshToken;
             tokenResult.refreshTokenExpiration = this.tokenResult.refreshTokenExpiration;
+
+      /* Not working
+      http.getJson("https://account.tst.essent.nl/jwks")
+        .then((tokenKeys: http.HttpResponse) => {
+          // request,
+          this,
+          (data, result, error) => {
+            if (result) {
+              const tokenResult = httpResponseToToken(result, tokenKeys);
+              // let's retain the refresh token
+              if (!tokenResult.refreshToken && this.tokenResult) {
+                tokenResult.refreshToken = this.tokenResult.refreshToken;
+                tokenResult.refreshTokenExpiration = this.tokenResult.refreshTokenExpiration;
+       */
+
+              }
+              this.tokenResult = tokenResult;
+            }
+            completion(this.tokenResult, error);
           }
-          this.tokenResult = tokenResult;
-        }
-        completion(this.tokenResult, error);
-      }
+      //})
     );
 
     connection.startTokenRefresh();

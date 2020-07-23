@@ -51,13 +51,13 @@
 	"readmeFilename": "README.md",
 	"devDependencies": {
 		"@types/crypto-js": "^3.1.43",
-		"tns-core-modules": "^6.0.0",
-		"tns-platform-declarations": "^6.0.0",
-		"typescript": "~3.4.5",
 		"prompt": "^1.0.0",
 		"rimraf": "^2.6.3",
+		"semver": "^5.6.0",
+		"tns-core-modules": "^6.0.0",
+		"tns-platform-declarations": "^6.0.0",
 		"tslint": "^5.12.1",
-		"semver": "^5.6.0"
+		"typescript": "~3.4.5"
 	},
 	"dependencies": {
 		"crypto-js": "3.1.9-1",

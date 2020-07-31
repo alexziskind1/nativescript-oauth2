@@ -5,6 +5,9 @@ import { TnsOaProvider } from "./providers";
 import { ITnsOAuthTokenResult } from ".";
 import { TnsOAuthClient } from "./index";
 const jws = require("./jws");
+import * as jsrsasign from 'jsrsasign';
+
+const jwsjs = new jsrsasign.KJUR.jws.JWSJS();
 
 function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   const customQueryParams = provider.options.customQueryParams;
@@ -182,6 +185,8 @@ export function httpResponseToToken(response: http.HttpResponse, tKeys: http.Htt
   let expDate = new Date();
   expDate.setSeconds(expDate.getSeconds() + expSecs);
 
+  console.log("******** Brane ********* id token", id_token);
+
   const decoded = jws.jwsDecode(id_token);
   const id_token_data = decoded["payload"];
   const id_token_header = decoded["header"];
@@ -192,7 +197,7 @@ export function httpResponseToToken(response: http.HttpResponse, tKeys: http.Htt
   console.log(id_token_signature);
 
   let key;
-  for ( var c = 0; c < (tokenKeys.length-1); c++) {
+  for ( var c = 0; c < tokenKeys.length; c++) {
     if ( tokenKeys[c]["kid"] === id_token_kid ) {
       key = tokenKeys[c];
       continue;
@@ -201,9 +206,14 @@ export function httpResponseToToken(response: http.HttpResponse, tKeys: http.Htt
 
   console.log("KEY: ", key);
 
-  //TODO PERA
-  //const decoded_token = jws.jwsVerify(id_token, id_token_header["alg"], key);
-  //console.log(decoded_token);
+  const pubKey = jsrsasign.KEYUTIL.getKey(key);
+  const verificationResult0 = jsrsasign.KJUR.jws.JWS.verify(id_token, pubKey, ["RS256"]);
+  console.log("******** Brane Verification result0 ******* ", verificationResult0);
+  const verificationResult = jsrsasign.KJUR.jws.JWS.verify(id_token + "tt", pubKey, ["RS256"]);
+  console.log("******** Brane Verification result ******* ", verificationResult);
+
+  const verificationResult2 = jsrsasign.KJUR.jws.JWS.verify(id_token, jsrsasign.KEYUTIL.getKey(tokenKeys[0]));
+  console.log("******** Brane Verification result ******* " + verificationResult2);
 
   return {
     accessToken: access_token,

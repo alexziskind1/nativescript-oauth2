@@ -69,11 +69,11 @@ export function configureOAuthProviderMicrosoft(): TnsOaProvider {
 export function configureOAuthProviderIdentityServer(): TnsOaProvider {
     const identityServerProviderOptions: TnsOaProviderOptionsIdentityServer = {
       openIdSupport: 'oid-full',
-      issuerUrl: 'https://demo.identityserver.io',
-      clientId: 'native.code',
-      urlScheme: 'org.nativescript.demoangular',
-      redirectUri: 'org.nativescript.demoangular://auth',
-      scopes: ['openid', 'profile', 'email', 'offline_access'],
+      issuerUrl: 'https://account.tst.energiedirect.nl',
+      clientId: 'ef9d9355-b1fb-4925-85c0-417a037f3bfd',
+      urlScheme: 'nl.energiedirect.selfserviceapp',
+      redirectUri: 'nl.energiedirect.selfserviceapp://deeplink/regelneef',
+      scopes: ['Customers.Internal.Read', 'Customers.Internal.Write', 'openid', 'offline_access'],
     };
     const identityServerProvider = new TnsOaProviderIdentityServer(
       identityServerProviderOptions

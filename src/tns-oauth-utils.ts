@@ -6,7 +6,6 @@ import { ITnsOAuthTokenResult } from ".";
 import { TnsOAuthClient } from "./index";
 const jws = require("./jws");
 import * as jsrsasign from 'jsrsasign';
-
 const jwsjs = new jsrsasign.KJUR.jws.JWSJS();
 
 function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
@@ -184,47 +183,37 @@ export function httpResponseToToken(response: http.HttpResponse, tKeys: http.Htt
   let expSecs = Math.floor(parseFloat(expires_in));
   let expDate = new Date();
   expDate.setSeconds(expDate.getSeconds() + expSecs);
-
-  console.log("******** Brane ********* id token", id_token);
-
   const decoded = jws.jwsDecode(id_token);
-  const id_token_data = decoded["payload"];
-  const id_token_header = decoded["header"];
-  const id_token_signature = decoded["signature"];
-  const id_token_kid = id_token_header["kid"];
-  console.log(id_token_header);
-  console.log(id_token_data);
-  console.log(id_token_signature);
 
-  let key;
-  for ( var c = 0; c < tokenKeys.length; c++) {
-    if ( tokenKeys[c]["kid"] === id_token_kid ) {
-      key = tokenKeys[c];
-      continue;
-    }
+  if (jsrsasign.KJUR.jws.JWS.verify(id_token, findPublicKeyByKid(decoded["header"]["kid"], tokenKeys))) {
+    console.log("****** Brane ****** verification!! passed ", jsrsasign.KJUR.jws.JWS.verify(id_token, findPublicKeyByKid(decoded["header"]["kid"], tokenKeys)));
+    return {
+      accessToken: access_token,
+      refreshToken: refresh_token,
+      idToken: id_token,
+      idTokenData: decoded["payload"],
+      accessTokenExpiration: expDate,
+      refreshTokenExpiration: expDate,
+      idTokenExpiration: expDate
+    };
   }
 
-  console.log("KEY: ", key);
-
-  const pubKey = jsrsasign.KEYUTIL.getKey(key);
-  const verificationResult0 = jsrsasign.KJUR.jws.JWS.verify(id_token, pubKey, ["RS256"]);
-  console.log("******** Brane Verification result0 ******* ", verificationResult0);
-  const verificationResult = jsrsasign.KJUR.jws.JWS.verify(id_token + "tt", pubKey, ["RS256"]);
-  console.log("******** Brane Verification result ******* ", verificationResult);
-
-  const verificationResult2 = jsrsasign.KJUR.jws.JWS.verify(id_token, jsrsasign.KEYUTIL.getKey(tokenKeys[0]));
-  console.log("******** Brane Verification result ******* " + verificationResult2);
-
-  return {
-    accessToken: access_token,
-    refreshToken: refresh_token,
-    idToken: id_token,
-    idTokenData: id_token_data,
-    accessTokenExpiration: expDate,
-    refreshTokenExpiration: expDate,
-    idTokenExpiration: expDate
-  };
+  console.log("******* Brane2 throw error JWKS validation of ID token has failed!" );
+  throw new Error("JWKS validation of ID token has failed!");
 }
+
+function findPublicKeyByKid(id_token_kid: string, tokenKeys: []): Object {
+  let key: string;
+  for (let c = 0; c < tokenKeys.length; c++) {
+    if ( tokenKeys[c]["kid"] === id_token_kid ) {
+      console.log("***** Brane ****** matched kid");
+      return jsrsasign.KEYUTIL.getKey(tokenKeys[c]);
+    }
+  }
+  console.log("****** Brane ******* Kid error");
+  throw new Error("Could not find JWK for kid given in ID token!");
+}
+
 export function getParamsFromURL(url: string): any {
   if (!url) {
       return {};

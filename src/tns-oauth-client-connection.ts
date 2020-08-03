@@ -247,8 +247,6 @@ export class TnsOAuthClientConnection {
       }
     }
 
-    console.log('***** Brane getOAuthAccessToken ****');
-
     const codeParam =
       params.grant_type === "refresh_token" ? "refresh_token" : "code";
     params[codeParam] = code;
@@ -272,17 +270,14 @@ export class TnsOAuthClientConnection {
     return new Promise<any>((resolve, reject) => {
       this._createRequest("GET", jwksUrl, null, null, null)
       .then((tokenKeys: http.HttpResponse) => {
-        console.log("******* Brane (JWKS) token keys", tokenKeys);
-        console.dir(tokenKeys);
         this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
           .then((response: http.HttpResponse, keys = tokenKeys) => {
-            console.log("***** Brane httpResponseToToken is going to be called");
-            console.log(response);
-            let tokenResult = httpResponseToToken(response, keys);
-            completion(tokenResult, <any>response);
-            resolve(response);
+              let tokenResult = httpResponseToToken(response, keys);
+              completion(tokenResult, <any>response);
+              resolve(response);
           })
           .catch(er => {
+            console.log("****** Brane catch2 err ", er);
             reject(er);
           });
         }

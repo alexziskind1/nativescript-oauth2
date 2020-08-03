@@ -1,7 +1,6 @@
 /*global module*/
 var Buffer = require('safe-buffer').Buffer;
 var buffer = require('buffer').Buffer;
-var jwa = require('./jwa');
 var JWS_REGEX = /^[a-zA-Z0-9\-_]+?\.[a-zA-Z0-9\-_]+?\.([a-zA-Z0-9\-_]+)?$/;
 
 export function toString(obj) {
@@ -44,22 +43,6 @@ export function payloadFromJWS(jwsSig, encoding) {
 
 export function isValidJws(string) {
   return JWS_REGEX.test(string) && !!headerFromJWS(string);
-}
-
-export function jwsVerify(jwsSig, algorithm, secretOrKey) {
-  if (!algorithm) {
-    var err = new Error("Missing algorithm parameter for jws.verify");
-    err.code = "MISSING_ALGORITHM";
-    throw err;
-  }
-  jwsSig = toString(jwsSig);
-  var signature = signatureFromJWS(jwsSig);
-  var securedInput = securedInputFromJWS(jwsSig);
-  var algo = jwa(algorithm);
-  console.log("signature: ", signature);
-  console.log("input: ", securedInput);
-  console.log("secret: ", secretOrKey);
-  return algo.verify(securedInput, signature, secretOrKey);
 }
 
 export function jwsDecode(jwsSig, opts) {

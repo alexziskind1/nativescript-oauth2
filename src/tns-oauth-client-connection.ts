@@ -270,6 +270,7 @@ export class TnsOAuthClientConnection {
           })
           .catch(er => {
             completion(null, er);
+            // client.logout(); does not have any effect
             reject(er);
           });
         }

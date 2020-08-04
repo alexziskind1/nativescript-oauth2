@@ -183,12 +183,6 @@ export class TnsOAuthClientConnection {
     return this.getOAuthAccessToken(client, code, oauthParams, completion);
   }
 
-
-  private getJwksTokenUrl(client: TnsOAuthClient): string {
-    return "https://account.tst.energiedirect.nl/jwks";
-  }
-
-
   private getAccessTokenUrl(client: TnsOAuthClient): string {
     let oauth2 = null;
 
@@ -264,11 +258,9 @@ export class TnsOAuthClientConnection {
     };
 
     const accessTokenUrl = this.getAccessTokenUrl(client);
-    const jwksUrl = this.getJwksTokenUrl(client);
-    console.log("****** Brane JWKS URL ", jwksUrl);
 
     return new Promise<any>((resolve, reject) => {
-      this._createRequest("GET", jwksUrl, null, null, null)
+      this._createRequest("GET", client.provider.options.jwksEndpoint, null, null, null)
       .then((tokenKeys: http.HttpResponse) => {
         this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
           .then((response: http.HttpResponse, keys = tokenKeys) => {
@@ -277,7 +269,7 @@ export class TnsOAuthClientConnection {
               resolve(response);
           })
           .catch(er => {
-            console.log("****** Brane catch2 err ", er);
+            completion(null, er);
             reject(er);
           });
         }

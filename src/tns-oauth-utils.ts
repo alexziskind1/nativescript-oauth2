@@ -186,7 +186,6 @@ export function httpResponseToToken(response: http.HttpResponse, tKeys: http.Htt
   const decoded = jws.jwsDecode(id_token);
 
   if (jsrsasign.KJUR.jws.JWS.verify(id_token, findPublicKeyByKid(decoded["header"]["kid"], tokenKeys))) {
-    console.log("****** Brane ****** verification!! passed ", jsrsasign.KJUR.jws.JWS.verify(id_token, findPublicKeyByKid(decoded["header"]["kid"], tokenKeys)));
     return {
       accessToken: access_token,
       refreshToken: refresh_token,
@@ -197,8 +196,6 @@ export function httpResponseToToken(response: http.HttpResponse, tKeys: http.Htt
       idTokenExpiration: expDate
     };
   }
-
-  console.log("******* Brane2 throw error JWKS validation of ID token has failed!" );
   throw new Error("JWKS validation of ID token has failed!");
 }
 
@@ -206,11 +203,9 @@ function findPublicKeyByKid(id_token_kid: string, tokenKeys: []): Object {
   let key: string;
   for (let c = 0; c < tokenKeys.length; c++) {
     if ( tokenKeys[c]["kid"] === id_token_kid ) {
-      console.log("***** Brane ****** matched kid");
       return jsrsasign.KEYUTIL.getKey(tokenKeys[c]);
     }
   }
-  console.log("****** Brane ******* Kid error");
   throw new Error("Could not find JWK for kid given in ID token!");
 }
 

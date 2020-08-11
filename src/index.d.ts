@@ -14,6 +14,12 @@ export declare interface ITnsOAuthTokenResult {
   idTokenExpiration: Date;
 }
 
+export declare interface ITnsOAuthIdTokenResult {
+  email?: string;
+  client_id?: string;
+  //TODO Brane
+}
+
 export type TnsOAuthClientLoginBlock = (
   tokenResult: ITnsOAuthTokenResult,
   error

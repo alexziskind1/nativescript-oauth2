@@ -29,6 +29,12 @@ export interface ITnsOAuthTokenResult {
   refreshTokenExpiration: Date;
   idTokenExpiration: Date;
 }
+
+export interface ITnsOAuthIdTokenResult {
+  email?: string;
+  client_id?: string;
+  //TODO Brane
+}
 export class TnsOAuthClient {
   public provider: TnsOaProvider = null;
   private loginController: ITnsOAuthLoginController;

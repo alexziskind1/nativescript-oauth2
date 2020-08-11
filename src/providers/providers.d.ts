@@ -11,6 +11,7 @@ export interface TnsOaProviderOptions {
   scopes?: string[];
   customQueryParams?: { [paramName: string]: string };
   jwksEndpoint?: string;
+  ecid?: string;
 }
 
 export interface TnsOaUnsafeProviderOptions extends TnsOaProviderOptions {

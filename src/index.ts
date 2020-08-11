@@ -17,7 +17,6 @@ export declare interface ITnsOAuthTokenResult {
 export declare interface ITnsOAuthIdTokenResult {
   email?: string;
   client_id?: string;
-  //TODO Brane
 }
 
 export type TnsOAuthClientLoginBlock = (
@@ -41,12 +40,13 @@ export declare class TnsOAuthClient {
   tokenResult: ITnsOAuthTokenResult;
   codeVerifier?: string;
   pkce?: boolean;
-  constructor(providerType: TnsOaProviderType, pkce?: boolean);
+  constructor(providerType: TnsOaProviderType, ecid: string, pkce?: boolean);
   loginWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
   logoutWithCompletion(completion?: TnsOAuthResponseBlock): void;
   refreshTokenWithCompletion(completion?: TnsOAuthClientLoginBlock): void;
   resumeWithUrl(url: string): void;
   logout(successPage?: string): void;
+  getEcid(): string;
 }
 
 export const configureTnsOAuth = function(providers: TnsOaProvider[]): void{};

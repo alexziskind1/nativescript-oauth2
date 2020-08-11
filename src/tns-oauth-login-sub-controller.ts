@@ -50,7 +50,7 @@ export class TnsOAuthLoginSubController {
       completion
     );
 
-    return getAuthUrlStr(this.client.provider, codeChallenge);
+    return getAuthUrlStr(this.client.provider, this.client.getEcid(), codeChallenge);
   }
 
   public preLogoutSetup(

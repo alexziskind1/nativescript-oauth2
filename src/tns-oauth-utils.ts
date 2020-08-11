@@ -17,7 +17,7 @@ function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   }
 }
 
-export function getAuthUrlStr(provider: TnsOaProvider, codeChallenge?: string): string {
+export function getAuthUrlStr(provider: TnsOaProvider, ecid: string, codeChallenge?: string): string {
   if (provider.getAuthUrlStr) {
     return provider.getAuthUrlStr();
   }
@@ -28,6 +28,7 @@ export function getAuthUrlStr(provider: TnsOaProvider, codeChallenge?: string): 
   params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
   params["response_mode"] = "query";
   params["state"] = "abcd";
+  params["ecid"] = ecid;
 
   if (codeChallenge) {
     params["code_challenge"] = codeChallenge;

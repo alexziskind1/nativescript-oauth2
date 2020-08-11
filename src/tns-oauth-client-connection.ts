@@ -260,15 +260,23 @@ export class TnsOAuthClientConnection {
     const accessTokenUrl = this.getAccessTokenUrl(client);
 
     return new Promise<any>((resolve, reject) => {
-      this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
-        .then((response: http.HttpResponse) => {
-          let tokenResult = httpResponseToToken(response);
-          completion(tokenResult, <any>response);
-          resolve(response);
-        })
-        .catch(er => {
-          reject(er);
-        });
+      this._createRequest("GET", client.provider.options.jwksEndpoint, null, null, null)
+      .then((tokenKeys: http.HttpResponse) => {
+        this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
+          .then((response: http.HttpResponse, keys = tokenKeys) => {
+              let tokenResult = httpResponseToToken(response, keys);
+              completion(tokenResult, <any>response);
+              resolve(response);
+          })
+          .catch(er => {
+            completion(null, er);
+            // client.logout(); does not have any effect
+            reject(er);
+          });
+        }
+      ).catch(er => {
+         reject(er);
+       });
     });
   }
 
@@ -323,4 +331,5 @@ export class TnsOAuthClientConnection {
     });
     return promise;
   }
+
 }

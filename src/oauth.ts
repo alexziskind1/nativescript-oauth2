@@ -24,6 +24,7 @@ export interface ITnsOAuthTokenResult {
   accessToken: string;
   refreshToken: string;
   idToken: string;
+  idTokenData: string;
   accessTokenExpiration: Date;
   refreshTokenExpiration: Date;
   idTokenExpiration: Date;
@@ -203,12 +204,11 @@ export class TnsOAuthClient {
       return;
     }
 
-    const connection: TnsOAuthClientConnection = TnsOAuthClientConnection.initWithRequestClientCompletion(
-      // request,
+  const connection: TnsOAuthClientConnection = TnsOAuthClientConnection.initWithRequestClientCompletion(
       this,
       (data, result, error) => {
         if (result) {
-          const tokenResult = httpResponseToToken(result);
+          const tokenResult = httpResponseToToken(result, null);
           // let's retain the refresh token
           if (!tokenResult.refreshToken && this.tokenResult) {
             tokenResult.refreshToken = this.tokenResult.refreshToken;
@@ -216,10 +216,9 @@ export class TnsOAuthClient {
           }
           this.tokenResult = tokenResult;
         }
-        completion(this.tokenResult, error);
+            completion(this.tokenResult, error);
       }
     );
-
     connection.startTokenRefresh();
   }
 }

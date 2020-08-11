@@ -23,6 +23,7 @@
     "@essent/nativescript-oauth2": "file:../src",
     "@nativescript/theme": "~2.3.3",
     "nativescript-angular": "~8.21.0",
+    "net": "^1.0.2",
     "reflect-metadata": "~0.1.12",
     "rxjs": "^6.4.0",
     "tns-core-modules": "~6.5.0",

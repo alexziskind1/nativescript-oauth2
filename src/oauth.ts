@@ -29,12 +29,17 @@ export interface ITnsOAuthTokenResult {
   refreshTokenExpiration: Date;
   idTokenExpiration: Date;
 }
+
+export interface ITnsOAuthIdTokenResult {
+  email?: string;
+  client_id?: string;
+}
 export class TnsOAuthClient {
   public provider: TnsOaProvider = null;
   private loginController: ITnsOAuthLoginController;
   public tokenResult: ITnsOAuthTokenResult;
 
-  public constructor(providerType: TnsOaProviderType, public pkce: boolean = true) {
+  public constructor(providerType: TnsOaProviderType, private ecid: string, public pkce: boolean = true) {
     this.provider = tnsOauthProviderMap.providerMap.get(providerType);
     if (this.provider) {
       switch (this.provider.options.openIdSupport) {
@@ -59,6 +64,10 @@ export class TnsOAuthClient {
           break;
       }
     }
+  }
+
+  public getEcid() {
+    return this.ecid;
   }
 
   public loginWithCompletion(completion?: TnsOAuthClientLoginBlock) {

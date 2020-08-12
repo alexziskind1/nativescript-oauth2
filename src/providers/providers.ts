@@ -10,6 +10,7 @@ export interface TnsOaProviderOptions {
   redirectUri: string;
   scopes?: string[];
   customQueryParams?: { [paramName: string]: string };
+  jwksEndpoint?: string;
 }
 
 export interface TnsOaUnsafeProviderOptions extends TnsOaProviderOptions {

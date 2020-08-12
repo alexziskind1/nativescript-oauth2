@@ -13,7 +13,9 @@ appModule.android.on(
         .getIntent()
         .getData()
         .toString();
-      TnsOAuthClientAppDelegate._client.resumeWithUrl(url);
+      if (TnsOAuthClientAppDelegate._client) {
+        TnsOAuthClientAppDelegate._client.resumeWithUrl(url);
+      }
       console.log(args.activity.getIntent().getData());
     } else {
       if (TnsOAuthClientAppDelegate._client) {

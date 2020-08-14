@@ -17,6 +17,7 @@ export declare interface ITnsOAuthTokenResult {
 export declare interface ITnsOAuthIdTokenResult {
   email?: string;
   client_id?: string;
+  online_account_id?: string;
 }
 
 export type TnsOAuthClientLoginBlock = (

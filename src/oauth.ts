@@ -33,6 +33,7 @@ export interface ITnsOAuthTokenResult {
 export interface ITnsOAuthIdTokenResult {
   email?: string;
   client_id?: string;
+  online_account_id?: string;
 }
 export class TnsOAuthClient {
   public provider: TnsOaProvider = null;

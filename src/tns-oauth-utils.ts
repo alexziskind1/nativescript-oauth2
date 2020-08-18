@@ -5,8 +5,6 @@ import { TnsOaProvider } from "./providers";
 import { ITnsOAuthTokenResult } from ".";
 import { TnsOAuthClient } from "./index";
 const jws = require("./jws");
-import * as jsrsasign from 'jsrsasign';
-const jwsjs = new jsrsasign.KJUR.jws.JWSJS();
 
 function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   const customQueryParams = provider.options.customQueryParams;
@@ -156,9 +154,8 @@ export function jsArrayToNSArray<T>(str) {
   return NSArray.arrayWithArray<T>(str);
 }
 
-export function httpResponseToToken(response: http.HttpResponse, tKeys: http.HttpResponse): ITnsOAuthTokenResult {
+export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthTokenResult {
   let results;
-  let tokenKeys;
   try {
     // As of http://tools.ietf.org/html/draft-ietf-oauth-v2-07
     // responses should be in JSON
@@ -169,11 +166,6 @@ export function httpResponseToToken(response: http.HttpResponse, tKeys: http.Htt
     // clients of these services will suffer a *minor* performance cost of the exception
     // being thrown
     results = querystring.parse(response.content.toString());
-  }
-  try {
-    tokenKeys = tKeys.content.toJSON()["keys"];
-  } catch (e) {
-    tokenKeys = querystring.parse(tKeys.content.toString())["keys"];
   }
   let access_token = results["access_token"];
   let refresh_token = results["refresh_token"];
@@ -186,28 +178,15 @@ export function httpResponseToToken(response: http.HttpResponse, tKeys: http.Htt
   expDate.setSeconds(expDate.getSeconds() + expSecs);
   const decoded = jws.jwsDecode(id_token);
 
-  if (jsrsasign.KJUR.jws.JWS.verify(id_token, findPublicKeyByKid(decoded["header"]["kid"], tokenKeys))) {
-    return {
-      accessToken: access_token,
-      refreshToken: refresh_token,
-      idToken: id_token,
-      idTokenData: decoded["payload"],
-      accessTokenExpiration: expDate,
-      refreshTokenExpiration: expDate,
-      idTokenExpiration: expDate
-    };
-  }
-  throw new Error("JWKS validation of ID token has failed!");
-}
-
-function findPublicKeyByKid(id_token_kid: string, tokenKeys: []): Object {
-  let key: string;
-  for (let c = 0; c < tokenKeys.length; c++) {
-    if ( tokenKeys[c]["kid"] === id_token_kid ) {
-      return jsrsasign.KEYUTIL.getKey(tokenKeys[c]);
-    }
-  }
-  throw new Error("Could not find JWK for kid given in ID token!");
+  return {
+    accessToken: access_token,
+    refreshToken: refresh_token,
+    idToken: id_token,
+    idTokenData: decoded["payload"],
+    accessTokenExpiration: expDate,
+    refreshTokenExpiration: expDate,
+    idTokenExpiration: expDate
+  };
 }
 
 export function getParamsFromURL(url: string): any {

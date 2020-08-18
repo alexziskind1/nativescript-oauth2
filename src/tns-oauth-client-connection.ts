@@ -1,13 +1,15 @@
 import * as querystring from "querystring";
 import * as URL from "url";
 import * as http from "tns-core-modules/http";
+const jws = require("./jws");
+import * as jsrsasign from 'jsrsasign';
 
 import {
   TnsOaOpenIdProviderOptions,
   TnsOaUnsafeProviderOptions
 } from "./providers";
 
-import { TnsOAuthClient, TnsOAuthResponseBlock } from "./index";
+import { TnsOAuthClient, TnsOAuthResponseBlock, ITnsOAuthTokenResult } from "./index";
 import { httpResponseToToken } from "./tns-oauth-utils";
 
 const accessTokenName = "access_token";
@@ -260,24 +262,46 @@ export class TnsOAuthClientConnection {
     const accessTokenUrl = this.getAccessTokenUrl(client);
 
     return new Promise<any>((resolve, reject) => {
-      this._createRequest("GET", client.provider.options.jwksEndpoint, null, null, null)
-      .then((tokenKeys: http.HttpResponse) => {
-        this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
-          .then((response: http.HttpResponse, keys = tokenKeys) => {
-              let tokenResult = httpResponseToToken(response, keys);
-              completion(tokenResult, <any>response);
-              resolve(response);
-          })
-          .catch(er => {
-            completion(null, er);
-            // client.logout(); does not have any effect
-            reject(er);
-          });
-        }
-      ).catch(er => {
-         reject(er);
-       });
+      this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
+        .then((response: http.HttpResponse) => {
+            let tokenResult = httpResponseToToken(response);
+            this.jwksValidattion(client.provider.options.jwksEndpoint, tokenResult.idToken);
+            completion(tokenResult, <any>response);
+            resolve(response);
+        })
+        .catch(er => {
+          completion(null, er);
+          // client.logout(); does not have any effect
+          reject(er);
+        });
     });
+  }
+
+  public jwksValidattion(jwksEndpoint: string, idToken: string): void {
+    this._createRequest('GET', jwksEndpoint, null, null, null)
+    .then((jwksKeys: http.HttpResponse) => {
+      let tokenKeys;
+      try {
+        tokenKeys = jwksKeys.content.toJSON()['keys'];
+      } catch (e) {
+        tokenKeys = querystring.parse(jwksKeys.content.toString())['keys'];
+      }
+      const decodedIdToken = jws.jwsDecode(idToken);
+      if (!jsrsasign.KJUR.jws.JWS.verify(idToken, this.findPublicKeyByKid(decodedIdToken['header']['kid'], tokenKeys))) {
+        throw new Error('JWKS validation of ID token has failed!');
+      }
+      console.log('JWKS validation of ID token has passed!!!');
+    });
+  }
+
+  private findPublicKeyByKid(id_token_kid: string, tokenKeys: []): Object {
+    let key: string;
+    for (let c = 0; c < tokenKeys.length; c++) {
+      if ( tokenKeys[c]['kid'] === id_token_kid ) {
+        return jsrsasign.KEYUTIL.getKey(tokenKeys[c]);
+      }
+    }
+    throw new Error("Could not find JWK for kid given in ID token!");
   }
 
   private _createRequest(

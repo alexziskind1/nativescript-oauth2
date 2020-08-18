@@ -12,7 +12,7 @@ export class AuthService {
   constructor() { }
 
   public tnsOauthLogin(providerType): Promise<ITnsOAuthTokenResult> {
-    this.client = new TnsOAuthClient(providerType);
+    this.client = new TnsOAuthClient(providerType, "");
 
     return new Promise<ITnsOAuthTokenResult>((resolve, reject) => {
       this.client.loginWithCompletion(

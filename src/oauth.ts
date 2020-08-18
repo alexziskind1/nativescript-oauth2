@@ -1,4 +1,3 @@
-import * as applicationModule from "tns-core-modules/application";
 import * as platformModule from "tns-core-modules/platform";
 import * as frameModule from "tns-core-modules/ui/frame";
 import { HttpResponse } from "tns-core-modules/http";
@@ -214,21 +213,25 @@ export class TnsOAuthClient {
       return;
     }
 
-  const connection: TnsOAuthClientConnection = TnsOAuthClientConnection.initWithRequestClientCompletion(
+    const connection: TnsOAuthClientConnection = TnsOAuthClientConnection.initWithRequestClientCompletion(
       this,
       (data, result, error) => {
         if (result) {
-          const tokenResult = httpResponseToToken(result, null);
-          // let's retain the refresh token
-          if (!tokenResult.refreshToken && this.tokenResult) {
-            tokenResult.refreshToken = this.tokenResult.refreshToken;
-            tokenResult.refreshTokenExpiration = this.tokenResult.refreshTokenExpiration;
+          if (!error) {
+            const tokenResult = httpResponseToToken(result);
+            // let's retain the refresh token
+            if (!tokenResult.refreshToken && this.tokenResult) {
+              tokenResult.refreshToken = this.tokenResult.refreshToken;
+              tokenResult.refreshTokenExpiration = this.tokenResult.refreshTokenExpiration;
+            }
+            this.tokenResult = tokenResult;
           }
-          this.tokenResult = tokenResult;
         }
-            completion(this.tokenResult, error);
+        completion(this.tokenResult, error);
       }
     );
+
+    connection.jwksValidattion(this.provider.options.jwksEndpoint, this.tokenResult.idToken);
     connection.startTokenRefresh();
   }
 }

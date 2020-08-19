@@ -34,6 +34,7 @@ export interface ITnsOAuthIdTokenResult {
   client_id?: string;
   online_account_id?: string;
   account_id?: string;
+  brand?: string;
 }
 export class TnsOAuthClient {
   public provider: TnsOaProvider = null;

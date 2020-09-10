@@ -1,10 +1,20 @@
-import { HttpResponse } from "tns-core-modules/http";
-import { Frame } from "tns-core-modules/ui/frame";
-import { ITnsOAuthTokenResult, TnsOAuthClient, TnsOAuthClientLoginBlock, TnsOAuthResponseBlock, TnsOAuthClientLogoutBlock } from "./index";
+import { Frame, HttpResponse } from "@nativescript/core";
+import {
+  ITnsOAuthTokenResult,
+  TnsOAuthClient,
+  TnsOAuthClientLoginBlock,
+  TnsOAuthResponseBlock,
+  TnsOAuthClientLogoutBlock,
+} from "./index";
 import { getCodeVerifier, sha256base64encoded } from "./pkce-util";
 import { TnsOAuthState } from "./tns-oauth-auth-state";
 import { TnsOAuthClientConnection } from "./tns-oauth-client-connection";
-import { authorizationCodeFromRedirectUrl, getAccessTokenUrlWithCodeStr, getAuthUrlStr, getLogoutUrlStr } from "./tns-oauth-utils";
+import {
+  authorizationCodeFromRedirectUrl,
+  getAccessTokenUrlWithCodeStr,
+  getAuthUrlStr,
+  getLogoutUrlStr,
+} from "./tns-oauth-utils";
 
 export interface ITnsOAuthLoginController {
   loginWithParametersFrameCompletion(
@@ -61,7 +71,8 @@ export class TnsOAuthLoginSubController {
     this.frame = frame;
 
     if (this.authState) {
-      const error = "Logout failed because another logout operation is in progress.";
+      const error =
+        "Logout failed because another logout operation is in progress.";
       completion(error);
     }
 
@@ -79,7 +90,10 @@ export class TnsOAuthLoginSubController {
     completion: TnsOAuthClientLoginBlock | TnsOAuthClientLogoutBlock
   ): boolean {
     if (this.authState) {
-      if (this.authState.isLogout && url === this.client.provider.options.redirectUri) {
+      if (
+        this.authState.isLogout &&
+        url === this.client.provider.options.redirectUri
+      ) {
         this.client.logout();
         (completion as TnsOAuthClientLogoutBlock)(undefined);
         return true;
@@ -89,7 +103,10 @@ export class TnsOAuthLoginSubController {
         );
 
         if (codeExchangeRequestUrl) {
-          this.codeExchangeWithUrlCompletion(codeExchangeRequestUrl, completion);
+          this.codeExchangeWithUrlCompletion(
+            codeExchangeRequestUrl,
+            completion
+          );
           return true;
         }
       }
@@ -134,13 +151,15 @@ export class TnsOAuthLoginSubController {
         response: HttpResponse,
         responseError: Error
       ) => {
-        if ((response.statusCode === 200 || (data && data.accessToken)) && !responseError) {
+        if (
+          (response.statusCode === 200 || (data && data.accessToken)) &&
+          !responseError
+        ) {
           const tokenResult = this.client.provider.parseTokenResult(data);
           this.client.tokenResult = tokenResult;
           completion(tokenResult, null);
-        }
-        else {
-          const msg = `${response ? response.statusCode : ''} ERROR Occurred`;
+        } else {
+          const msg = `${response ? response.statusCode : ""} ERROR Occurred`;
           console.error(msg);
           completion(null, responseError ? responseError : new Error(msg));
         }

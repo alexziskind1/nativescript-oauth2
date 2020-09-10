@@ -1,10 +1,11 @@
 import * as querystring from "querystring";
 import * as URL from "url";
-import * as http from "tns-core-modules/http";
+
+import { Http, HttpResponse, HttpRequestOptions } from "@nativescript/core";
 
 import {
   TnsOaOpenIdProviderOptions,
-  TnsOaUnsafeProviderOptions
+  TnsOaUnsafeProviderOptions,
 } from "./providers";
 
 import { TnsOAuthClient, TnsOAuthResponseBlock } from "./index";
@@ -14,7 +15,7 @@ const accessTokenName = "access_token";
 
 export class TnsOAuthClientConnection {
   private _client: TnsOAuthClient;
-  private _request: http.HttpRequestOptions;
+  private _request: HttpRequestOptions;
   private _completion: TnsOAuthResponseBlock;
 
   private _customHeaders: any;
@@ -87,40 +88,38 @@ export class TnsOAuthClientConnection {
     const revokeUrl =
       this.client.provider.authority + this.client.provider.revokeEndpoint;
     const headers = {
-      "Content-Type": "application/x-www-form-urlencoded"
+      "Content-Type": "application/x-www-form-urlencoded",
     };
     const body = querystring.stringify({
-      token: this.client.tokenResult.refreshToken
+      token: this.client.tokenResult.refreshToken,
     });
 
-    http
-      .request({
-        url: revokeUrl,
-        method: "POST",
-        headers: headers,
-        content: body
-      })
-      .then(
-        (response: http.HttpResponse) => {
-          if (response.statusCode !== 200) {
-            this.completion(
-              null,
-              response,
-              new Error(`Failed logout with status ${response.statusCode}.`)
-            );
-          } else {
-            this.completion(null, response, null);
-          }
-        },
-        error => this.completion(null, null, error)
-      );
+    Http.request({
+      url: revokeUrl,
+      method: "POST",
+      headers: headers,
+      content: body,
+    }).then(
+      (response: HttpResponse) => {
+        if (response.statusCode !== 200) {
+          this.completion(
+            null,
+            response,
+            new Error(`Failed logout with status ${response.statusCode}.`)
+          );
+        } else {
+          this.completion(null, response, null);
+        }
+      },
+      (error) => this.completion(null, null, error)
+    );
   }
 
   public startTokenRefresh() {
     const tokenUrl =
       this.client.provider.authority + this.client.provider.tokenEndpoint;
     const headers = {
-      "Content-Type": "application/x-www-form-urlencoded"
+      "Content-Type": "application/x-www-form-urlencoded",
     };
     let body = null;
     switch (this.client.provider.options.openIdSupport) {
@@ -131,7 +130,7 @@ export class TnsOAuthClientConnection {
         body = querystring.stringify({
           grant_type: "refresh_token",
           refresh_token: this.client.tokenResult.refreshToken,
-          client_id: options1.clientId
+          client_id: options1.clientId,
         });
         break;
       case "oid-none":
@@ -142,33 +141,31 @@ export class TnsOAuthClientConnection {
           grant_type: "refresh_token",
           refresh_token: this.client.tokenResult.refreshToken,
           client_id: options2.clientId,
-          client_secret: options2.clientSecret
+          client_secret: options2.clientSecret,
         });
     }
 
-    http
-      .request({
-        url: tokenUrl,
-        method: "POST",
-        headers: headers,
-        content: body
-      })
-      .then(
-        (response: http.HttpResponse) => {
-          if (response.statusCode !== 200) {
-            this.completion(
-              null,
-              response,
-              new Error(
-                `Failed refresh token with status ${response.statusCode}.`
-              )
-            );
-          } else {
-            this.completion(null, response, null);
-          }
-        },
-        error => this.completion(null, null, error)
-      );
+    Http.request({
+      url: tokenUrl,
+      method: "POST",
+      headers: headers,
+      content: body,
+    }).then(
+      (response: HttpResponse) => {
+        if (response.statusCode !== 200) {
+          this.completion(
+            null,
+            response,
+            new Error(
+              `Failed refresh token with status ${response.statusCode}.`
+            )
+          );
+        } else {
+          this.completion(null, response, null);
+        }
+      },
+      (error) => this.completion(null, null, error)
+    );
   }
 
   private getTokenFromCode(
@@ -177,7 +174,7 @@ export class TnsOAuthClientConnection {
     completion
   ): Promise<any> {
     let oauthParams = {
-      grant_type: "authorization_code"
+      grant_type: "authorization_code",
     };
 
     return this.getOAuthAccessToken(client, code, oauthParams, completion);
@@ -194,7 +191,7 @@ export class TnsOAuthClientConnection {
           baseSite: client.provider.authority,
           baseSiteToken: client.provider.tokenEndpointBase,
           authorizePath: client.provider.authorizeEndpoint,
-          accessTokenPath: client.provider.tokenEndpoint
+          accessTokenPath: client.provider.tokenEndpoint,
         };
         break;
       case "oid-none":
@@ -205,7 +202,7 @@ export class TnsOAuthClientConnection {
           baseSite: client.provider.authority,
           baseSiteToken: client.provider.tokenEndpointBase,
           authorizePath: client.provider.authorizeEndpoint,
-          accessTokenPath: client.provider.tokenEndpoint
+          accessTokenPath: client.provider.tokenEndpoint,
         };
     }
 
@@ -249,24 +246,24 @@ export class TnsOAuthClientConnection {
       params["code_verifier"] = client.codeVerifier;
     }
 
-    params['redirect_uri'] = client.provider.options.redirectUri;
+    params["redirect_uri"] = client.provider.options.redirectUri;
 
     let post_data = querystring.stringify(params);
 
     const post_headers = {
-      "Content-Type": "application/x-www-form-urlencoded"
+      "Content-Type": "application/x-www-form-urlencoded",
     };
 
     const accessTokenUrl = this.getAccessTokenUrl(client);
 
     return new Promise<any>((resolve, reject) => {
       this._createRequest("POST", accessTokenUrl, post_headers, post_data, null)
-        .then((response: http.HttpResponse) => {
+        .then((response: HttpResponse) => {
           let tokenResult = httpResponseToToken(response);
           completion(tokenResult, <any>response);
           resolve(response);
         })
-        .catch(er => {
+        .catch((er) => {
           reject(er);
         });
     });
@@ -278,7 +275,7 @@ export class TnsOAuthClientConnection {
     headers,
     post_body,
     access_token
-  ): Promise<http.HttpResponse> {
+  ): Promise<HttpResponse> {
     const parsedUrl = URL.parse(url, true);
 
     const realHeaders = {};
@@ -308,18 +305,18 @@ export class TnsOAuthClientConnection {
       port: parsedUrl.port,
       path: parsedUrl.pathname + queryStr,
       method: method,
-      headers: realHeaders
+      headers: realHeaders,
     };
 
     return this._executeRequest(options, url, post_body);
   }
 
-  private _executeRequest(options, url, post_body): Promise<http.HttpResponse> {
-    const promise = http.request({
+  private _executeRequest(options, url, post_body): Promise<HttpResponse> {
+    const promise = Http.request({
       url: url,
       method: options.method,
       headers: options.headers,
-      content: post_body
+      content: post_body,
     });
     return promise;
   }

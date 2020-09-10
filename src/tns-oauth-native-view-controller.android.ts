@@ -1,11 +1,14 @@
-import * as appModule from "tns-core-modules/application";
-import * as colorModule from "tns-core-modules/color";
-import { Frame } from "tns-core-modules/ui/frame";
-import { TnsOAuthClient, ITnsOAuthTokenResult, TnsOAuthClientLogoutBlock } from "./index";
+import { Application, Color, Frame } from "@nativescript/core";
+
+import {
+  TnsOAuthClient,
+  ITnsOAuthTokenResult,
+  TnsOAuthClientLogoutBlock,
+} from "./index";
 import { TnsOAuthClientLoginBlock } from "./index";
 import {
   ITnsOAuthLoginController,
-  TnsOAuthLoginSubController
+  TnsOAuthLoginSubController,
 } from "./tns-oauth-login-sub-controller";
 
 declare let android, global: any;
@@ -14,7 +17,9 @@ function useAndroidX() {
   return global.androidx && global.androidx.appcompat;
 }
 
-const customtabs = useAndroidX() ? androidx.browser.customtabs : android.support.customtabs;
+const customtabs = useAndroidX()
+  ? androidx.browser.customtabs
+  : android.support.customtabs;
 
 export class TnsOAuthLoginNativeViewController
   implements ITnsOAuthLoginController {
@@ -58,16 +63,13 @@ export class TnsOAuthLoginNativeViewController
     this.openUrlWithParametersCompletion(fullUrl, frame);
   }
 
-  private openUrlWithParametersCompletion(
-    fullUrl: string,
-    frame: Frame
-  ): void {
+  private openUrlWithParametersCompletion(fullUrl: string, frame: Frame): void {
     const builder = new customtabs.CustomTabsIntent.Builder();
-    builder.setToolbarColor(new colorModule.Color("#335da0").android);
+    builder.setToolbarColor(new Color("#335da0").android);
     builder.setShowTitle(true);
     const customTabsIntent = builder.build();
     customTabsIntent.launchUrl(
-      appModule.android.startActivity,
+      Application.android.startActivity,
       android.net.Uri.parse(fullUrl)
     );
   }
@@ -75,14 +77,14 @@ export class TnsOAuthLoginNativeViewController
   public resumeWithUrl(url: string): boolean {
     if (!!url) {
       return this.loginController.resumeWithUrl(
-      url,
-      (tokenResult: ITnsOAuthTokenResult, error) => {
-        this.loginController.completeLoginWithTokenResponseError(
-          tokenResult,
-          error
-        );
-      }
-    );
+        url,
+        (tokenResult: ITnsOAuthTokenResult, error) => {
+          this.loginController.completeLoginWithTokenResponseError(
+            tokenResult,
+            error
+          );
+        }
+      );
     } else {
       const er = "The login operation was canceled.";
       this.loginController.completeLoginWithTokenResponseError(null, er);

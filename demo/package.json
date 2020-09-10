@@ -9,10 +9,10 @@
     }
   },
   "dependencies": {
+    "@nativescript/core": "7.0.0",
     "nativescript-theme-core": "1.0.4",
     "nativescript-unit-test-runner": "0.7.0",
-    "nativescript-oauth2": "file:../src",
-    "tns-core-modules": "6.0.1"
+    "nativescript-oauth2": "file:../src"
   },
   "devDependencies": {
     "jasmine-core": "^2.5.2",

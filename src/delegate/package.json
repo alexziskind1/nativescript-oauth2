@@ -1,5 +1,0 @@
-{ 
-    "name": "delegate",
-    "main": "delegate",
-    "types": "delegate.d.ts"
-}

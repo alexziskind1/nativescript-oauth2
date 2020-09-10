@@ -1,16 +1,19 @@
-import { Frame } from "tns-core-modules/ui/frame";
+import { Frame } from "@nativescript/core";
+
 import {
   TnsOAuthClient,
   ITnsOAuthTokenResult,
   TnsOAuthClientLoginBlock,
-  TnsOAuthClientLogoutBlock
+  TnsOAuthClientLogoutBlock,
 } from "./index";
 import {
   ITnsOAuthLoginController,
-  TnsOAuthLoginSubController
+  TnsOAuthLoginSubController,
 } from "./tns-oauth-login-sub-controller";
 
-export class TnsOAuthLoginNativeViewController extends NSObject
+@NativeClass()
+export class TnsOAuthLoginNativeViewController
+  extends NSObject
   implements SFSafariViewControllerDelegate, ITnsOAuthLoginController {
   public static ObjCProtocols = [SFSafariViewControllerDelegate];
 
@@ -55,10 +58,7 @@ export class TnsOAuthLoginNativeViewController extends NSObject
     this.openUrlWithParametersCompletion(fullUrl, frame);
   }
 
-  private openUrlWithParametersCompletion(
-    fullUrl: string,
-    frame: Frame
-  ): void {
+  private openUrlWithParametersCompletion(fullUrl: string, frame: Frame): void {
     this.safariViewController = SFSafariViewController.alloc().initWithURLEntersReaderIfAvailable(
       NSURL.URLWithString(fullUrl),
       false
@@ -71,9 +71,17 @@ export class TnsOAuthLoginNativeViewController extends NSObject
       while (topmostParent.parent) {
         topmostParent = topmostParent.parent;
       }
-      topmostParent.viewController.presentViewControllerAnimatedCompletion(this.safariViewController, true, null);
+      topmostParent.viewController.presentViewControllerAnimatedCompletion(
+        this.safariViewController,
+        true,
+        null
+      );
     } else {
-      frame.ios.controller.presentViewControllerAnimatedCompletion(this.safariViewController, true, null);
+      frame.ios.controller.presentViewControllerAnimatedCompletion(
+        this.safariViewController,
+        true,
+        null
+      );
     }
   }
 

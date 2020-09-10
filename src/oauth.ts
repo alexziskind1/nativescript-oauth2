@@ -1,13 +1,10 @@
-import * as applicationModule from "tns-core-modules/application";
-import * as platformModule from "tns-core-modules/platform";
-import * as frameModule from "tns-core-modules/ui/frame";
-import { HttpResponse } from "tns-core-modules/http";
+import { Application, Frame, HttpResponse } from "@nativescript/core";
 
 import {
   TnsOAuthClientLoginBlock,
   ITnsOAuthLoginController,
   TnsOAuthResponseBlock,
-  TnsOAuthClientLogoutBlock
+  TnsOAuthClientLogoutBlock,
 } from "./index";
 import { TnsOaProvider, TnsOaProviderType } from "./providers";
 import { TnsOAuthClientAppDelegate } from "./delegate";
@@ -17,7 +14,7 @@ import { TnsOAuthClientConnection } from "./tns-oauth-client-connection";
 import {
   nsArrayToJSArray,
   jsArrayToNSArray,
-  httpResponseToToken
+  httpResponseToToken,
 } from "./tns-oauth-utils";
 
 export interface ITnsOAuthTokenResult {
@@ -33,7 +30,10 @@ export class TnsOAuthClient {
   private loginController: ITnsOAuthLoginController;
   public tokenResult: ITnsOAuthTokenResult;
 
-  public constructor(providerType: TnsOaProviderType, public pkce: boolean = true) {
+  public constructor(
+    providerType: TnsOaProviderType,
+    public pkce: boolean = true
+  ) {
     this.provider = tnsOauthProviderMap.providerMap.get(providerType);
     if (this.provider) {
       switch (this.provider.options.openIdSupport) {
@@ -64,7 +64,7 @@ export class TnsOAuthClient {
     if (this.provider) {
       this.loginController.loginWithParametersFrameCompletion(
         null,
-        frameModule.topmost(),
+        Frame.topmost(),
         (<any>this.provider.options).urlScheme,
         completion
       );
@@ -77,7 +77,7 @@ export class TnsOAuthClient {
     if (this.provider) {
       this.loginController.logoutWithParametersFrameCompletion(
         null,
-        frameModule.topmost(),
+        Frame.topmost(),
         (<any>this.provider.options).urlScheme,
         completion
       );
@@ -105,7 +105,7 @@ export class TnsOAuthClient {
   }
 
   private removeCookies(): void {
-    if (platformModule.isIOS) {
+    if (global.isIOS) {
       let cookieArr = nsArrayToJSArray(
         NSHTTPCookieStorage.sharedHTTPCookieStorage.cookies
       );
@@ -121,7 +121,7 @@ export class TnsOAuthClient {
       const dataStore = WKWebsiteDataStore.defaultDataStore();
       dataStore.fetchDataRecordsOfTypesCompletionHandler(
         WKWebsiteDataStore.allWebsiteDataTypes(),
-        records => {
+        (records) => {
           const cookieArr = <WKWebsiteDataRecord[]>nsArrayToJSArray(records);
 
           for (let k = 0; k < cookieArr.length; k++) {
@@ -137,9 +137,7 @@ export class TnsOAuthClient {
                   jsArrayToNSArray([cookieRecord]),
                   () => {
                     console.log(
-                      `Cookies for ${
-                        cookieRecord.displayName
-                      } deleted successfully`
+                      `Cookies for ${cookieRecord.displayName} deleted successfully`
                     );
                   }
                 );
@@ -148,7 +146,7 @@ export class TnsOAuthClient {
           }
         }
       );
-    } else if (platformModule.isAndroid) {
+    } else if (global.isAndroid) {
       let cookieManager = android.webkit.CookieManager.getInstance();
       if ((<any>cookieManager).removeAllCookies) {
         let cm23 = <any>cookieManager;
@@ -239,12 +237,12 @@ export class TnsOauthProviderMap {
 export const tnsOauthProviderMap = new TnsOauthProviderMap();
 
 function configureClientAuthAppDelegate(): void {
-  applicationModule.ios.delegate = TnsOAuthClientAppDelegate;
+  Application.ios.delegate = TnsOAuthClientAppDelegate;
 }
 
 export function configureTnsOAuth(providers: TnsOaProvider[]) {
-  if (platformModule.isIOS) {
-    if (providers.some(p => p.options.openIdSupport === "oid-full")) {
+  if (global.isIOS) {
+    if (providers.some((p) => p.options.openIdSupport === "oid-full")) {
       configureClientAuthAppDelegate();
     }
   }

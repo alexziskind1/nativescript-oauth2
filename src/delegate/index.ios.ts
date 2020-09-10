@@ -1,7 +1,9 @@
 import { TnsOAuthClient } from "../index";
 
 @ObjCClass(UIApplicationDelegate)
-export class TnsOAuthClientAppDelegate extends UIResponder
+@NativeClass()
+export class TnsOAuthClientAppDelegate
+  extends UIResponder
   implements UIApplicationDelegate {
   private static _client: TnsOAuthClient;
   private static _urlScheme: string;

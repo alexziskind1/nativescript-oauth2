@@ -1,5 +1,4 @@
-import { EventData } from "tns-core-modules/data/observable";
-import { Page } from "tns-core-modules/ui/page";
+import { Page, EventData } from "@nativescript/core";
 import { HelloWorldModel } from "./main-view-model";
 import {
   tnsOauthLogin,

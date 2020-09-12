@@ -1,49 +1,20 @@
 {
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "declaration": false,
-        "removeComments": true,
-        "noLib": false,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "lib": [
-            "es6",
-            "dom",
-            "es2015.iterable"
-        ],
-        "pretty": true,
-        "allowUnreachableCode": false,
-        "allowUnusedLabels": false,
-        "noEmitHelpers": true,
-        "noEmitOnError": false,
-        "noImplicitAny": false,
-        "noImplicitReturns": true,
-        "noImplicitUseStrict": false,
-        "noFallthroughCasesInSwitch": true,
-        "skipLibCheck": true,
-        "baseUrl": ".",
-        "paths": {
-            "*": [
-                "./node_modules/tns-core-modules/*",
-                "./node_modules/*"
-            ],
-            "~/*": [
-                "app/*"
-            ]
-        }
-    },
-    "include": [
-        "../src",
-        "**/*"
-    ],
-    "files": [
-        "../src/delegate/delegate.ts",
-    ],
-    "exclude": [
-        "../src/node_modules",
-        "node_modules",
-        "platforms"
-    ],
-    "compileOnSave": false
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es2015",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmitHelpers": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+    "lib": ["es2018", "es2017", "dom", "es6"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["app/*"]
+    }
+  },
+  "include": ["src/tests/**/*.ts", "src/**/*.ios.ts", "src/**/*.android.ts"],
+  "files": ["./references.d.ts", "./src/main.ts", "../src/oauth.ts"],
+  "exclude": ["node_modules", "platforms", "e2e"]
 }

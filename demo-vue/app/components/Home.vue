@@ -20,7 +20,7 @@
     },
     methods: {
         onLoginTap() {
-            auth_service_1.tnsOauthLogin("facebook");
+            auth_service_1.tnsOauthLogin("microsoft");
         },
         onLogoutTap() {
             auth_service_1.tnsOauthLogout();

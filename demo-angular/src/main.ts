@@ -11,10 +11,4 @@ import { configureOAuthProviders } from "./app/auth-providers-helper";
 
 configureOAuthProviders();
 
-platformNativeScriptDynamic({ bootInExistingPage: true }).bootstrapModule(
-  AppModule
-);
-
-//platformNativeScriptDynamic({ createFrameOnBootstrap: true }).bootstrapModule(
-//  AppModule
-//);
+platformNativeScriptDynamic().bootstrapModule(AppModule);

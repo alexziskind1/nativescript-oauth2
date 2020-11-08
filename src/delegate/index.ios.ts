@@ -20,7 +20,7 @@ function setup() {
       url: NSURL,
       options: NSDictionary<string, any>
     ): boolean {
-      return this.handleIncomingUrl(url);
+      return TnsOAuthClientAppDelegate.handleIncomingUrl(url);
     }
 
     // iOS < 10
@@ -30,10 +30,10 @@ function setup() {
       sourceApplication: string,
       annotation: any
     ): boolean {
-      return this.handleIncomingUrl(url);
+      return TnsOAuthClientAppDelegate.handleIncomingUrl(url);
     }
 
-    private handleIncomingUrl(url: NSURL): boolean {
+    private static handleIncomingUrl(url: NSURL): boolean {
       if (
         !TnsOAuthClientAppDelegate._client ||
         !TnsOAuthClientAppDelegate._urlScheme

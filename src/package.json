@@ -4,12 +4,6 @@
   "description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
   "main": "oauth",
   "typings": "index.d.ts",
-  "nativescript": {
-    "platforms": {
-      "android": "7.0.0",
-      "ios": "7.0.0"
-    }
-  },
   "scripts": {
     "tsc": "tsc",
     "build": "npm i && ts-patch install && tsc",
@@ -24,7 +18,7 @@
     "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\" --exclude \"**/platforms/**\" --exclude \"**/demo*/**\"",
     "plugin.tscwatch": "npm run tsc -- -w",
     "demo.ios": "npm run tsc && cd ../demo && tns run ios --emulator",
-    "demo.android": "npm run tsc && cd ../demo && tns run android --emulator",
+    "demo.android": "npm run tsc && cd ../demo && tns debug android --emulator",
     "demo.ios-angular": "npm run tsc && cd ../demo-angular && tns run ios --emulator",
     "demo.android-angular": "npm run tsc && cd ../demo-angular && tns run android --emulator",
     "demo.ios-vue": "npm run tsc && cd ../demo-vue && tns run ios --bundle --emulator",
@@ -66,10 +60,10 @@
   "homepage": "https://github.com/alexziskind1/nativescript-oauth2",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "@nativescript/core": "7.0.0",
-    "@nativescript/types": "7.0.0",
-    "@nativescript/webpack": "~3.0.0",
-    "typescript": "~3.9.0",
+    "@nativescript/core": "~7.0.13",
+    "@nativescript/types": "~7.0.4",
+    "@nativescript/webpack": "~3.0.8",
+    "typescript": "4.0.5",
     "prompt": "^1.0.0",
     "rimraf": "^2.6.2",
     "tslint": "5.18.0",

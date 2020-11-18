@@ -42,18 +42,6 @@ export class TnsOAuthClient {
             this,
             (<any>this.provider.options).urlScheme
           );
-          console.log(
-            "TnsOAuthLoginNativeViewController:",
-            TnsOAuthLoginNativeViewController
-          );
-          console.log(
-            "typeof TnsOAuthLoginNativeViewController:",
-            typeof TnsOAuthLoginNativeViewController
-          );
-          console.log(
-            "TnsOAuthLoginNativeViewController.initWithClient:",
-            TnsOAuthLoginNativeViewController.initWithClient
-          );
           this.loginController = TnsOAuthLoginNativeViewController.initWithClient(
             this
           );

@@ -92,7 +92,7 @@ export class TnsOAuthLoginSubController {
     if (this.authState) {
       if (
         this.authState.isLogout &&
-        url === this.client.provider.options.redirectUri
+        url.startsWith(this.client.provider.options.redirectUri)
       ) {
         this.client.logout();
         (completion as TnsOAuthClientLogoutBlock)(undefined);

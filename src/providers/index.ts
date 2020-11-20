@@ -56,6 +56,7 @@ export class TnsOaProviderMicrosoft implements TnsOaProvider {
   public tokenEndpointBase = "https://login.microsoftonline.com/common";
   public authorizeEndpoint = "/oauth2/v2.0/authorize";
   public tokenEndpoint = "/oauth2/v2.0/token";
+  public endSessionEndpoint = '/oauth2/v2.0/logout';
   public cookieDomains = ["login.microsoftonline.com", "live.com"];
 
   constructor(options: TnsOaProviderOptionsMicrosoft) {

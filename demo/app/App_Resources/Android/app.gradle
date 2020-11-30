@@ -4,6 +4,9 @@
 //dependencies {
 //	compile 'com.android.support:recyclerview-v7:+'
 //}
+dependencies {
+  implementation 'androidx.browser:browser:1.2.0'
+}
 
 android {  
   defaultConfig {  

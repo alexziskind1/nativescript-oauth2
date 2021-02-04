@@ -65,11 +65,11 @@ console.dir(fullUrl);
     );
 
     this.safariViewController.delegate = this;
-    frame.ios.controller.presentViewControllerAnimatedCompletion(
-      this.safariViewController,
-      true,
-      null
-    );
+    let topmostParent = frame;
+    while (topmostParent.parent) {
+      topmostParent = topmostParent.parent as Frame;
+    }
+    topmostParent.viewController.presentViewControllerAnimatedCompletion(this.safariViewController, true, null);    
   }
 
   public resumeWithUrl(url: string): boolean {

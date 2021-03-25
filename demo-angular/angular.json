@@ -6,12 +6,12 @@
     "defaultCollection": "@nativescript/schematics"
   },
   "projects": {
-    "blank": {
+    "hello-world": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "ns"
     }
   },
-  "defaultProject": "blank"
+  "defaultProject": "hello-world"
 }

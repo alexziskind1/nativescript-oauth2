@@ -1,38 +1,20 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es5",
-		"declaration": false,
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"noEmitHelpers": true,
-		"noEmitOnError": true,
-		"skipLibCheck": true,
-		"lib": [
-			"es6",
-			"dom",
-			"es2015.iterable"
-		],
-		"baseUrl": ".",
-		"paths": {
-			"~/*": [
-				"src/*"
-			],
-			"*": [
-				"./node_modules/*"
-			]
-		}
-	},
-	"exclude": [
-		"node_modules",
-		"platforms",
-		"../src/node_modules"
-	],
-	"include": [
-		"../src",
-		"**/*"
-	],
-    "files": [
-        "../src/delegate/delegate.ts",
-    ]
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "es2015",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noEmitHelpers": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+    "lib": ["es2018", "es2017", "dom", "es6"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["app/*"]
+    }
+  },
+  "include": ["src/tests/**/*.ts", "src/**/*.ios.ts", "src/**/*.android.ts"],
+  "files": ["./references.d.ts", "./src/main.ts", "../src/oauth.ts"],
+  "exclude": ["node_modules", "platforms", "e2e"]
 }

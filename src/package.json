@@ -1,71 +1,73 @@
 {
-	"name": "@essent/nativescript-oauth2",
-	"version": "2.1.6",
-	"description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
-	"main": "oauth",
-	"typings": "index.d.ts",
-	"nativescript": {
-		"platforms": {
-			"android": "6.5.0",
-			"ios": "6.5.0"
-		}
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/Essent/nativescript-oauth2.git"
-	},
-	"scripts": {
-		"tsc": "npm i && tsc",
-		"build": "npm run tsc && npm run build.native",
-		"build.native": "node scripts/build-native.js",
-		"tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
-		"ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**' --exclude '**/platforms/**'",
-		"prepack": "npm run build.native",
-		"demo-angular.ios": "npm i && cd ../demo-angular && tns run ios",
-		"demo-angular.android": "npm i && cd ../demo-angular && tns run android",
-		"demo-angular.reset": "cd ../demo-angular && npx rimraf -- hooks node_modules platforms package-lock.json",
-		"plugin.prepare": "npm run build && cd ../demo-angular && tns plugin remove @essent/nativescript-oauth2 && tns plugin add ../src",
-		"clean": "npm run demo-angular.reset && npx rimraf -- node_modules package-lock.json && npm i"
-	},
-	"keywords": [
-		"NativeScript",
-		"JavaScript",
-		"TypeScript",
-		"Office365",
-		"Facebook",
-		"Google",
-		"Azure AD",
-		"iOS",
-		"Android"
-	],
-	"author": {
-		"name": "Alexander Ziskind",
-		"email": "alex@nuvious.com",
-		"url": "https://nativescripting.com"
-	},
-	"bugs": {
-		"url": "https://github.com/Essent/nativescript-oauth2/issues"
-	},
-	"license": "MIT",
-	"homepage": "https://github.com/Essent/nativescript-oauth2",
-	"readmeFilename": "README.md",
-	"devDependencies": {
-		"@types/crypto-js": "^3.1.43",
-		"prompt": "^1.0.0",
-		"rimraf": "^2.6.3",
-		"semver": "^5.6.0",
-		"tns-core-modules": "^6.5.12",
-		"tns-platform-declarations": "^6.5.12",
-		"tslint": "^5.12.1",
-		"typescript": "~3.4.5"
-	},
-	"dependencies": {
-		"buffer-equal-constant-time": "^1.0.1",
-		"crypto-js": "3.1.9-1",
-		"ecdsa-sig-formatter": "^1.0.11",
-		"querystring": "0.2.0",
-		"url": "0.11.0",
-		"jsrsasign": "8.0.20"
-	},
-	"bootstrapper": "nativescript-plugin-seed"
+  "name": "@essent/nativescript-oauth2",
+  "version": "3.0.0",
+  "description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
+  "main": "oauth",
+  "typings": "index.d.ts",
+  "nativescript": {
+    "platforms": {
+      "android": "7.0.0",
+      "ios": "7.0.0"
+    }
+  },
+  "scripts": {
+    "tsc": "tsc",
+    "build": "npm i && ts-patch install && tsc",
+    "build.native": "node scripts/build-native.js",
+    "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\" --exclude \"**/platforms/**\" --exclude \"**/demo*/**\"",
+    "prepack": "npm run build.native",
+    "demo-angular.ios": "npm i && cd ../demo-angular && tns run ios",
+    "demo-angular.android": "npm i && cd ../demo-angular && tns run android",
+    "demo-angular.reset": "cd ../demo-angular && npx rimraf -- hooks node_modules platforms package-lock.json",
+    "plugin.prepare": "npm run build && cd ../demo-angular && tns plugin remove @essent/nativescript-oauth2 && tns plugin add ../src",
+    "clean": "npm run demo-angular.reset && npx rimraf -- node_modules package-lock.json && npm i",
+    "ci.tslint": "npm i && tslint '**/*.ts' --config '../tslint.json' --exclude '**/node_modules/**'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Essent/nativescript-oauth2.git"
+  },
+  "keywords": [
+    "NativeScript",
+    "JavaScript",
+    "TypeScript",
+    "Office365",
+    "Facebook",
+    "Google",
+    "Azure AD",
+    "iOS",
+    "Android"
+  ],
+  "author": {
+    "name": "Alexander Ziskind",
+    "email": "alex@nuvious.com",
+    "url": "https://nativescripting.com"
+  },
+  "bugs": {
+    "url": "https://github.com/Essent/nativescript-oauth2/issues"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Essent/nativescript-oauth2",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "@nativescript/core": "~7.0.13",
+    "@nativescript/types": "~7.0.4",
+    "@nativescript/webpack": "~3.0.8",
+    "typescript": "4.0.5",
+    "prompt": "^1.0.0",
+    "rimraf": "^2.6.2",
+    "tslint": "5.18.0",
+    "ts-patch": "1.3.0",
+    "semver": "^5.5.0"
+  },
+  "dependencies": {
+    "buffer-equal-constant-time": "^1.0.1",
+    "crypto-js": "3.1.9-1",
+    "querystring": "0.2.0",
+    "ts-node": "^9.0.0",
+    "ecdsa-sig-formatter": "^1.0.11",
+    "url": "0.11.0",
+    "jsrsasign": "8.0.20"
+  },
+  "bootstrapper": "nativescript-plugin-seed"
 }

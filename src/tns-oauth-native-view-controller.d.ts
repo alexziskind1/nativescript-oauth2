@@ -1,4 +1,5 @@
-import { Frame } from "tns-core-modules/ui/frame";
+import { Frame } from "@nativescript/core";
+
 import { ITnsOAuthLoginController } from "./tns-oauth-login-sub-controller";
 import { TnsOAuthClient, TnsOAuthClientLoginBlock } from "./index";
 

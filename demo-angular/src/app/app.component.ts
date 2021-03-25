@@ -1,8 +1,9 @@
 import { Component } from "@angular/core";
+import { Page } from "@nativescript/core";
 
 @Component({
     selector: "ns-app",
-    templateUrl: "app.component.html"
+    moduleId: module.id,
+    templateUrl: "app.component.html",
 })
-export class AppComponent {
- }
+export class AppComponent {}

@@ -5,20 +5,21 @@
 [![Downloads][downloads-image]][npm-url]
 [![Twitter Follow][twitter-image]][twitter-url]
 
-[build-status]:https://travis-ci.org/alexziskind1/nativescript-oauth2.svg?branch=master
-[build-url]:https://travis-ci.org/alexziskind1/nativescript-oauth2
-[npm-image]:http://img.shields.io/npm/v/nativescript-oauth2.svg
-[npm-url]:https://npmjs.org/package/nativescript-oauth2
-[downloads-image]:http://img.shields.io/npm/dm/nativescript-oauth2.svg
-[twitter-image]:https://img.shields.io/twitter/follow/digitalix.svg?style=social&label=Follow%20me
-[twitter-url]:https://twitter.com/digitalix
+[build-status]: https://travis-ci.org/alexziskind1/nativescript-oauth2.svg?branch=master
+[build-url]: https://travis-ci.org/alexziskind1/nativescript-oauth2
+[npm-image]: http://img.shields.io/npm/v/nativescript-oauth2.svg
+[npm-url]: https://npmjs.org/package/nativescript-oauth2
+[downloads-image]: http://img.shields.io/npm/dm/nativescript-oauth2.svg
+[twitter-image]: https://img.shields.io/twitter/follow/digitalix.svg?style=social&label=Follow%20me
+[twitter-url]: https://twitter.com/digitalix
 
 Library for interacting with OAuth 2.0 in NativeScript applications that provides simplified direct client access with a OAuth providers that support the OAuth 2.0 protocol such as Microsoft, Facebook, and Google, but not limited to any login providers, and even allows you to plug in your own. This library doesn't use any native libraries and relies only on what comes in the box - making it really lightweight.
 
 **_NOTE:_** **This is the new version of the old [nativescript-oauth plugin](https://www.npmjs.com/package/nativescript-oauth)**
 
-<img src="https://raw.githubusercontent.com/alexziskind1/nativescript-oauth2/master/docs/images/nativescript-oauth2-logo.png" alt="NativeScript OAuth 2"/>
+**_NOTE:_** For **NativeScript 7** support, use version 3+ of this plugin. For versions of NativeScript that are less than 7, use versions less than 3 of this plugin.
 
+<img src="https://raw.githubusercontent.com/alexziskind1/nativescript-oauth2/master/docs/images/nativescript-oauth2-logo.png" alt="NativeScript OAuth 2"/>
 
 <br/>
 
@@ -87,7 +88,7 @@ For logging in with your LinkedIn account, you should have a LinkedIn developer 
 
 For logging in with [IdentityServer](https://identityserver.io/) you can make use of the [demo server](https://demo.identityserver.io/) or create your own. You can get more information on how to start your own IdentityServer [here](https://identityserver4.readthedocs.io/en/latest/quickstarts/0_overview.html).
 
-The default IdentityServer provider is configured to use the [demo server](https://demo.identityserver.io/) with __client id: native.code__ _grant type: authorization code with PKCE and client credentials_.
+The default IdentityServer provider is configured to use the [demo server](https://demo.identityserver.io/) with **client id: native.code** _grant type: authorization code with PKCE and client credentials_.
 
 login with `bob/bob`, `alice/alice` or choose external login with `Google` or `Azure AD`.
 
@@ -148,7 +149,7 @@ import {
   TnsOaProviderOptionsGoogle,
   TnsOaProviderGoogle,
   TnsOaProviderOptionsMicrosoft,
-  TnsOaProviderMicrosoft
+  TnsOaProviderMicrosoft,
 } from "nativescript-oauth2/providers";
 
 function configureOAuthProviderGoogle(): TnsOaProvider {
@@ -160,7 +161,7 @@ function configureOAuthProviderGoogle(): TnsOaProvider {
       "com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb:/auth",
     urlScheme:
       "com.googleusercontent.apps.932931520457-buv2dnhgo7jjjjv5fckqltn367psbrlb",
-    scopes: ["email"]
+    scopes: ["email"],
   };
   const googleProvider = new TnsOaProviderGoogle(googleProviderOptions);
   return googleProvider;
@@ -172,7 +173,7 @@ function configureOAuthProviderFacebook(): TnsOaProvider {
     clientId: "691208554415641",
     clientSecret: "d8725ac416fa1bb1917ccffd1670e3c7",
     redirectUri: "https://www.facebook.com/connect/login_success.html",
-    scopes: ["email"]
+    scopes: ["email"],
   };
   const facebookProvider = new TnsOaProviderFacebook(facebookProviderOptions);
   return facebookProvider;
@@ -180,7 +181,7 @@ function configureOAuthProviderFacebook(): TnsOaProvider {
 
 configureTnsOAuth([
   configureOAuthProviderGoogle(),
-  configureOAuthProviderFacebook()
+  configureOAuthProviderFacebook(),
 ]);
 ```
 
@@ -217,8 +218,8 @@ After login is done, the completion handler will be called with the results.
 
 Once you have logged in, you can call `refreshTokenWithCompletion()` on your `TnsOAuthClient` instance to attempt to refresh your access token. In order to do this, the following criteria must be met:
 
- * The scope `offline_access` was requested when you logged in.
- * The `TnsOAuthClient` must have the token result from your previous login. If you have the original instance you used to log in, it will already be on the object. If you do not have the original instance of `TnsOAuthClient` which you used to log in, such as if the app was restarted, then assign the client's `tokenResult` property to your token.
+- The scope `offline_access` was requested when you logged in.
+- The `TnsOAuthClient` must have the token result from your previous login. If you have the original instance you used to log in, it will already be on the object. If you do not have the original instance of `TnsOAuthClient` which you used to log in, such as if the app was restarted, then assign the client's `tokenResult` property to your token.
 
 If that criteria is met, then you can refresh the token like so:
 
@@ -246,14 +247,15 @@ You need to implement two interfaces: provider options that suits your provider 
 
 #### Provider Options
 
-Implement your provider's options by extending the `TnsOaUnsafeProviderOptions` interface **if your provider is not Open Id compliant**, or the `TnsOaOpenIdProviderOptions` interface **if your provider *is* Open Id compliant**.
+Implement your provider's options by extending the `TnsOaUnsafeProviderOptions` interface **if your provider is not Open Id compliant**, or the `TnsOaOpenIdProviderOptions` interface **if your provider _is_ Open Id compliant**.
 
 > Note: the interface is named with the word 'unsafe' in the name because non-open id compliant providers (like Facebook) usually make you use a client secret to send to the provider in exchange for the token. Storing the secret somewhere other than the client app is recommended (like a proxy), but most people don't do this and just store the secret with the app - thus unsafe.
 
 ```typescript
 //Provider options example
 
-export interface TnsOaMyCustomProviderOptions extends TnsOaUnsafeProviderOptions { }
+export interface TnsOaMyCustomProviderOptions
+  extends TnsOaUnsafeProviderOptions {}
 ```
 
 #### TnsOaProvider
@@ -264,22 +266,22 @@ Then you can create your provider class by implementing the `TnsOaProvider` inte
 //Provider implementation example
 
 export class TnsOaProviderMyCustomProvider implements TnsOaProvider {
-    public options: TnsOaProviderOptions;
-    public openIdSupport: OpenIdSupportNone = "oid-none";
-    public providerType = "myCustomProvider";
-    public authority = "https://www.facebook.com/v3.1/dialog";
-    public tokenEndpointBase = "https://graph.facebook.com";
-    public authorizeEndpoint = "/oauth";
-    public tokenEndpoint = "/v3.1/oauth/access_token";
-    public cookieDomains = ["facebook.com"];
+  public options: TnsOaProviderOptions;
+  public openIdSupport: OpenIdSupportNone = "oid-none";
+  public providerType = "myCustomProvider";
+  public authority = "https://www.facebook.com/v3.1/dialog";
+  public tokenEndpointBase = "https://graph.facebook.com";
+  public authorizeEndpoint = "/oauth";
+  public tokenEndpoint = "/v3.1/oauth/access_token";
+  public cookieDomains = ["facebook.com"];
 
-    constructor(options: TnsOaMyCustomProviderOptions) {
-        this.options = options;
-    }
+  constructor(options: TnsOaMyCustomProviderOptions) {
+    this.options = options;
+  }
 
-    public parseTokenResult(jsonData): ITnsOAuthTokenResult {
-        return jsonData;
-    }
+  public parseTokenResult(jsonData): ITnsOAuthTokenResult {
+    return jsonData;
+  }
 }
 ```
 
@@ -309,14 +311,15 @@ function configureOAuthProviderMyCustomProvider(): TnsOaProvider {
     redirectUri: "<redirect Uri>",
     scopes: ["email"],
     customQueryParams: {
-      foo: "bar"
-    }
+      foo: "bar",
+    },
   };
-  const facebookProvider = new TnsOaProviderMyCustomProvider(facebookProviderOptions);
+  const facebookProvider = new TnsOaProviderMyCustomProvider(
+    facebookProviderOptions
+  );
   return facebookProvider;
 }
 ```
-
 
 ### Custom URL Scheme
 

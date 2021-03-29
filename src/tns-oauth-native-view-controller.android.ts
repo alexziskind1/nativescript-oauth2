@@ -18,7 +18,7 @@ function useAndroidX() {
 }
 
 const customtabs = useAndroidX()
-  ? androidx.browser?.customtabs
+  ? global.androidx.browser?.customtabs
   : android.support.customtabs;
 
 export class TnsOAuthLoginNativeViewController

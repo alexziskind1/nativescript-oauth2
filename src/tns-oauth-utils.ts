@@ -1,4 +1,4 @@
-import * as http from "@nativescript/core/http";
+import { HttpResponse } from "@nativescript/core";
 import * as querystring from "querystring";
 import * as UrlLib from "url";
 import { TnsOaProvider } from "./providers";
@@ -15,7 +15,12 @@ function addCustomQueryParams(params: object, provider: TnsOaProvider): void {
   }
 }
 
-export function getAuthUrlStr(provider: TnsOaProvider, ecid: string, codeChallenge?: string): string {
+export function getAuthUrlStr(
+  provider: TnsOaProvider,
+  ecid: string,
+  codeChallenge?: string
+): string {
+
   if (provider.getAuthUrlStr) {
     return provider.getAuthUrlStr();
   }
@@ -23,7 +28,8 @@ export function getAuthUrlStr(provider: TnsOaProvider, ecid: string, codeChallen
   params["client_id"] = provider.options.clientId;
   params["response_type"] = "code";
   params["redirect_uri"] = provider.options.redirectUri;
-  params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
+  params["scope"] =
+    provider.options.scopes && provider.options.scopes.join(" ");
   params["response_mode"] = "query";
   params["state"] = "abcd";
   params["ecid"] = ecid;
@@ -42,7 +48,10 @@ export function getAuthUrlStr(provider: TnsOaProvider, ecid: string, codeChallen
   return retAuthUrlStr;
 }
 
-export function getLogoutUrlStr(provider: TnsOaProvider, client: TnsOAuthClient): string {
+export function getLogoutUrlStr(
+  provider: TnsOaProvider,
+  client: TnsOAuthClient
+): string {
   if (provider.getLogoutUrlStr) {
     return provider.getLogoutUrlStr();
   }
@@ -70,7 +79,7 @@ export function authorizationCodeFromRedirectUrl(url: string): string {
   if (url) {
     let parsedRetStr = UrlLib.parse(url);
 
-    let qsObj = querystring.parse(parsedRetStr.query);
+    let qsObj = querystring.parse(parsedRetStr.query) as any;
     authorizationCode = qsObj["code"];
   }
   return authorizationCode;
@@ -101,7 +110,8 @@ export function getAccessTokenUrlWithCodeStr(
   params["client_secret"] = (<any>provider.options).clientSecret;
   // params["response_type"] = "code";
   // params["redirect_uri"] = credentials.redirectUri;
-  params["scope"] = provider.options.scopes && provider.options.scopes.join(' ');
+  params["scope"] =
+    provider.options.scopes && provider.options.scopes.join(" ");
   // params["response_mode"] = "query";
   params["state"] = "abcd";
 
@@ -123,9 +133,9 @@ export function newUUID(a?, b?) {
     b = a = "";
     a++ < 36;
     b +=
-    (a * 51) & 52
-      ? (a ^ 15 ? 8 ^ (Math.random() * (a ^ 20 ? 16 : 4)) : 4).toString(16)
-      : "-"
+      (a * 51) & 52
+        ? (a ^ 15 ? 8 ^ (Math.random() * (a ^ 20 ? 16 : 4)) : 4).toString(16)
+        : "-"
   );
   return b;
 }
@@ -154,7 +164,9 @@ export function jsArrayToNSArray<T>(str) {
   return NSArray.arrayWithArray<T>(str);
 }
 
-export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthTokenResult {
+export function httpResponseToToken(
+  response: HttpResponse
+): ITnsOAuthTokenResult {
   let results;
   try {
     // As of http://tools.ietf.org/html/draft-ietf-oauth-v2-07
@@ -185,7 +197,7 @@ export function httpResponseToToken(response: http.HttpResponse): ITnsOAuthToken
     idTokenData: decoded["payload"],
     accessTokenExpiration: expDate,
     refreshTokenExpiration: expDate,
-    idTokenExpiration: expDate
+    idTokenExpiration: expDate,
   };
 }
 

@@ -1,11 +1,8 @@
+import * as applicationModule from '@nativescript/core/application';
 import { TnsOAuthClient } from "../index";
 
 function setup() {
-  @ObjCClass(UIApplicationDelegate)
-  @NativeClass()
-  class TnsOAuthClientAppDelegate
-    extends UIResponder
-    implements UIApplicationDelegate {
+  class TnsOAuthClientAppDelegate {
     private static _client: TnsOAuthClient;
     private static _urlScheme: string;
 
@@ -14,26 +11,40 @@ function setup() {
       this._urlScheme = urlScheme;
     }
 
-    // iOS >= 10
-    public applicationOpenURLOptions(
-      application: UIApplication,
-      url: NSURL,
-      options: NSDictionary<string, any>
-    ): boolean {
-      return this.handleIncomingUrl(url);
+    private static getAppDelegate() {
+      // Play nice with other plugins by not completely ignoring anything already added to the appdelegate
+      if (applicationModule.ios.delegate === undefined) {
+        @ObjCClass(UIApplicationDelegate)
+        class UIApplicationDelegateImpl extends UIResponder implements UIApplicationDelegate { }
+  
+        applicationModule.ios.delegate = UIApplicationDelegateImpl;
+      }
+      return applicationModule.ios.delegate;
+    }
+  
+    private static addAppDelegateMethods = appDelegate => {
+      // iOS >= 10
+      appDelegate.prototype.applicationOpenURLOptions = (
+            application: UIApplication,
+            url: NSURL,
+            options: NSDictionary<string, any>) => {
+        TnsOAuthClientAppDelegate.handleIncomingUrl(url);
+      };
+      // iOS < 10
+      appDelegate.prototype.applicationOpenURLSourceApplicationAnnotation = (
+            application: UIApplication,
+            url: NSURL,
+            sourceApplication: string,
+            annotation: any ) => {
+        TnsOAuthClientAppDelegate.handleIncomingUrl(url);
+      };
+    }
+  
+    public static doRegisterDelegates() {
+      this.addAppDelegateMethods(this.getAppDelegate());
     }
 
-    // iOS < 10
-    public applicationOpenURLSourceApplicationAnnotation?(
-      application: UIApplication,
-      url: NSURL,
-      sourceApplication: string,
-      annotation: any
-    ): boolean {
-      return this.handleIncomingUrl(url);
-    }
-
-    private handleIncomingUrl(url: NSURL): boolean {
+    private static handleIncomingUrl(url: NSURL): boolean {
       if (
         !TnsOAuthClientAppDelegate._client ||
         !TnsOAuthClientAppDelegate._urlScheme

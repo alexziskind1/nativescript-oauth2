@@ -236,14 +236,10 @@ export class TnsOauthProviderMap {
 
 export const tnsOauthProviderMap = new TnsOauthProviderMap();
 
-function configureClientAuthAppDelegate(): void {
-  Application.ios.delegate = TnsOAuthClientAppDelegate;
-}
-
 export function configureTnsOAuth(providers: TnsOaProvider[]) {
   if (global.isIOS) {
     if (providers.some((p) => p.options.openIdSupport === "oid-full")) {
-      configureClientAuthAppDelegate();
+      TnsOAuthClientAppDelegate.doRegisterDelegates();
     }
   }
 

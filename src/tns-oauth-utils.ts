@@ -186,6 +186,7 @@ export function httpResponseToToken(
   expDate.setSeconds(expDate.getSeconds() + expSecs);
 
   return {
+    original: results,
     accessToken: access_token,
     refreshToken: refresh_token,
     idToken: id_token,

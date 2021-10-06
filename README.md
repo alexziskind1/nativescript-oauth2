@@ -40,11 +40,7 @@ For logging in with your Office 365 account, you should have an Office 365 Accou
 
 Keep an eye out on my [YouTube channel](https://www.youtube.com/c/AlexanderZiskind) for a video on how to set up Facebook with with plugin.
 
-Register your mobile app [here](https://apps.dev.microsoft.com). This will require you to login with your Office 365 account. You can then click the big "Add an app" button and go through the steps listed there, starting with giving you app a name. On the app creation screen, you need to do 3 things:
-
-1.  Click the "Add Platform" button and select "Mobile application"
-2.  Copy the "Client Id" GUID from the Mobile Application section.
-3.  Click "Save" at the bottom.
+Register your mobile app [here](https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade). 
 
 Microsoft login will work either with the in-app webview method, in which case your redirectUri config property can be set to `urn:ietf:wg:oauth:2.0:oob`. Or it can use the more secure method that doesn't require a client secret, but it will need to have a custom URL scheme registered (see below).
 

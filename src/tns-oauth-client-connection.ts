@@ -90,8 +90,11 @@ export class TnsOAuthClientConnection {
     const headers = {
       "Content-Type": "application/x-www-form-urlencoded",
     };
+    const options = <TnsOaOpenIdProviderOptions>this.client.provider.options;
     const body = querystring.stringify({
+      client_id: options.clientId,
       token: this.client.tokenResult.refreshToken,
+      token_type_hint: "refresh_token"
     });
 
     Http.request({

@@ -14,14 +14,16 @@ function setup() {
     private static getAppDelegate() {
       // Play nice with other plugins by not completely ignoring anything already added to the appdelegate
       if (applicationModule.ios.delegate === undefined) {
-        @ObjCClass(UIApplicationDelegate)
-        class UIApplicationDelegateImpl extends UIResponder implements UIApplicationDelegate { }
-  
+        @NativeClass
+        class UIApplicationDelegateImpl extends UIResponder implements UIApplicationDelegate {
+          public static ObjCProtocols = [UIApplicationDelegate];
+        }
+
         applicationModule.ios.delegate = UIApplicationDelegateImpl;
       }
       return applicationModule.ios.delegate;
     }
-  
+
     private static addAppDelegateMethods = appDelegate => {
       // iOS >= 10
       appDelegate.prototype.applicationOpenURLOptions = (
@@ -39,7 +41,7 @@ function setup() {
         TnsOAuthClientAppDelegate.handleIncomingUrl(url);
       };
     }
-  
+
     public static doRegisterDelegates() {
       this.addAppDelegateMethods(this.getAppDelegate());
     }

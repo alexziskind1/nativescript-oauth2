@@ -13,7 +13,9 @@ function setup() {
 
     private static getAppDelegate() {
       // As of NativeScript 8.2, ensureNativeApplication should be called prior to accesses to applicationModule.ios.
+      /* @ts-ignore */
       if (!!applicationModule.ensureNativeApplication) {
+        /* @ts-ignore */
         applicationModule.ensureNativeApplication();
       }
       // Play nice with other plugins by not completely ignoring anything already added to the appdelegate
@@ -31,17 +33,17 @@ function setup() {
     private static addAppDelegateMethods = appDelegate => {
       // iOS >= 10
       appDelegate.prototype.applicationOpenURLOptions = (
-            application: UIApplication,
-            url: NSURL,
-            options: NSDictionary<string, any>) => {
+        application: UIApplication,
+        url: NSURL,
+        options: NSDictionary<string, any>) => {
         TnsOAuthClientAppDelegate.handleIncomingUrl(url);
       };
       // iOS < 10
       appDelegate.prototype.applicationOpenURLSourceApplicationAnnotation = (
-            application: UIApplication,
-            url: NSURL,
-            sourceApplication: string,
-            annotation: any ) => {
+        application: UIApplication,
+        url: NSURL,
+        sourceApplication: string,
+        annotation: any) => {
         TnsOAuthClientAppDelegate.handleIncomingUrl(url);
       };
     }

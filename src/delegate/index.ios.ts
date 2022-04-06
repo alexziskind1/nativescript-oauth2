@@ -12,6 +12,10 @@ function setup() {
     }
 
     private static getAppDelegate() {
+      // As of NativeScript 8.2, ensureNativeApplication should be called prior to accesses to applicationModule.ios.
+      if (!!applicationModule.ensureNativeApplication) {
+        applicationModule.ensureNativeApplication();
+      }
       // Play nice with other plugins by not completely ignoring anything already added to the appdelegate
       if (applicationModule.ios.delegate === undefined) {
         @NativeClass

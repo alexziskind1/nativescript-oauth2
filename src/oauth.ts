@@ -195,10 +195,10 @@ export class TnsOAuthClient {
     completion?: TnsOAuthClientLoginBlock
   ) {
     if (!this.provider.tokenEndpoint) {
-      return;
+      return completion(null, 'Provider End-point token is missing');
     }
     if (!this.tokenResult) {
-      return;
+      return completion(null, 'Token Result is missing');
     }
 
     const connection: TnsOAuthClientConnection = TnsOAuthClientConnection.initWithRequestClientCompletion(

@@ -1,5 +1,5 @@
 dependencies {
-  compile 'com.android.support:customtabs:27.0.2'
-  compile 'com.android.support:appcompat-v7:27.0.2'
+  implementation 'com.android.support:customtabs:27.0.2'
+  implementation 'com.android.support:appcompat-v7:27.0.2'
   implementation 'androidx.browser:browser:1.2.0'
 }

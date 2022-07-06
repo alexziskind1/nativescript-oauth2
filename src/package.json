@@ -1,6 +1,6 @@
 {
   "name": "@essent/nativescript-oauth2",
-  "version": "3.0.3",
+  "version": "3.1.0",
   "description": "OAuth 2 generic authorization plugin for NativeScript that doesn't install third party native libraries",
   "main": "oauth",
   "typings": "index.d.ts",
@@ -61,11 +61,11 @@
   "dependencies": {
     "buffer-equal-constant-time": "^1.0.1",
     "crypto-js": "3.1.9-1",
+    "ecdsa-sig-formatter": "^1.0.11",
+    "jsrsasign": "^10.5.25",
     "querystring": "0.2.0",
     "ts-node": "^9.0.0",
-    "ecdsa-sig-formatter": "^1.0.11",
-    "url": "0.11.0",
-    "jsrsasign": "8.0.20"
+    "url": "0.11.0"
   },
   "bootstrapper": "nativescript-plugin-seed"
 }

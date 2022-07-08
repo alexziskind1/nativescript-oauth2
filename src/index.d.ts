@@ -13,6 +13,7 @@ export declare interface ITnsOAuthTokenResult {
   accessTokenExpiration: Date;
   refreshTokenExpiration: Date;
   idTokenExpiration: Date;
+  original: any;
 }
 
 export type TnsOAuthClientLoginBlock = (

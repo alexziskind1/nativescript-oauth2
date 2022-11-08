@@ -14,7 +14,13 @@
       "~/*": ["app/*"]
     }
   },
-  "include": ["src/tests/**/*.ts", "src/**/*.ios.ts", "src/**/*.android.ts"],
-  "files": ["./references.d.ts", "./src/main.ts", "../src/oauth.ts"],
-  "exclude": ["node_modules", "platforms", "e2e"]
+  "include": ["./src/**/*.ts", "../src/**/*.ts"],
+  "exclude": ["node_modules", "platforms", "e2e",
+         "../src/pkce-util.android.ts",
+         "../src/pkce-util.ios.ts",
+         "../src/tns-oauth-native-view-controller.android.ts",
+         "../src/tns-oauth-native-view-controller.ios.ts",
+         "../src/delegate/index.android.ts",
+         "../src/delegate/index.ios.ts"
+  ]
 }

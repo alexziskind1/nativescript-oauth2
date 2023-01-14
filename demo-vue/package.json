@@ -5,7 +5,7 @@
     "nativescript-oauth2": "../src",
     "nativescript-vue": "2.8.0",
     "@nativescript/core": "7.0.0",
-    "@nativescript/webpack": "3.0.0"
+    "@nativescript/webpack": "5.0.12"
   },
   "devDependencies": {
     "@babel/core": "~7.1.0",

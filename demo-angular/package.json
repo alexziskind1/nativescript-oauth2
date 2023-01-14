@@ -23,7 +23,7 @@
     "@angular/compiler-cli": "~10.1.0",
     "@nativescript/ios": "7.0.0",
     "@nativescript/types": "~7.0.0",
-    "@nativescript/webpack": "~3.0.0",
+    "@nativescript/webpack": "~5.0.12",
     "@ngtools/webpack": "~10.1.0",
     "typescript": "~3.9.0"
   },
